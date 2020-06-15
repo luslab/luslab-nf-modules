@@ -1,0 +1,34 @@
+This is cutadapt 2.6 with Python 3.7.6
+Command line parameters: -q 10 -a AGATCGGAAGAGC -m 16 -o Sample1.trimmed.fq.gz readfile1.fq.gz
+Processing reads on 1 core in single-end mode ...
+Finished in 0.08 s (116 us/read; 0.52 M reads/minute).
+
+=== Summary ===
+
+Total reads processed:                     687
+Reads with adapters:                         8 (1.2%)
+Reads that were too short:                   6 (0.9%)
+Reads written (passing filters):           681 (99.1%)
+
+Total basepairs processed:        35,320 bp
+Quality-trimmed:                       0 bp (0.0%)
+Total written (filtered):         35,204 bp (99.7%)
+
+=== Adapter 1 ===
+
+Sequence: AGATCGGAAGAGC; Type: regular 3'; Length: 13; Trimmed: 8 times.
+
+No. of allowed errors:
+0-9 bp: 0; 10-13 bp: 1
+
+Bases preceding removed adapters:
+  A: 50.0%
+  C: 0.0%
+  G: 0.0%
+  T: 50.0%
+  none/other: 0.0%
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+3	4	10.7	0	4
+4	4	2.7	0	4
