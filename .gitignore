@@ -1,0 +1,25 @@
+
+<<<<<<< HEAD
+tools/.nextflow/
+
+tools/work/
+
+tools/.nextflow.log
+=======
+tools/work/
+
+tools/.nextflow/
+
+tools/.log.#*
+
+*.log
+>>>>>>> mod-cutadapt
+
+tools/.nextflow.log.1
+
+tools/.nextflow.log.2
+<<<<<<< HEAD
+
+*.log
+=======
+>>>>>>> mod-cutadapt
