@@ -15,9 +15,6 @@ module_name = 'dedup'
 params.internal_outdir = 'results'
 params.internal_process_name = 'dedup'
 
-// Check for internal parameter overrides
-nfUtils.check_internal_overrides(module_name, params)
-
 /*-------------------------------------------------> DEDUP OPTIONS <-----------------------------------------------------*/
 
 /*-----------------------------------------------------------------------------------------------------------------------------
@@ -204,7 +201,10 @@ params.internal_buffer_whole_contig = false
 
 /*-----------------------------------------------------------------------------------------------------------------------------*/
 
+// Check for internal parameter overrides
+nfUtils.check_internal_overrides(module_name, params)
 
+/*-----------------------------------------------------------------------------------------------------------------------------*/
 
 
 // dedup reusable component
