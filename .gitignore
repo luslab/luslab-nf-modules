@@ -1,0 +1,12 @@
+
+tools/.nextflow/
+
+tools/work/
+
+tools/.nextflow.log
+
+tools/.nextflow.log.1
+
+tools/.nextflow.log.2
+
+*.log
