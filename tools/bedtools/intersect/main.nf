@@ -35,4 +35,3 @@ process bedtools_intersect {
     bedtools intersect -a ${regions_file} -b $reads -wa -wb -s > ${sample_id}.annotated.bed
     """
 }
-
