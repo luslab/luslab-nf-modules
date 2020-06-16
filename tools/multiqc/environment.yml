@@ -1,0 +1,13 @@
+# You can use this file to create a conda environment for the nf-core multiqc module:
+#   conda env create -f environment.yml
+name: nfcore-multiqc-0.1
+channels:
+  - conda-forge
+  - bioconda
+  - defaults
+dependencies:
+  ## basic packages
+  - pigz=2.3.4
+
+  ## bioconda packages, see above
+  - multiqc=1.8
