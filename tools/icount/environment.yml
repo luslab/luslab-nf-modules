@@ -1,0 +1,15 @@
+# You can use this file to create a conda environment for the nf-core icount module:
+#   conda env create -f environment.yml
+name: nfcore-icount-0.1
+channels:
+  - conda-forge
+  - bioconda
+  - defaults
+dependencies:
+  ## basic packages
+  - pigz=2.3.4
+
+  ## bioconda packages, see above
+  - bedtools=2.28.0
+  - star=2.7.3a
+
