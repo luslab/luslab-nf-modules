@@ -1,12 +1,5 @@
-
-tools/work/
-
-tools/.nextflow/
-
-tools/.log.#*
-
-*.log
-
-tools/.nextflow.log.1
-
-tools/.nextflow.log.2
+.nextflow*
+work/
+results/
+.DS_Store
+.log?
