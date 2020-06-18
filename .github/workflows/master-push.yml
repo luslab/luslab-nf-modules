@@ -8,6 +8,9 @@ on:
 jobs:
   build-push-docker:
     runs-on: ubuntu-latest
+    strategy:
+        matrix:
+            module-name: ['bedtools','cutadapt','fastqc','get_crosslinks','get_crosslinks_coverage','icount','paraclu','peka','samtools','star','umi_tools']           
     steps:
       - uses: actions/checkout@v2
       - name: Build and push image
@@ -15,6 +18,6 @@ jobs:
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
-          repository: luslab/nf-modules-bedtools
-          dockerfile: tools/bedtools/Dockerfile
+          repository: luslab/nf-modules-${{module-name}}
+          dockerfile: tools/${{module-name}}/Dockerfile
           tags: workflow-testing
