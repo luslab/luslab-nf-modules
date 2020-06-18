@@ -18,6 +18,6 @@ jobs:
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
-          repository: luslab/nf-modules-${{module-name}}
-          dockerfile: tools/${{module-name}}/Dockerfile
+          repository: luslab/nf-modules-${{matrix.module-name}}
+          dockerfile: tools/${{matrix.module-name}}/Dockerfile
           tags: workflow-testing
