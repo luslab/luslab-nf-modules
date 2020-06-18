@@ -16,5 +16,5 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
           repository: luslab/nf-modules-bedtools
-          dockerfile: luslab/nf-modules/tools/bedtools/Dockerfile
+          dockerfile: tools/bedtools/Dockerfile
           tags: workflow-testing
