@@ -23,7 +23,7 @@ jobs:
           sudo mv nextflow /usr/local/bin/ 
       - name: Docker pull
         run: |
-        docker pull luslab/nf-modules-${{matrix.module-name}}:workflow-testing 
+          docker pull luslab/nf-modules-${{matrix.module-name}}:workflow-testing 
       - name: Module testing - first batch
         run: |
           nextflow run ${GITHUB_WORKSPACE}/tools/${{matrix.module-name}}/test/test.nf --internal_classpath '/home/runner/work/nf-modules/nf-modules/tools/${{matrix.module-name}}/groovy/NfUtils.groovy'
