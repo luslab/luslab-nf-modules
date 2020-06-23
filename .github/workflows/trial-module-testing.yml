@@ -1,0 +1,25 @@
+name: module-testing
+
+on:
+  pull_request:
+    branches: [ master ]
+  push:
+    branches: [ workflow-testing ]
+
+jobs:
+  test-modules:
+    runs-on: ubuntu-latest    
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install Nextflow
+        run: |
+          export NXF_VER=20.01.0
+          wget -qO- get.nextflow.io | bash
+          sudo mv nextflow /usr/local/bin/ 
+      - name: Download cutadapt image
+        run: |
+          docker pull luslab/nf-modules-cutadapt:workflow-testing 
+      - name: Module testing - cutadapt
+        run: |
+          nextflow run ${GITHUB_WORKSPACE}/tools/cutadapt/test/test.nf --internal_classpath '/home/runner/work/nf-modules/nf-modules/tools/cutadapt/groovy/NfUtils.groovy'
+      
