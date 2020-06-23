@@ -3,7 +3,7 @@ description: Functions for helping with luslab analysis pipelines
 keywords:
     - Util
 functions:
-    - luslabHeader:
+    - luslab_header:
         description: |
             Shows a standard luslab header to the commandline
 authors:
