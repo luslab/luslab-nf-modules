@@ -12,7 +12,7 @@ jobs:
     strategy:
       matrix:
         #nxf_ver: ['20.01.0', '']
-        module-name: ['cutadapt','fastqc','get_crosslinks','get_crosslinks_coverage','icount','paraclu','peka']
+        module-name: ['cutadapt','fastqc','get_crosslinks_coverage','icount','paraclu','peka']
         
     steps:
       - uses: actions/checkout@v2
