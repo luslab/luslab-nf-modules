@@ -7,22 +7,6 @@ on:
     branches: [ workflow-testing ]
 
 jobs:
-      build-push-docker:
-        runs-on: ubuntu-latest
-        strategy:
-            matrix:
-                module-name: ['bedtools','cutadapt','fastqc','get_crosslinks','get_crosslinks_coverage','icount','paraclu','peka','samtools','star','umi_tools']           
-        steps:
-          - uses: actions/checkout@v2
-          - name: Build and push image
-            uses: docker/build-push-action@v1.1.0
-            with:
-              username: ${{ secrets.DOCKER_USERNAME }}
-              password: ${{ secrets.DOCKER_PASSWORD }}
-              repository: luslab/nf-modules-${{matrix.module-name}}
-              dockerfile: tools/${{matrix.module-name}}/Dockerfile
-              tags: workflow-testing
-jobs:
   test-modules:
     runs-on: ubuntu-latest
     strategy:
@@ -36,10 +20,12 @@ jobs:
         run: |
           export NXF_VER=20.01.0
           wget -qO- get.nextflow.io | bash
-          sudo mv nextflow /usr/local/bin/  
+          sudo mv nextflow /usr/local/bin/ 
+      - name: Docker pull
+        run: |
+        docker pull luslab/nf-modules-${{matrix.module-name}}:workflow-testing 
       - name: Module testing - first batch
         run: |
-          docker pull luslab/nf-modules-${{matrix.module-name}}:workflow-testing
           nextflow run ${GITHUB_WORKSPACE}/tools/${{matrix.module-name}}/test/test.nf --internal_classpath '/home/runner/work/nf-modules/nf-modules/tools/${{matrix.module-name}}/groovy/NfUtils.groovy'
       
     
