@@ -1,4 +1,4 @@
-name: module-testing
+name: trial-module-testing
 
 on:
   pull_request:
