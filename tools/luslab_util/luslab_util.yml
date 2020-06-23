@@ -1,0 +1,10 @@
+name: Luslab Utility Module 
+description: Functions for helping with luslab analysis pipelines
+keywords:
+    - Util
+functions:
+    - luslab_header:
+        description: |
+            Shows a standard luslab header to the commandline
+authors:
+    - @chris-cheshire
