@@ -21,11 +21,26 @@ jobs:
           export NXF_VER=20.01.0
           wget -qO- get.nextflow.io | bash
           sudo mv nextflow /usr/local/bin/ 
-      - name: Docker pull
-        run: |
-          docker pull luslab/nf-modules-${{matrix.module-name}}:workflow-testing 
       - name: Module testing - first batch
         run: |
+          docker pull luslab/nf-modules-${{matrix.module-name}}:workflow-testing
           nextflow run ${GITHUB_WORKSPACE}/tools/${{matrix.module-name}}/test/test.nf --internal_classpath '/home/runner/work/nf-modules/nf-modules/tools/${{matrix.module-name}}/groovy/NfUtils.groovy'
+      - name: Module testing - bedtools/intersect
+        run: |
+        docker pull luslab/nf-modules-bedtools:workflow-testing
+        nextflow run ${GITHUB_WORKSPACE}/tools/bedtools/intersect/test/test.nf --internal_classpath '/home/runner/work/nf-modules/nf-modules/tools/${{matrix.module-name}}/groovy/NfUtils.groovy'
+      - name: Module testing - samtools/index
+        run: |
+        docker pull luslab/nf-modules-samtools:workflow-testing
+        nextflow run ${GITHUB_WORKSPACE}/tools/samtools/index/test/test.nf --internal_classpath '/home/runner/work/nf-modules/nf-modules/tools/${{matrix.module-name}}/groovy/NfUtils.groovy'
+      - name: Module testing - star/map
+        run: |
+        docker pull luslab/nf-modules-star:workflow-testing
+        nextflow run ${GITHUB_WORKSPACE}/tools/star/map/test/test.nf --internal_classpath '/home/runner/work/nf-modules/nf-modules/tools/${{matrix.module-name}}/groovy/NfUtils.groovy'
+      - name: Module testing - umi_tools/dedup
+        run: |
+        docker pull luslab/nf-modules-umi_tools:workflow-testing
+        nextflow run ${GITHUB_WORKSPACE}/tools/umi_tools/dedup/test/test.nf --internal_classpath '/home/runner/work/nf-modules/nf-modules/tools/${{matrix.module-name}}/groovy/NfUtils.groovy'
+    
       
     
