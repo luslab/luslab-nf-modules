@@ -9,16 +9,26 @@
 Module decription
 ----------------------------------------------------------------------------------------
 
-This module contains helper functions for displaying help on the screen and showing 
-logging output
+This module contains helper functions for luslab nextflow pipelines
 
 ----------------------------------------------------------------------------------------
 */
 
-//tets change
-
 // Define DSL2
 nextflow.preview.dsl=2
+
+def build_debug_param_summary() {
+    Set paramsKeySet = params.keySet()
+    def summary = [:]
+
+    paramsKeySet.each {
+        summary[it] = params.get(it)
+    }
+
+    output = summary.collect { k,v -> "${k.padRight(18)}: $v" }.join("\n")
+    output += "\n-\033[2m---------------------------------------------------------------\033[0m-"
+    return output
+}
 
 def luslab_header() {
     // Log colors ANSI codes
