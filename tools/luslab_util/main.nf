@@ -26,7 +26,7 @@ def build_debug_param_summary() {
     }
 
     output = summary.collect { k,v -> "${k.padRight(18)}: $v" }.join("\n")
-    output += "\n-\033[2m---------------------------------------------------------------------\033[0m-"
+    output += "\n-\033[2m----------------------------------------------------------------------\033[0m-"
     return output
 }
 
@@ -42,7 +42,7 @@ def luslab_header() {
     c_cyan = params.monochrome_logs ? '' : "\033[0;36m";
     c_white = params.monochrome_logs ? '' : "\033[0;37m";
 
-    return """  -${c_dim}---------------------------------------------------------------------${c_reset}-
+    return """  -${c_dim}----------------------------------------------------------------------${c_reset}-
     ${c_purple} __       __    __       _______. __          ___      .______ ${c_reset}
     ${c_purple}|  |     |  |  |  |     /       ||  |        /   \\     |   _  \\ ${c_reset}
     ${c_purple}|  |     |  |  |  |    |   (----`|  |       /  ^  \\    |  |_)  | ${c_reset}
@@ -50,14 +50,14 @@ def luslab_header() {
     ${c_purple}|  `----.|  `--'  | .----)   |   |  `----./  _____  \\  |  |_)  | ${c_reset}
     ${c_purple}|_______| \\______/  |_______/    |_______/__/     \\__\\ |______/ ${c_reset}
 
--${c_dim}---------------------------------------------------------------------${c_reset}-        
+-${c_dim}----------------------------------------------------------------------${c_reset}-        
 
 ${c_green}${workflow.manifest.name} v${workflow.manifest.version}${c_reset}
     
 ${c_cyan}Author : ${workflow.manifest.author}${c_reset}
 ${c_cyan}Homepage : ${workflow.manifest.homePage}${c_reset}
 
--${c_dim}---------------------------------------------------------------------${c_reset}-        
+-${c_dim}----------------------------------------------------------------------${c_reset}-        
     """.stripIndent()
 }
 
