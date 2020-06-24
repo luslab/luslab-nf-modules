@@ -4,14 +4,14 @@
 nextflow.preview.dsl = 2
 
 // Define workflow to load up a csv file as a channel
-workflow metadata {
-    take: csv
+workflow simple_metadata {
+    take: filePath
     main:
         Channel
-            .fromPath( csv )
+            .fromPath( filePath )
             .splitCsv(header:true)
-            .map { row -> [ row.sample_id, file(row.fastq, checkIfExists: true) ]  }
-            .set { data }
+            .map { row -> [ row.sample_id, [ row.read1, row.read2 ]  }
+            .set { ch_metadata }
     emit:
-        data
+        ch_metadata
 }
