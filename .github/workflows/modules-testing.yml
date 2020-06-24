@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        #nxf_ver: ['20.01.0', '']
+        nxf_ver: ['20.01.0', '']
         module-name: ['bedtools','cutadapt','fastqc','get_crosslinks','get_crosslinks_coverage','icount','paraclu','peka','samtools','umi_tools']
         include:
           - module-name: 'bedtools'
@@ -27,11 +27,13 @@ jobs:
       - uses: actions/checkout@v2
       - name: Install Nextflow
         run: |
-          export NXF_VER=20.01.0
+          export NXF_VER=${{matrix.nxf_ver}}
           wget -qO- get.nextflow.io | bash
           sudo mv nextflow /usr/local/bin/ 
+      - name: Docker build 
+        run: |
+          docker build -t luslab/nf-modules-${{matrix.module-name}}:latest ${GITHUB_WORKSPACE}/tools/${{matrix.module-name}}
       - name: Module testing
         run: |
-          docker pull luslab/nf-modules-${{matrix.module-name}}:workflow-testing 
           nextflow run ${GITHUB_WORKSPACE}/tools/${{matrix.module-name}}${{matrix.submodule-name}}/test/test.nf --internal_classpath '/home/runner/work/nf-modules/nf-modules/tools/cutadapt/groovy/NfUtils.groovy'
       
