@@ -49,11 +49,13 @@ def luslab_header() {
     ${c_purple}|  |     |  |  |  |     \\   \\    |  |      /  /_\\  \\   |   _  < ${c_reset}
     ${c_purple}|  `----.|  `--'  | .----)   |   |  `----./  _____  \\  |  |_)  | ${c_reset}
     ${c_purple}|_______| \\______/  |_______/    |_______/__/     \\__\\ |______/ ${c_reset}
+-${c_dim}-----------------------------------------------------------------${c_reset}-        
 
-    ${c_green}${workflow.manifest.name} v${workflow.manifest.version}${c_reset}
+${c_green}${workflow.manifest.name} v${workflow.manifest.version}${c_reset}
     
-    ${c_cyan}Author : ${workflow.manifest.author}${c_reset}
-    ${c_cyan}Homepage : ${workflow.manifest.homePage}${c_reset}
+${c_cyan}Author : ${workflow.manifest.author}${c_reset}
+${c_cyan}Homepage : ${workflow.manifest.homePage}${c_reset}
+
 -${c_dim}-----------------------------------------------------------------${c_reset}-        
     """.stripIndent()
 }
