@@ -12,14 +12,14 @@ jobs:
     strategy:
       matrix:
         #nxf_ver: ['20.01.0', '']
-        module-name: ['bedtools','cutadapt','fastqc','get_crosslinks','get_crosslinks_coverage','icount','paraclu','peka','samtools','star','umi_tools']
+        module-name: ['bedtools','cutadapt','fastqc','get_crosslinks','get_crosslinks_coverage','icount','paraclu','peka','samtools','umi_tools']
         include:
           - module-name: 'bedtools'
             submodule-name: '/intersect'
           - module-name: 'samtools'
             submodule-name: '/index'
-          - module-name: 'star'
-            submodule-name: '/map'
+          #- module-name: 'star'
+          #  submodule-name: '/map'
           - module-name: 'umi_tools'
             submodule-name: '/dedup'  
     
