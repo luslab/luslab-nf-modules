@@ -16,13 +16,10 @@ jobs:
         include:
           module-name: 'bedtools'
           submodule-name: '/intersect'
-        include:
           module-name: 'samtools'
           submodule-name: '/index'
-        include: 
           module-name: 'star'
           submodule-name: '/map'
-        include:
           module-name: 'umi_tools'
           submodule-name: '/dedup'  
     
