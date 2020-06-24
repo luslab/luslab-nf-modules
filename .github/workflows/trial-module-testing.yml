@@ -30,7 +30,7 @@ jobs:
           export NXF_VER=20.01.0
           wget -qO- get.nextflow.io | bash
           sudo mv nextflow /usr/local/bin/ 
-      - name: Module testing - cutadapt
+      - name: Module testing
         run: |
           docker pull luslab/nf-modules-${{matrix.module-name}}:workflow-testing 
           nextflow run ${GITHUB_WORKSPACE}/tools/${{matrix.module-name}}${{matrix.submodule-name}}/test/test.nf --internal_classpath '/home/runner/work/nf-modules/nf-modules/tools/cutadapt/groovy/NfUtils.groovy'

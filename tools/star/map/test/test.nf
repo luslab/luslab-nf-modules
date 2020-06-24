@@ -48,8 +48,8 @@ params.genome_index = "$baseDir/input/reduced_star_index"
 
 //test data for single-end reads
 testMetaData = [
-  ['Sample1', "$baseDir/input/prpf8_eif4a3_rep1.Unmapped.fq.gz"],
-  ['Sample2', "$baseDir/input/prpf8_eif4a3_rep2.Unmapped.fq.gz"]
+  ['Sample1', "$baseDir/input/prpf8_eif4a3_rep1.Unmapped.fq"],
+  ['Sample2', "$baseDir/input/prpf8_eif4a3_rep2.Unmapped.fq"]
 ]
 
 //test data for paired-end reads
