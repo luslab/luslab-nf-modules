@@ -1,10 +1,8 @@
-name: linting
+name: docker-linting
 
 on:
     pull_request:
       branches: [ master ]
-    push:
-      branches: [ workflow-testing ]
 
 jobs:
   lint-docker:

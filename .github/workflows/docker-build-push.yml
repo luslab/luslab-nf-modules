@@ -1,9 +1,8 @@
-name: workflow-testing-push
+name: docker-build-push
 
-# Only runs on pushes to workflow-testing
 on:
-  push:
-    branches: [ workflow-testing ]
+  pull-request:
+    branches: [ master ]
 
 jobs:
   build-push-docker:
