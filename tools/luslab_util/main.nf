@@ -93,3 +93,16 @@ def check_max(obj, type) {
     }
   }
 }
+
+def check_params(paramList) {
+    Set paramsKeySet = params.keySet()
+
+    paramList.each {
+      if(!paramsKeySet.contains(it)) {
+          exit 1, "Parameter " + it + " is required."
+      }
+      else if(params.get(it) == '') {
+          exit 1, "Parameter " + it + " is required."
+      }
+    }
+}
