@@ -1,0 +1,18 @@
+name: docker-linting
+
+on:
+    pull_request:
+      branches: [ master ]
+
+jobs:
+  lint-docker:
+    runs-on: ubuntu-latest
+    strategy:
+        matrix:
+          module-name: ['bedtools','cutadapt','fastqc','get_crosslinks','get_crosslinks_coverage','icount','paraclu','peka','samtools','umi_tools']
+    steps:
+      - uses: actions/checkout@v2
+      - name: Lint Dockerfile
+        uses: brpaz/hadolint-action@master
+        with:
+          dockerfile: tools/${{matrix.module-name}}/Dockerfile
