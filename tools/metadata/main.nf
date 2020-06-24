@@ -10,7 +10,7 @@ workflow simple_metadata {
         Channel
             .fromPath( filePath )
             .splitCsv(header:true)
-            .map { row -> [ row.sample_id, [ row.read1, row.read2 ]  }
+            .map { row -> [ row.sample_id, [ row.read1, row.read2 ]] }
             .set { ch_metadata }
     emit:
         ch_metadata
