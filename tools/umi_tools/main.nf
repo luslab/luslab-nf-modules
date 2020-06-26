@@ -29,7 +29,7 @@ process umitools_dedup {
         args += " " + ext_args.trim()
     }
 
-    // Contruct CL line
+    // Construct CL line
     dedup_command = "umi_tools dedup ${args} -I ${bam[0]} -S ${sample_id}.dedup.bam --output-stats=${sample_id}"
 
     // Log
