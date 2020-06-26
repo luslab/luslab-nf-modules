@@ -2,7 +2,7 @@ name: docker-build-push
 
 on:
   push:
-    branches: [ master ]
+    branches: [ master , feat-model-module ]
 
 jobs:
   build-push-docker:

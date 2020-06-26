@@ -1,6 +1,8 @@
 name: module-testing
 
 on:
+  push:
+    branches: [ feat-model-module ]
   pull_request:
     branches: [ master ]
 
