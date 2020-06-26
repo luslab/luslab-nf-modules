@@ -37,5 +37,4 @@ jobs:
       # docker build -f tools/${{matrix.module-name}}/Dockerfile -t luslab/nf-modules-${{matrix.module-name}}:latest .
       - name: Module testing
         run: |
-          nextflow run ${GITHUB_WORKSPACE}/tools/${{matrix.module-name}}${{matrix.submodule-name}}/test/test.nf --internal_classpath '/home/runner/work/nf-modules/nf-modules/tools/cutadapt/groovy/NfUtils.groovy'
-      
+          nextflow run ${GITHUB_WORKSPACE}/tools/${{matrix.module-name}}${{matrix.submodule-name}}/test/test.nf 
