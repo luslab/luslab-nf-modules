@@ -32,7 +32,8 @@ jobs:
           sudo mv nextflow /usr/local/bin/ 
       - name: Docker build
         run: |
-          docker build -f tools/${{matrix.module-name}}/Dockerfile -t luslab/nf-modules-${{matrix.module-name}}:latest .
+            docker build -t luslab/nf-modules-umi_tools:latest umi_tools
+          # docker build -f tools/${{matrix.module-name}}/Dockerfile -t luslab/nf-modules-${{matrix.module-name}}:latest .
       - name: Module testing
         run: |
           nextflow run ${GITHUB_WORKSPACE}/tools/${{matrix.module-name}}${{matrix.submodule-name}}/test/test.nf --internal_classpath '/home/runner/work/nf-modules/nf-modules/tools/cutadapt/groovy/NfUtils.groovy'
