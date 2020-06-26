@@ -37,4 +37,4 @@ jobs:
       # docker build -f tools/${{matrix.module-name}}/Dockerfile -t luslab/nf-modules-${{matrix.module-name}}:latest .
       - name: Module testing
         run: |
-          nextflow run ${GITHUB_WORKSPACE}/tools/${{matrix.module-name}}${{matrix.submodule-name}}/test/test.nf 
+          nextflow run ${GITHUB_WORKSPACE}/tools/${{matrix.module-name}}${{matrix.submodule-name}}/test/main.nf 
