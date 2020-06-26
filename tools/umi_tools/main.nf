@@ -8,7 +8,7 @@ process umitools_dedup {
     publishDir "${params.outdir}/umitools/dedup",
         mode: "copy", overwrite: true
 
-    container 'luslab/nf-modules-umitools:latest'
+    container 'luslab/nf-modules-umi_tools:latest'
 
     input:
         tuple val(sample_id), path(bam)
