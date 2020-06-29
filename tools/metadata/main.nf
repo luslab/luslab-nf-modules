@@ -11,7 +11,7 @@ workflow simple_metadata {
             .fromPath( filePath )
             .splitCsv(header:true)
             .map { row -> [ row.sample_id, [ row.read1, row.read2 ]] }
-            .set { ch_metadata }
+            .set { metadata }
     emit:
-        ch_metadata
+        metadata
 }
