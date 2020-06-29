@@ -1,13 +1,10 @@
 # This file creates a conda environment for the cutadapt module
 #   conda env create -f environment.yml
-name: nfcore-cutadapt-0.1
+name: nfcore-module-cutadapt
 channels:
   - conda-forge
   - bioconda
   - defaults
 dependencies:
-  ## basic packages
   - pigz=2.3.4
-
-  ## bioconda packages, see above
   - cutadapt=2.6

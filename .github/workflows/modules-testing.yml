@@ -1,6 +1,8 @@
 name: module-testing
 
 on:
+  push:
+    branches: [ feat-model-module ]
   pull_request:
     branches: [ master ]
 
@@ -10,16 +12,17 @@ jobs:
     strategy:
       matrix:
         nxf_ver: ['20.01.0', '']
-        module-name: ['bedtools','cutadapt','fastqc','get_crosslinks','get_crosslinks_coverage','icount','paraclu','peka','samtools','umi_tools']
-        include:
-          - module-name: 'bedtools'
-            submodule-name: '/intersect'
-          - module-name: 'samtools'
-            submodule-name: '/index'
+        module-name: ['umi_tools','fastqc','cutadapt']
+        #module-name: ['bedtools','cutadapt','fastqc','get_crosslinks','get_crosslinks_coverage','icount','paraclu','peka','samtools','umi_tools']
+        #include:
+         # - module-name: 'bedtools'
+           # submodule-name: '/intersect'
+          #- module-name: 'samtools'
+           # submodule-name: '/index'
           #- module-name: 'star'
           #  submodule-name: '/map'
-          - module-name: 'umi_tools'
-            submodule-name: '/dedup'  
+          #- module-name: 'umi_tools'
+           # submodule-name: '/dedup'   
     
     steps:
       - uses: actions/checkout@v2
@@ -30,8 +33,7 @@ jobs:
           sudo mv nextflow /usr/local/bin/ 
       - name: Docker build
         run: |
-          docker build -f tools/${{matrix.module-name}}/Dockerfile -t luslab/nf-modules-${{matrix.module-name}}:latest .
+          docker build -t luslab/nf-modules-${{matrix.module-name}}:latest tools/${{matrix.module-name}}
       - name: Module testing
         run: |
-          nextflow run ${GITHUB_WORKSPACE}/tools/${{matrix.module-name}}${{matrix.submodule-name}}/test/test.nf --internal_classpath '/home/runner/work/nf-modules/nf-modules/tools/cutadapt/groovy/NfUtils.groovy'
-      
+          nextflow run ${GITHUB_WORKSPACE}/tools/${{matrix.module-name}}${{matrix.submodule-name}}/test/main.nf 

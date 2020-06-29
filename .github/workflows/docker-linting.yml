@@ -1,8 +1,10 @@
 name: docker-linting
 
 on:
-    pull_request:
-      branches: [ master ]
+  push:
+    branches: [ feat-model-module ]
+  pull_request:
+    branches: [ master ]
 
 jobs:
   lint-docker:
