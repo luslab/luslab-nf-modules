@@ -6,4 +6,5 @@ channels:
   - bioconda
   - defaults
 dependencies:
+  - pigz=2.3.4
   - cutadapt=2.6

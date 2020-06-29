@@ -10,7 +10,7 @@ log.info ("Starting tests for cutadapt...")
 /* Define params
 --------------------------------------------------------------------------------------*/
 
-params.cutadapt_args = ""
+params.cutadapt_args = '-a AGATCGGAAGAGC'
 params.verbose = true
 
 /*------------------------------------------------------------------------------------*/
@@ -24,19 +24,19 @@ include cutadapt from '../main.nf'
 --------------------------------------------------------------------------------------*/
 
 testData = [
-    ['Sample1', "$baseDir/input/readfile1.fq.gz"],
-    ['Sample2', "$baseDir/input/readfile2.fq.gz"],
-    ['Sample3', "$baseDir/input/readfile3.fq.gz"],
-    ['Sample4', "$baseDir/input/readfile4.fq.gz"],
-    ['Sample5', "$baseDir/input/readfile5.fq.gz"],
-    ['Sample6', "$baseDir/input/readfile6.fq.gz"]
+    ['Sample1', "$baseDir/input/sample1.fq.gz"],
+    ['Sample2', "$baseDir/input/sample2.fq.gz"],
+    ['Sample3', "$baseDir/input/sample3.fq.gz"],
+    ['Sample4', "$baseDir/input/sample4.fq.gz"],
+    ['Sample5', "$baseDir/input/sample5.fq.gz"],
+    ['Sample6', "$baseDir/input/sample6.fq.gz"]
 ]
 
 //Define test data input channel
-  Channel
-  .from(testData)
-  .map { row -> [ row[0], file(row[1], checkIfExists: true) ] }
-  .set {ch_fastq}
+Channel
+    .from(testData)
+    .map { row -> [ row[0], file(row[1], checkIfExists: true) ] }
+    .set {ch_fastq}
 
 /*------------------------------------------------------------------------------------*/
 /* Run tests

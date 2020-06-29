@@ -15,21 +15,19 @@ process cutadapt {
 
     output:
         tuple val(sample_id), path("${sample_id}.trimmed.fq.gz"), emit: trimmedReads
-        path "*.cutadapt.txt", emit: report
+        path "*.txt", emit: report
 
     script:
 
-    // Init
-    args = "--log=${sample_id}.cutadapt.txt"
-
     // Check main args string exists and strip whitespace
+    args = ''
     if(params.cutadapt_args) {
         ext_args = params.cutadapt_args
         args += " " + ext_args.trim()
     }
 
     // Construct CL line
-    cutadapt_command = "cutadapt ${args} $reads -o ${sample_id}.trimmed.fq.gz > ${sample_id}_cutadapt.txt"
+    cutadapt_command = "cutadapt${args} -o ${sample_id}.trimmed.fq.gz $reads > ${sample_id}_cutadapt.txt"
 
     // Log
     if (params.verbose){
