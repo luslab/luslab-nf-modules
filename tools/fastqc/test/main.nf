@@ -10,14 +10,14 @@ log.info ("Starting tests for fastqc...")
 /* Define params
 --------------------------------------------------------------------------------------*/
 
-params.fastqc_args = '--threads'
+params.fastqc_args = ''
 params.verbose = true
 
 /*------------------------------------------------------------------------------------*/
 /* Module inclusions
 --------------------------------------------------------------------------------------*/
 
-include fastqc from '../main.nf'
+include fastqc from '../main.nf' addParams(fastqc_reportname: 'test')
 
 /*------------------------------------------------------------------------------------*/
 /* Define input channels

@@ -20,20 +20,30 @@ process fastqc {
     script:
 
     // Check main args string exists and strip whitespace
-    if(params.fastqc_args) {
-        args = params.fastqc_args.trim()
+    args = ""
+    if(params.fastqc_args && params.fastqc_args != '') {
+        ext_args = params.fastqc_args
+        args += " " + ext_args.trim()
     }
 
     // Construct CL line
-    fastqc_command = "fastqc ${args} ${task.cpus} $reads"
+    fastqc_command = "fastqc${args} --threads ${task.cpus} $reads"
+    mv_command = ''
+
+    // Check the report name
+    if(params.fastqc_reportname && params.fastqc_reportname != ''){
+        mv_command = 
+        "mv ${reads.simpleName}*.html ${sample_id}_${params.fastqc_reportname}.html && mv ${reads.simpleName}*.zip ${sample_id}_${params.fastqc_reportname}.zip"
+    }
 
     // Log
     if (params.verbose){
         println ("[MODULE] fastqc command: " + fastqc_command)
     }
-
+    
     //SHELL
     """
-    ${fastqc_command}
+    ${fastqc_command} 
+    ${mv_command}
     """
 }
