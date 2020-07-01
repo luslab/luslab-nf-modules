@@ -26,8 +26,8 @@ include star_map as map_pe from '../main.nf'
 
 // Single-end test reads
 testMetaDataSingleEnd = [
-  ['Sample1', "$baseDir/input/prpf8_eif4a3_rep1.Unmapped.fq"],
-  ['Sample2', "$baseDir/input/prpf8_eif4a3_rep2.Unmapped.fq"]
+  ['Sample1', "$baseDir/input/single_end/prpf8_eif4a3_rep1.Unmapped.fq"],
+  ['Sample2', "$baseDir/input/single_end/prpf8_eif4a3_rep2.Unmapped.fq"]
 ]
 
 // Paired-end test reads
@@ -64,14 +64,14 @@ workflow {
     map_se.out.progressLogFiles.collect() | view 
 
     // Run paired-end read mapping
-    log.info ("Run paired-end read mapping...")
-    map_se ( ch_testData_paired_end )
+    //log.info ("Run paired-end read mapping...")
+    //map_pe ( ch_testData_paired_end )
 
     // Collect file names and view output for single-end read mapping
-    map_pe.out.bamFiles.collect() | view
-    map_pe.out.samFiles.collect() | view
-    map_pe.out.sjFiles.collect() | view
-    map_pe.out.finalLogFiles.collect() | view
-    map_pe.out.outLogFiles.collect() | view
-    map_pe.out.progressLogFiles.collect() | view 
+    //map_pe.out.bamFiles.collect() | view
+    //map_pe.out.samFiles.collect() | view
+    //map_pe.out.sjFiles.collect() | view
+    //map_pe.out.finalLogFiles.collect() | view
+    //map_pe.out.outLogFiles.collect() | view
+    //map_pe.out.progressLogFiles.collect() | view 
 }
