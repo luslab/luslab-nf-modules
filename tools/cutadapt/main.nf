@@ -35,7 +35,14 @@ process cutadapt {
     }
 
     //SHELL
-    """
-    ${cutadapt_command} 
-    """
+    readList = reads.collect{it.toString()}
+    if (readList.size > 1){
+        """
+        cutadapt${args} -o ${sample_id}.trimmed.fq.gz -p ${sample_id}.trimmed.fq.gz  $reads > ${sample_id}_cutadapt.txt
+        """
+    } else {
+        """
+        ${cutadapt_command}
+        """
+    }
 }
