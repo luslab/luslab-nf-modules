@@ -3,20 +3,33 @@
 // Specify DSL2
 nextflow.preview.dsl = 2
 
+// --outfile name prefix
+// Set to sample ID
+params.outfile_prefix_sampleid = true
+
+// Switch for paired-end reads 
+params.paired_end = false
+
 // Process definition
-process umitools_dedup {
-    publishDir "${params.outdir}/umitools/dedup",
+process map {
+    tag "${sample_id}"
+
+    publishDir "${params.outdir}/star/map",
         mode: "copy", overwrite: true
 
-    container 'luslab/nf-modules-umi_tools:latest'
+    container 'luslab/nf-modules-star:latest'
 
     input:
-        tuple val(sample_id), path(bam)
-       
+      tuple val(sample_id), path(reads), path(star_index)
+
     output:
-        tuple val(sample_id), path("${sample_id}.dedup.bam"), emit: dedupBam
-        tuple val(sample_id), path("${sample_id}.dedup.bam.bai"), emit: dedupBai
-        path "*.dedup.log", emit: report
+      tuple val(sample_id), path("*.sam"), optional: true, emit: samFiles
+      tuple val(sample_id), path("*.bam"), optional: true, emit: bamFiles
+      tuple val(sample_id), path("*SJ.out.tab"), emit: sjFiles
+      tuple val(sample_id), path("*Log.final.out"), emit: finalLogFiles
+      tuple val(sample_id), path("*Log.out"), emit: outLogFiles
+      tuple val(sample_id), path("*Log.progress.out"), emit: progressLogFiles
+      path "*Log.final.out", emit: report
 
     script:
 
