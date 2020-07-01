@@ -11,7 +11,7 @@ params.outfile_prefix_sampleid = true
 params.paired_end = false
 
 // Process definition
-process map {
+process star_map {
     tag "${sample_id}"
 
     publishDir "${params.outdir}/star/map",
@@ -34,25 +34,58 @@ process map {
     script:
 
     // Init
-    args = "--log=${sample_id}.dedup.log"
+    args = ""
 
-    // Check main args string exists and strip whitespace
-    if(params.umitools_dedup_args) {
-        ext_args = params.umitools_dedup_args
-        args += " " + ext_args.trim()
+    // Set the main arguments
+    if (params.paired_end) {
+      args = "--genomeDir $star_index --readFilesIn ${reads[0]} ${reads[1]} "
+    } else {
+      args = "--genomeDir $star_index --readFilesIn $reads "
     }
 
-    // Construct CL line
-    dedup_command = "umi_tools dedup ${args} -I ${bam[0]} -S ${sample_id}.dedup.bam --output-stats=${sample_id}"
+    // Combining the custom arguments and creating star args
+    if (params.star_map_args) {
+      ext_args = params.star_map_args
+      args += " " + ext_args.trim()
+    }
+
+    // Set the number of threads
+    args += "--runThreadN $task.cpus "
+
+    // Output file name prefix
+    if (params.outfile_prefix_sampleid) {
+      args += "--outFileNamePrefix ${sample_id}. "
+    }
+
+    // Compression parameters 
+    if (params.paired_end) {
+      test_file_name = "${reads[0]}"
+    } else {
+      test_file_name = "$reads"
+    }
+
+    if ("$test_file_name" =~ /(.gz$)/) {
+      args += "--readFilesCommand gunzip -c "
+    } 
+    if ("$test_file_name" =~ /(.bz2$)/) {
+      args += "--readFilesCommand bunzip2 -c "
+    }
+
+    // Set memory constraints
+    avail_mem = task.memory ? "--limitGenomeGenerateRAM ${task.memory.toBytes() - 100000000} " : ''
+    avail_mem += task.memory ? "--limitBAMsortRAM ${task.memory.toBytes() - 100000000}" : ''
+    args += avail_mem
+
+    // Construct command line
+    map_command = "STAR $arg"
 
     // Log
-    if (params.verbose){
-        println ("[MODULE] umi_tools/dedup command: " + dedup_command)
+    if (params.verbose) {
+        println ("[MODULE] star/map command: " + map_command)
     }
 
-    //SHELL
+    // Run read mapping with STAR
     """
-    ${dedup_command}
-    samtools index ${sample_id}.dedup.bam
+    ${map_command}
     """
 }

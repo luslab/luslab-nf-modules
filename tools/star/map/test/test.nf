@@ -54,7 +54,7 @@ testMetaData = [
 
 //test data for paired-end reads
 testMetaDataPairedEnd = [
-  ['Sample1', "$baseDir/input/paired_end/ENCFF282NGP_chr6_3400000_3500000_1000reads_1.fq.bz2", "$baseDir/input/paired_end/ENCFF282NGP_chr6_3400000_3500000_1000reads_2.fq.bz2"],
+  ['Sample1', "$baseDir/input/paired_end/ENCFF282NGP_chr6_3400000_3500000_1000reads_1.fq.bz2", "$baseDir/input/paired_end/ENCFF282NGP_chr6_3400000_3500000_1000reads_2.fq.bz2"]
 ]
 
 //Channel for single-end reads 
