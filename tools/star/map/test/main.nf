@@ -52,21 +52,19 @@ testMetaDataPairedEnd = [
 // Run tests
 workflow {
     // Run single-end read mapping
-    log.info ("Run single-end read mapping...")
-    params.outdir = './results_se'  
-    map_se ( ch_testData_single_end )
+    //log.info ("Run single-end read mapping...")
+    //map_se ( ch_testData_single_end )
 
     // Collect file names and view output for single-end read mapping
-    map_se.out.bamFiles.collect() | view
-    map_se.out.samFiles.collect() | view
-    map_se.out.sjFiles.collect() | view
-    map_se.out.finalLogFiles.collect() | view
-    map_se.out.outLogFiles.collect() | view
-    map_se.out.progressLogFiles.collect() | view 
+    //map_se.out.bamFiles.collect() | view
+    //map_se.out.samFiles.collect() | view
+    //map_se.out.sjFiles.collect() | view
+    //map_se.out.finalLogFiles.collect() | view
+    //map_se.out.outLogFiles.collect() | view
+    //map_se.out.progressLogFiles.collect() | view 
 
     // Run paired-end read mapping
     log.info ("Run paired-end read mapping...")
-    params.outdir = './results_pe'  
     map_pe ( ch_testData_paired_end )
 
     // Collect file names and view output for single-end read mapping
