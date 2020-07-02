@@ -10,14 +10,16 @@ log.info ("Starting tests for samtools...")
 /* Define params
 --------------------------------------------------------------------------------------*/
 
-params.samtools_index_args = ''
 params.verbose = true
+params.samtools_index_args = ''
+params.samtools_view_args = ''
+params.samtools_view_region = 'chr21'
 
 /*------------------------------------------------------------------------------------*/
 /* Module inclusions 
 --------------------------------------------------------------------------------------*/
 
-include samtools_index from '../main.nf' 
+include {samtools_index; samtools_view} from '../main.nf'
 
 /*------------------------------------------------------------------------------------*/
 /* Define input channels
@@ -25,23 +27,34 @@ include samtools_index from '../main.nf'
 
 // Define test data
 testData = [
-    ['Sample1', "$baseDir/input/sample1.bam"],
-    ['Sample2', "$baseDir/input/sample2.bam"]
+    ['Sample1', "$baseDir/input/sample1.bam", "$baseDir/input/sample1.bam.bai"],
+    ['Sample2', "$baseDir/input/sample2.bam", "$baseDir/input/sample2.bam.bai"]
 ]
 
 Channel
     .from( testData )
     .map { row -> [ row[0], file(row[1], checkIfExists: true) ] }
-    .set { ch_testData }
+    .set { ch_testDataIndex }
+
+Channel
+    .from( testData )
+    .map { row -> [ row[0], [file(row[1], checkIfExists: true), file(row[2], checkIfExists: true) ]] }
+    .set { ch_testDataView }
 
 /*------------------------------------------------------------------------------------*/
 /* Run tests
 --------------------------------------------------------------------------------------*/
 
 workflow {
-    // Run star
-    samtools_index ( ch_testData )
+    // Run samtools index
+    samtools_index ( ch_testDataIndex )
 
-    // Collect file names and view output
+    // View output
     samtools_index.out.baiFiles | view
+
+    // Run samtools index
+    samtools_view ( ch_testDataView )
+
+    // View output
+    samtools_view.out.bamFiles | view
 }
