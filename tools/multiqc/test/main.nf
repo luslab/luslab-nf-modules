@@ -6,6 +6,8 @@ nextflow.preview.dsl=2
 // Log
 log.info ("Starting test pipeline for multiqc")
 
+params.verbose = true
+
 /* Module inclusions 
 --------------------------------------------------------------------------------------*/
 
@@ -13,14 +15,13 @@ include multiqc from '../main.nf'
 
 /*------------------------------------------------------------------------------------*/
 
+ch_testData = Channel.fromPath( "$baseDir/input/*.zip" )
+
 // Run workflow
 workflow {
-    // Create test data channel from log files
-    ch_testData = Channel.fromPath( "test" )
-
     // Run multiqc
-    multiqc ( ch_testData )
+    multiqc ( ch_testData.collect() )
 
     // Collect file names and view output
-    multiqc.out..collect() | view
+    multiqc.out.report | view
 }
