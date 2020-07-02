@@ -64,8 +64,8 @@ Channel
 
 workflow {
     // Run getcrosslinks
-    //getcrosslinks ( ch_test_meta_bam )
-    getcrosslinks ( ch_test_meta_bam_bai )
+    getcrosslinks ( ch_test_meta_bam )
+    //getcrosslinks ( ch_test_meta_bam_bai )
 
     // Collect file names and view output
     getcrosslinks.out.crosslinkBed | view
