@@ -11,15 +11,15 @@ params.outfile_prefix_sampleid = true
 params.paired_end = false
 
 // Optional input
-sjdbGTFfile = ''
-log.info ("GTF param: ${params.sjdbGTFfile}")
-if (params.sjdbGTFfile != '') {
-    Channel
-        .fromPath( params.sjdbGTFfile )
-        .subscribe { Path p -> sjdbGTFfile = p }
-}
+//sjdbGTFfile = ''
+//log.info ("GTF param: ${params.sjdbGTFfile}")
+//if (params.sjdbGTFfile != '') {
+//    Channel
+//        .fromPath( params.sjdbGTFfile )
+//        .subscribe { Path p -> sjdbGTFfile = p }
+//}
 
-log.info ("GTF: ${sjdbGTFfile}")
+//log.info ("GTF: ${sjdbGTFfile}")
 
 // Process definition
 process star_map {
@@ -42,6 +42,7 @@ process star_map {
       tuple val(sample_id), path("*Log.out"), emit: outLogFiles
       tuple val(sample_id), path("*Log.progress.out"), emit: progressLogFiles
       path "*Log.final.out", emit: report
+      path("test.out")
 
     script:
 
@@ -83,14 +84,18 @@ process star_map {
       args += "--readFilesCommand bunzip2 -c "
     }
 
-    if ( params.sjdbGTFfile != '' ) {
-      args += "--sjdbGTFfile ${sjdbGTFfile} "
-    }
+    //if ( params.sjdbGTFfile != '' ) {
+    //  args += "--sjdbGTFfile ${params.sjdbGTFfile} "
+    //}
 
     // Set memory constraints
     avail_mem = task.memory ? "--limitGenomeGenerateRAM ${task.memory.toBytes() - 100000000} " : ''
     avail_mem += task.memory ? "--limitBAMsortRAM ${task.memory.toBytes() - 100000000}" : ''
     args += avail_mem
+
+    if ( params.sjdbGTFfile != '' ) {
+      args += "; head -20 ${params.sjdbGTFfile} > test.out"
+    }
 
     // Construct command line
     map_command = "STAR $args"
