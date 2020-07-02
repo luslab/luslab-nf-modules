@@ -28,13 +28,7 @@ process fastqc {
 
     // Construct CL line
     fastqc_command = "fastqc${args} --threads ${task.cpus} $reads"
-    mv_command = ''
 
-    // Check the report name
-    if(params.fastqc_reportname && params.fastqc_reportname != ''){
-        mv_command = 
-        "mv ${reads.simpleName}*.html ${sample_id}_${params.fastqc_reportname}.html && mv ${reads.simpleName}*.zip ${sample_id}_${params.fastqc_reportname}.zip"
-    }
 
     // Log
     if (params.verbose){
@@ -42,8 +36,32 @@ process fastqc {
     }
     
     //SHELL
-    """
-    ${fastqc_command} 
-    ${mv_command}
-    """
+    readList = reads.collect{it.toString()}
+    if(readList.size > 1){
+        if(params.fastqc_reportname && params.fastqc_reportname != ''){
+            """
+            ${fastqc_command}
+            mv ${reads[0].simpleName}*.html ${reads[0].simpleName}_${params.fastqc_reportname}.html
+            mv ${reads[0].simpleName}*.zip ${reads[0].simpleName}_${params.fastqc_reportname}.zip
+            mv ${reads[1].simpleName}*.html ${reads[1].simpleName}_${params.fastqc_reportname}.html
+            mv ${reads[1].simpleName}*.zip ${reads[1].simpleName}_${params.fastqc_reportname}.zip
+            """
+        } else {
+            """
+            ${fastqc_command}
+            """
+        }
+    } else {
+        if(params.fastqc_reportname && params.fastqc_reportname != ''){
+            """
+            ${fastqc_command}
+            mv ${reads[0].simpleName}*.html ${reads[0].simpleName}_${params.fastqc_reportname}.html
+            mv ${reads[0].simpleName}*.zip ${reads[0].simpleName}_${params.fastqc_reportname}.zip
+            """
+        } else {
+            """
+            ${fastqc_command}
+            """
+        }
+    }
 }
