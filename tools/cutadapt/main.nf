@@ -14,7 +14,7 @@ process cutadapt {
         tuple val(sample_id), path(reads)
 
     output:
-        tuple val(sample_id), path("${sample_id}.trimmed.fq.gz"), emit: trimmedReads
+        tuple val(sample_id), path("*.trimmed.fq.gz"), emit: trimmedReads
         path "*.txt", emit: report
 
     script:
@@ -38,7 +38,7 @@ process cutadapt {
     readList = reads.collect{it.toString()}
     if (readList.size > 1){
         """
-        cutadapt${args} -o ${sample_id}.trimmed.fq.gz -p ${sample_id}.trimmed.fq.gz  $reads > ${sample_id}_cutadapt.txt
+        cutadapt${args} -o ${reads[0].simpleName}.trimmed.fq.gz -p ${reads[1].simpleName}.trimmed.fq.gz  $reads > ${sample_id}_cutadapt.txt
         """
     } else {
         """
