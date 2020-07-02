@@ -25,12 +25,12 @@ include getcrosslinks from '../main.nf'
 --------------------------------------------------------------------------------------*/
 
 //Define test data 
-testMetaDataBam = [
+testDataBam = [
     ['Sample1', "$baseDir/input/sample1.bam"],
     ['Sample2', "$baseDir/input/sample2.bam"]
 ]
 
-testMetaDataBamBai = [
+testDataBamBai = [
     ['Sample1', "$baseDir/input/sample1.bam", "$baseDir/input/sample1.bam.bai"],
     ['Sample2', "$baseDir/input/sample2.bam", "$baseDir/input/sample2.bam.bai"]
 ]
@@ -40,21 +40,21 @@ testMetaDataBamBai = [
 // Fai input channel
 Channel
     .fromPath(params.fai, checkIfExists: true)
-    .set {ch_test_fai}
+    .set {ch_fai}
 
 // Bam input channel
 Channel
-    .from(testMetaDataBam)
+    .from(testDataBam)
     .map { row -> [ row[0], file(row[1], checkIfExists: true) ] }
-    .combine( ch_test_fai )
-    .set {ch_test_meta_bam}
+    .combine( ch_fai )
+    .set {ch_bam}
 
 // Bam/bai input channel
 Channel
-    .from(testMetaDataBamBai)
+    .from(testDataBamBai)
     .map { row -> [ row[0], [file(row[1], checkIfExists: true), file(row[2], checkIfExists:true)] ] }
-    .combine( ch_test_fai )
-    .set {ch_test_meta_bam_bai}
+    .combine( ch_fai )
+    .set {ch_bam_bai}
 
 
 /*------------------------------------------------------------------------------------*/
@@ -63,8 +63,8 @@ Channel
 
 workflow {
     // Run getcrosslinks
-    getcrosslinks ( ch_test_meta_bam )
-    //getcrosslinks ( ch_test_meta_bam_bai )
+    getcrosslinks ( ch_bam )
+    //getcrosslinks ( ch_bam_bai )
 
     // Collect file names and view output
     getcrosslinks.out.crosslinkBed | view

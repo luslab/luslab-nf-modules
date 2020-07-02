@@ -3,6 +3,7 @@
 // Specify DSL2
 nextflow.preview.dsl = 2
 
+// Process definition
 process getcrosslinks {
     publishDir "${params.outdir}/get_crosslinks",
         mode: "copy", overwrite: true
