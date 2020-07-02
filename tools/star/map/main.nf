@@ -10,6 +10,17 @@ params.outfile_prefix_sampleid = true
 // Switch for paired-end reads 
 params.paired_end = false
 
+// Optional input
+sjdbGTFfile = ''
+log.info ("GTF param: ${params.sjdbGTFfile}")
+if (params.sjdbGTFfile != '') {
+    Channel
+        .fromPath( params.sjdbGTFfile )
+        .subscribe { Path p -> sjdbGTFfile = p }
+}
+
+log.info ("GTF: ${sjdbGTFfile}")
+
 // Process definition
 process star_map {
     tag "${sample_id}"
@@ -70,6 +81,10 @@ process star_map {
     } 
     if ("$test_file_name" =~ /(.bz2$)/) {
       args += "--readFilesCommand bunzip2 -c "
+    }
+
+    if ( params.sjdbGTFfile != '' ) {
+      args += "--sjdbGTFfile ${sjdbGTFfile} "
     }
 
     // Set memory constraints

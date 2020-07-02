@@ -6,23 +6,17 @@ nextflow.preview.dsl=2
 // Log
 log.info ("Starting tests for STAR mapping...")
 
-/*------------------------------------------------------------------------------------*/
-/* Define params
---------------------------------------------------------------------------------------*/
-
+// Define params
 params.star_map_args = '--outFilterMultimapNmax 20'
 params.verbose = true
+// Optional input
+params.sjdbGTFfile = "$baseDir/input/raw_genome/gencode.v30.primary_assembly.annotation_chr6_34000000_35000000.gtf"
 
-/*------------------------------------------------------------------------------------*/
-/* Module inclusions
---------------------------------------------------------------------------------------*/
-
+// Module inclusions
 include star_map as map_se from '../main.nf'
 include star_map as map_pe from '../main.nf'
 
-/*------------------------------------------------------------------------------------*/
-/* Define input channels
---------------------------------------------------------------------------------------*/
+// Define input channels
 
 // Single-end test reads
 testMetaDataSingleEnd = [
