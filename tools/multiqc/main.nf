@@ -1,48 +1,45 @@
 #!/usr/bin/env nextflow
 
-// Include NfUtils
-params.internal_classpath = "multiqc/groovy/NfUtils.groovy"
-Class groovyClass = new GroovyClassLoader(getClass().getClassLoader()).parseClass(new File(params.internal_classpath));
-GroovyObject nfUtils = (GroovyObject) groovyClass.newInstance();
-
 // Specify DSL2
 nextflow.preview.dsl = 2
 
-// Define internal params
-module_name = 'multiqc'
-
-// Local default params
-params.internal_outdir = 'results'
-params.internal_process_name = 'multiqc'
-
-/*-------------------------------------------------> FASTQC PARAMETERS <-----------------------------------------------------*/
-
-/*---------------------------------------------------------------------------------------------------------------------------*/
-
-// Check global overrides
-nfUtils.check_internal_overrides(module_name, params)
-
 // Main process
 process multiqc {
-    publishDir "multiqc/${params.internal_outdir}/${params.internal_process_name}",
+    publishDir "${params.outdir}/multiqc",
         mode: "copy", overwrite: true
+
+    container 'luslab/nf-modules-multiqc:latest'
     
     input:
-      tuple path(reports), path(config_path)
+      path(reports)
 
     output:
       path "multiqc_report.html", emit: report
       path "multiqc_data/multiqc.log", emit: log
         
-    shell:
+    script:
 
-    args = '-v -x work'
+    // Check for custom args
+    args = ""
+    if(params.multiqc_args && params.multiqc_args != '') {
+        ext_args = params.multiqc_args
+        args += " " + ext_args.trim()
+    }
 
-    if("$config_path" != '') {
-        args += " -c $config_path"
+    // Check for custom config
+    custom_config_file = ''
+    if(params.multiqc_config && params.multiqc_config != '') {
+        $custom_config_file = "--config ${params.multiqc_config}"
+    }
+
+    multiqc_command = "multiqc . $args $custom_config_file"
+
+    // Log
+    if (params.verbose){
+        println ("[MODULE] multiqc command: " + multiqc_command)
     }
 
     """
-    multiqc $args .
+    ${multiqc_command}
     """
 }
