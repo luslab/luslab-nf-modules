@@ -25,19 +25,19 @@ include getcrosslinkscoverage from '../main.nf'
 
 //Define test data 
 testData = [
-  ['Sample1', "$baseDir/input/sample1.xl.bed.gz"],
-  ['Sample2', "$baseDir/input/sample2.xl.bed.gz"],
-  ['Sample3', "$baseDir/input/sample3.xl.bed.gz"],
-  ['Sample4', "$baseDir/input/sample4.xl.bed.gz"],
-  ['Sample5', "$baseDir/input/sample5.xl.bed.gz"],
-  ['Sample6', "$baseDir/input/sample6.xl.bed.gz"]
+    ['Sample1', "$baseDir/input/sample1.xl.bed.gz"],
+    ['Sample2', "$baseDir/input/sample2.xl.bed.gz"],
+    ['Sample3', "$baseDir/input/sample3.xl.bed.gz"],
+    ['Sample4', "$baseDir/input/sample4.xl.bed.gz"],
+    ['Sample5', "$baseDir/input/sample5.xl.bed.gz"],
+    ['Sample6', "$baseDir/input/sample6.xl.bed.gz"]
 ]
 
 // Create channels of test data 
- Channel
-  .from(testData)
-  .map { row -> [ row[0], file(row[1], checkIfExists: true) ] }
-  .set {ch_bed} 
+Channel
+    .from(testData)
+    .map { row -> [ row[0], file(row[1], checkIfExists: true) ] }
+    .set {ch_bed} 
 
 //------------------------------------------------------------------------------------
 
