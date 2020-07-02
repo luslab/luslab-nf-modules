@@ -1,6 +1,6 @@
 # You can use this file to create a conda environment for the bedtools module:
 #   conda env create -f environment.yml
-name: nfcore-bedtools-0.1
+name: nfcore-module-bedtools
 channels:
   - conda-forge
   - bioconda

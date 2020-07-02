@@ -8,6 +8,6 @@ RUN apt-get update \
  && apt-get clean \
  && rm -rf /var/lib/apt/lists/*
 # Install conda packages
-COPY tools/get_crosslinks_coverage/environment.yml /
+COPY environment.yml /
 RUN conda env create -f /environment.yml && conda clean -a
 ENV PATH /opt/conda/envs/nfcore-getcrosslinkscoverage-0.1/bin:$PATH

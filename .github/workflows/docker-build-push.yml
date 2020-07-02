@@ -18,5 +18,5 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
           repository: luslab/nf-modules-${{matrix.module-name}}
-          dockerfile: tools/${{matrix.module-name}}/Dockerfile
+          path: tools/${{matrix.module-name}}
           tags: latest
