@@ -11,7 +11,7 @@ dependencies:
   - perl=5.26.2
 
   ## bioconda packages, see above
-  - star=2.7.3a
+  - star=2.6.1d
   - perl-io-uncompress-bunzip2
   - perl-io-uncompress-gunzip
 
