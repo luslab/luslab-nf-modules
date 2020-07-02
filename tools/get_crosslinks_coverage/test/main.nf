@@ -10,8 +10,6 @@ log.info ("Starting tests for get_crosslinks_coverage...")
 /* Define params
 --------------------------------------------------------------------------------------*/
 
-params.get_crosslinks_coverage_args = ''
-params.verbose = true
 
 /*------------------------------------------------------------------------------------*/
 /* Module inclusions

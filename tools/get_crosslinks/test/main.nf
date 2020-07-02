@@ -11,8 +11,6 @@ log.info ("Starting tests for get_crosslinks...")
 --------------------------------------------------------------------------------------*/
 
 params.fai = "$baseDir/input/GRCh38.primary_assembly.genome_chr6_34000000_35000000.fa.fai"
-params.get_crosslinks_args = ''
-params.verbose = true
 
 /*------------------------------------------------------------------------------------*/
 /* Module inclusions

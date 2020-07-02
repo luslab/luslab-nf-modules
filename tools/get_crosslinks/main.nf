@@ -18,21 +18,6 @@ process getcrosslinks {
 
     script:
 
-    // Check main args string exists and strip whitespace
-    args = ''
-    if(params.get_crosslinks_args && params.get_crosslinks_args != '') {
-        ext_args = params.get_crosslinks_args
-        args += " " + ext_args.trim()
-    }
-
-    // Construct CL line
-    get_crosslinks_command = ''
-
-    // Log
-    if (params.verbose && get_crosslinks_command != ''){
-        println ("[MODULE] get_crosslinks command: " + get_crosslinks_command)
-    }
-
     //SHELL
     """
     bedtools bamtobed -i ${bam[0]} > dedupe.bed

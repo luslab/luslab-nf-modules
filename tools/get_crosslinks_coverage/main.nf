@@ -19,21 +19,6 @@ process getcrosslinkscoverage {
 
     script:
 
-    // Check main args string exists and strip whitespace
-    args = ''
-    if(params.get_crosslinks_coverage_args && params.get_crosslinks_coverage_args != '') {
-        ext_args = params.get_crosslinks_coverage_args
-        args += " " + ext_args.trim()
-    }
-
-    // Construct CL line
-    get_crosslinks_coverage_command = ''
-
-    // Log
-    if (params.verbose && get_crosslinks_coverage_command != ''){
-        println ("[MODULE] get_crosslinks_coverage command: " + get_crosslinks_coverage_command)
-    }
-
     //SHELL
     """
     # Raw bedgraphs
