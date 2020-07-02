@@ -1,31 +1,14 @@
 #!/usr/bin/env nextflow
 
-// Include NfUtils
-params.internal_classpath = "get_crosslinks_coverage/groovy/NfUtils.groovy"
-Class groovyClass = new GroovyClassLoader(getClass().getClassLoader()).parseClass(new File(params.internal_classpath));
-GroovyObject nfUtils = (GroovyObject) groovyClass.newInstance();
-
-// Define internal params
-module_name = 'getcrosslinkscoverage'
-
 // Specify DSL2
 nextflow.preview.dsl = 2
 
-// TODO check version of cutadapt in host process --> CUTADAPT 2.6 (latest is 2.9)
-
-// Define default nextflow internals
-params.internal_outdir = 'results'
-params.internal_process_name = 'getcrosslinkscoverage'
-
-//Prefix to define the output file 
-params.internal_output_prefix = ''
-
-// Check if globals need to 
-nfUtils.check_internal_overrides(module_name, params)
-
+// Process definition
 process getcrosslinkscoverage {
-    publishDir "get_crosslinks_coverage/${params.internal_outdir}/${params.internal_process_name}",
+    publishDir "${params.outdir}/get_crosslinks_coverage",
         mode: "copy", overwrite: true
+    
+    container 'luslab/nf-modules-get_crosslinks_coverage'
 
     input:
       tuple val(sample_id), path(bed)
@@ -35,6 +18,23 @@ process getcrosslinkscoverage {
       tuple val(sample_id), path("${bed.simpleName}.norm.bedgraph.gz"), emit: normBedGraph
 
     script:
+
+    // Check main args string exists and strip whitespace
+    args = ''
+    if(params.get_crosslinks_coverage_args && params.get_crosslinks_coverage_args != '') {
+        ext_args = params.get_crosslinks_coverage_args
+        args += " " + ext_args.trim()
+    }
+
+    // Construct CL line
+    get_crosslinks_coverage_command = ''
+
+    // Log
+    if (params.verbose && get_crosslinks_coverage_command != ''){
+        println ("[MODULE] get_crosslinks_coverage command: " + get_crosslinks_coverage_command)
+    }
+
+    //SHELL
     """
     # Raw bedgraphs
     gunzip -c $bed | awk '{OFS = "\t"}{if (\$6 == "+") {print \$1, \$2, \$3, \$5} else {print \$1, \$2, \$3, -\$5}}' | pigz > ${bed.simpleName}.bedgraph.gz
