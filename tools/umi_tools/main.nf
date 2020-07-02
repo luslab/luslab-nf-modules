@@ -24,7 +24,7 @@ process umitools_dedup {
     args = "--log=${sample_id}.dedup.log"
 
     // Check main args string exists and strip whitespace
-    if(params.umitools_dedup_args) {
+    if(params.umitools_dedup_args && params.umitools_dedup_args != '') {
         ext_args = params.umitools_dedup_args
         args += " " + ext_args.trim()
     }

@@ -21,7 +21,7 @@ process cutadapt {
 
     // Check main args string exists and strip whitespace
     args = ''
-    if(params.cutadapt_args) {
+    if(params.cutadapt_args && params.cutadapt_args != '') {
         ext_args = params.cutadapt_args
         args += " " + ext_args.trim()
     }
