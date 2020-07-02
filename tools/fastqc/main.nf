@@ -15,7 +15,7 @@ process fastqc {
 
     output:
         tuple val(sample_id), path ("*.{zip,html}"), emit: fastqcOutput
-        path "*.{zip,html}", emit: report
+        path "*.zip", emit: report
 
     script:
 
@@ -41,10 +41,10 @@ process fastqc {
         if(params.fastqc_reportname && params.fastqc_reportname != ''){
             """
             ${fastqc_command}
-            mv ${reads[0].simpleName}*.html ${reads[0].simpleName}_${params.fastqc_reportname}.html
-            mv ${reads[0].simpleName}*.zip ${reads[0].simpleName}_${params.fastqc_reportname}.zip
-            mv ${reads[1].simpleName}*.html ${reads[1].simpleName}_${params.fastqc_reportname}.html
-            mv ${reads[1].simpleName}*.zip ${reads[1].simpleName}_${params.fastqc_reportname}.zip
+            mv ${reads[0].simpleName}*.html ${reads[0].simpleName}_${params.fastqc_reportname}_fastqc.html
+            mv ${reads[0].simpleName}*.zip ${reads[0].simpleName}_${params.fastqc_reportname}_fastqc.zip
+            mv ${reads[1].simpleName}*.html ${reads[1].simpleName}_${params.fastqc_reportname}_fastqc.html
+            mv ${reads[1].simpleName}*.zip ${reads[1].simpleName}_${params.fastqc_reportname}_fastqc.zip
             """
         } else {
             """
@@ -55,8 +55,8 @@ process fastqc {
         if(params.fastqc_reportname && params.fastqc_reportname != ''){
             """
             ${fastqc_command}
-            mv ${reads[0].simpleName}*.html ${reads[0].simpleName}_${params.fastqc_reportname}.html
-            mv ${reads[0].simpleName}*.zip ${reads[0].simpleName}_${params.fastqc_reportname}.zip
+            mv ${reads[0].simpleName}*.html ${reads[0].simpleName}_${params.fastqc_reportname}_fastqc.html
+            mv ${reads[0].simpleName}*.zip ${reads[0].simpleName}_${params.fastqc_reportname}_fastqc.zip
             """
         } else {
             """
