@@ -10,7 +10,7 @@ log.info ("Starting tests for get_crosslinks...")
 /* Define params
 --------------------------------------------------------------------------------------*/
 
-params.fai = [["$baseDir/input/GRCh38.primary_assembly.genome_chr6_34000000_35000000.fa.fai"]]
+params.fai = "$baseDir/input/GRCh38.primary_assembly.genome_chr6_34000000_35000000.fa.fai"
 params.get_crosslinks_args = ''
 params.verbose = true
 
@@ -39,8 +39,7 @@ testMetaDataBamBai = [
 
 // Fai input channel
 Channel
-    .from(params.fai)
-    .map { row -> file(row[0], checkIfExists: true)}
+    .fromPath(params.fai, checkIfExists: true)
     .set {ch_test_fai}
 
 // Bam input channel
