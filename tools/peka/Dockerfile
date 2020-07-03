@@ -15,7 +15,7 @@ RUN apt-get update \
 # Install conda packages
 COPY environment.yml /
 RUN conda env create -f /environment.yml && conda clean -a
-ENV PATH /opt/conda/envs/nfcore-peka-0.1/bin:$PATH
+ENV PATH /opt/conda/envs/nfcore-module-peka/bin:$PATH
 
 # Install PEKA
 WORKDIR /home
