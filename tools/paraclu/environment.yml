@@ -1,12 +1,10 @@
 # You can use this file to create a conda environment for this pipeline:
 #   conda env create -f environment.yml
-name: nfcore-paraclu-0.1
+name: nfcore-module-paraclu
 channels:
   - conda-forge
   - bioconda
   - defaults
 dependencies:
-  ## basic packages and dependencies
   - pigz=2.3.4
- ## bioconda packages, see above
   - pandas=0.24.2
