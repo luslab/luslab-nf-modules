@@ -11,7 +11,8 @@ log.info ("Starting tests for iCount...")
 --------------------------------------------------------------------------------------*/
 
 params.seg = "$baseDir/input/segmentation.gtf.gz"
-params.half_window = '3'
+params.icount_half_window = '3'
+params.icount_fdr = '0,05'
 
 /*------------------------------------------------------------------------------------*/
 /* Module inclusions 

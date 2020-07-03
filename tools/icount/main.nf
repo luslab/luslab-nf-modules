@@ -24,11 +24,11 @@ process icount {
     """
     iCount peaks $seg $bed ${bed.simpleName}.xl.peaks.bed.gz \
         --scores ${bed.simpleName}.scores.tsv \
-        --half_window ${params.half_window} \
-        --fdr 0.05
+        --half_window ${params.icount_half_window} \
+        --fdr ${params.icount_fdr}
 
     zcat ${bed.simpleName}.xl.peaks.bed.gz | \
-    bedtools merge -i stdin -s -d ${params.half_window} -c 4,5,6 -o distinct,sum,distinct | \
+    bedtools merge -i stdin -s -d ${params.icount_half_window} -c 4,5,6 -o distinct,sum,distinct | \
     gzip > ${bed.simpleName}.xl.clusters.bed.gz
     """
 }
