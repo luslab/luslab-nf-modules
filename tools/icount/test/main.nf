@@ -4,12 +4,16 @@
 nextflow.preview.dsl=2
 
 // Log
-log.info ("Starting icount trimming test pipeline")
+log.info ("Starting tests for iCount...")
 
-/* Define global params
+/*------------------------------------------------------------------------------------*/
+/* Define params
 --------------------------------------------------------------------------------------*/
 
+params.seg = "$baseDir/input/segmentation.gtf.gz"
+params.half_window = '3'
 
+/*------------------------------------------------------------------------------------*/
 /* Module inclusions 
 --------------------------------------------------------------------------------------*/
 
@@ -19,37 +23,39 @@ include icount from '../main.nf'
 /* Define input channels
 --------------------------------------------------------------------------------------*/
 
-testMetaData = [
-  ['Sample1', "$baseDir/input/prpf8_ctrl_rep1.xl.bed.gz"]//,
-//  ['Sample 2', "$baseDir/input/prpf8_ctrl_rep2.xl.bed.gz"],
+// Define test data
+testData = [
+  ['Sample1', "$baseDir/input/sample1.xl.bed.gz"],
+  ['Sample 2', "$baseDir/input/sample2.xl.bed.gz"]//,
 //  ['Sample 3', "$baseDir/input/prpf8_ctrl_rep4.xl.bed.gz"],
 //  ['Sample 4', "$baseDir/input/prpf8_eif4a3_rep1.xl.bed.gz"],
 //  ['Sample 5', "$baseDir/input/prpf8_eif4a3_rep2.xl.bed.gz"],
 //  ['Sample 6', "$baseDir/input/prpf8_eif4a3_rep4.xl.bed.gz"]
 ]
 
-testSegPath = [
-  ["$baseDir/input/segmentation.gtf.gz"]
-]
+// Define test data input channels 
 
-// Create channels of test data 
+// Seg file channel
 Channel
-  .from(testSegPath)
-  .map { row -> file(row[0], checkIfExists: true) }
-  .set {ch_test_seg}
+    .fromPath(params.seg, , checkIfExists: true)
+    .set {ch_seg}
 
-  Channel
-  .from(testMetaData)
-  .map { row -> [ row[0], file(row[1], checkIfExists: true) ] }
-  .combine(ch_test_seg)
-  .set {ch_test_meta}
+// Bed/seg channel
+Channel
+    .from(testData)
+    .map { row -> [ row[0], file(row[1], checkIfExists: true) ] }
+    .combine(ch_seg)
+    .set {ch_bed}
 
 /*------------------------------------------------------------------------------------*/
+/* Run tests
+--------------------------------------------------------------------------------------*/
 
-// Run workflow
 workflow {
-    icount( ch_test_meta ) 
+    // Run iCount
+    icount( ch_bed ) 
 
+    // Collect file names and view output
     icount.out.peaks | view
     icount.out.peak_scores | view
     icount.out.clusters | view
