@@ -3,6 +3,7 @@
 // Specify DSL2
 nextflow.preview.dsl = 2
 
+// Process definition
 process getcrosslinks {
     publishDir "${params.outdir}/get_crosslinks",
         mode: "copy", overwrite: true
@@ -16,21 +17,6 @@ process getcrosslinks {
       tuple val(sample_id), path ("${bam[0].simpleName}.xl.bed.gz"), emit: crosslinkBed
 
     script:
-
-    // Check main args string exists and strip whitespace
-    args = ''
-    if(params.get_crosslinks_args && params.get_crosslinks_args != '') {
-        ext_args = params.get_crosslinks_args
-        args += " " + ext_args.trim()
-    }
-
-    // Construct CL line
-    get_crosslinks_command = ''
-
-    // Log
-    if (params.verbose && get_crosslinks_command != ''){
-        println ("[MODULE] get_crosslinks command: " + get_crosslinks_command)
-    }
 
     //SHELL
     """
