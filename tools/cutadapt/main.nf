@@ -38,7 +38,7 @@ process cutadapt {
     readList = reads.collect{it.toString()}
     if (readList.size > 1){
         """
-        cutadapt${args} -o ${reads[0].simpleName}.trimmed.fq.gz -p ${reads[1].simpleName}.trimmed.fq.gz  $reads > ${sample_id}_cutadapt.txt
+        cutadapt${args} -o ${reads[0].simpleName}.trimmed.fq.gz -p ${reads[1].simpleName}.trimmed.fq.gz $reads > ${sample_id}_cutadapt.txt
         """
     } else {
         """
