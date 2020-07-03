@@ -18,7 +18,6 @@ process paraclu {
 
     script:
 
-    //SHELL
     """
     #!/usr/bin/env python
 
