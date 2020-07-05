@@ -84,21 +84,22 @@ process star_map {
       args += "--readFilesCommand bunzip2 -c "
     }
 
-    //if ( params.sjdbGTFfile != '' ) {
-    //  args += "--sjdbGTFfile ${params.sjdbGTFfile} "
-    //}
+    if ( params.sjdbGTFfile != '' ) {
+      args += "--sjdbGTFfile ${params.sjdbGTFfile} "
+    }
 
     // Set memory constraints
     avail_mem = task.memory ? "--limitGenomeGenerateRAM ${task.memory.toBytes() - 100000000} " : ''
     avail_mem += task.memory ? "--limitBAMsortRAM ${task.memory.toBytes() - 100000000}" : ''
     args += avail_mem
 
-    if ( params.sjdbGTFfile != '' ) {
-      args += "; head -20 ${params.sjdbGTFfile} > test.out"
-    }
+    //if ( params.sjdbGTFfile != '' ) {
+    //  args += "; head -20 ${params.sjdbGTFfile} > test.out"
+    //}
 
     // Construct command line
-    map_command = "STAR $args"
+    //map_command = "STAR $args"
+    map_command = "STAR --version"
 
     // Log
     if (params.verbose) {
