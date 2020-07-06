@@ -1,39 +1,23 @@
 #!/usr/bin/env nextflow
 
-// Include NfUtils
-params.internal_classpath = "paraclu/groovy/NfUtils.groovy"
-Class groovyClass = new GroovyClassLoader(getClass().getClassLoader()).parseClass(new File(params.internal_classpath));
-GroovyObject nfUtils = (GroovyObject) groovyClass.newInstance();
-
-// Define internal params
-module_name = 'paraclu'
-
 // Specify DSL2
 nextflow.preview.dsl = 2
 
-// Define default nextflow internals
-params.internal_outdir = 'results'
-params.internal_process_name = 'paraclu'
-
-// Local default params
-params.internal_min_value = 10
-params.internal_max_cluster_length = 200
-params.internal_min_density_increase = 2
-
-// Check if globals need to 
-nfUtils.check_internal_overrides(module_name, params)
-
+// Process definition
 process paraclu {
-    publishDir "paraclu/${params.internal_outdir}/${params.internal_process_name}",
+    publishDir "${params.outdir}/paraclu",
         mode: "copy", overwrite: true
+      
+    container 'luslab/nf-modules-paraclu:latest'
 
     input:
-      tuple val(sample_id), path(crosslinks)
+        tuple val(sample_id), path(crosslinks)
 
     output:
-      tuple val(sample_id), path("*_peaks.bed.gz"), emit: peaks
+        tuple val(sample_id), path("*_peaks.bed.gz"), emit: peaks
 
     script:
+
     """
     #!/usr/bin/env python
 
@@ -65,7 +49,7 @@ process paraclu {
 
     df_out.to_csv(paraclu_input, sep='\t', header=None, index=None)
 
-    call(f'paraclu ${params.internal_min_value} "{paraclu_input}" | paraclu-cut.sh -l ${params.internal_max_cluster_length} -d ${params.internal_min_density_increase} > "{paraclu_output}"', shell=True)
+    call(f'paraclu ${params.paraclu_min_value} "{paraclu_input}" | paraclu-cut.sh -l ${params.paraclu_max_cluster_length} -d ${params.paraclu_min_density_increase} > "{paraclu_output}"', shell=True)
     df_in = pd.read_csv(paraclu_output,
                         names = ["sequence_name", "strand","start", "end", "number_of_positions",
                                 "sum_of_data_values", "min_density", "max_density"],
