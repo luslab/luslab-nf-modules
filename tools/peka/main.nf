@@ -30,16 +30,16 @@ process peka {
      "$genome",
      "$genome_index", 
      "$regions",
-     $params.peka_window,
-     $params.peka_window_distal,
-     $params.peka_kmer_length,
-     $params.peka_top_n,
-     $params.peka_percentile,
-     $params.peka_min_relativ_occurence,
-     $params.peka_clusters,
-     $params.peka_smoothing,
-     $params.peka_all_outputs,
-     $params.peka_regions_selection,
-     $params.peka_subsample)
+     ${params.peka_window},
+     ${params.peka_window_distal},
+     ${params.peka_kmer_length},
+     ${params.peka_top_n},
+     ${params.peka_percentile},
+     ${params.peka_clusters},
+     ${params.peka_smoothing},
+     ${params.peka_all_outputs},
+     ${params.peka_regions_selection},
+     ${params.peka_subsample},
+     "${params.peka_repeats}")
     """
 }

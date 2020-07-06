@@ -21,12 +21,12 @@ params.peka_window_distal = 150
 params.peka_kmer_length = 4
 params.peka_top_n = 20
 params.peka_percentile = 0.7
-params.peka_min_relativ_occurence = 2
 params.peka_clusters = 5
 params.peka_smoothing = 6
 params.peka_all_outputs = "False"
 params.peka_regions_selection = "None"
 params.peka_subsample = "True"
+params.peka_repeats = "masked"
 
 /*------------------------------------------------------------------------------------*/
 /* Module inclusions 
