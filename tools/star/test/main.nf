@@ -6,10 +6,12 @@ nextflow.preview.dsl=2
 // Log
 log.info ("Starting tests for STAR mapping...")
 
-// Define params
+// Define main params
+params.genome_index = "tools/star/test/input/reduced_star_index"
 params.star_map_args = '--outFilterMultimapNmax 20'
 params.verbose = true
-// Optional input
+
+// Define optional input
 params.sjdbGTFfile = "$baseDir/input/raw_genome/gencode.v30.primary_assembly.annotation_chr6_34000000_35000000.gtf"
 
 // Module inclusions
