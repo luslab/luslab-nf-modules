@@ -1,6 +1,6 @@
 # You can use this file to create a conda environment for the samtools module:
 #   conda env create -f environment.yml
-name: nfcore-samtools-0.1
+name: nfcore-module-samtools
 channels:
   - conda-forge
   - bioconda
