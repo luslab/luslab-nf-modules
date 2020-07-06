@@ -13,7 +13,7 @@ log.info ("Starting tests for peka...")
 // Params passed as input
 params.peka_testGenome = "$baseDir/input/chr20.fa"
 params.peka_testGenomeIndex = "$baseDir/input/chr20.fa.fai"
-params.peka_testRegions = "$baseDir/input/regions_GENCODE_v30.gtf.gz"
+params.peka_testRegions = "$baseDir/input/regions_GENCODE_v30_chr20.gtf.gz"
 
 // Other params
 params.peka_window = 40
