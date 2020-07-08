@@ -4,20 +4,23 @@
 nextflow.preview.dsl = 2
 
 // Process definition
-process guppy_basecalling {
+process guppy_basecaller {
     publishDir "${params.outdir}/guppy",
         mode: "copy", overwrite: true
     
+    container "luslab/nf-modules-guppy:latest"
+
     input:
-        tuple val(sample_id), path(raw)
+        tuple val(sample_id), path(reads)
 
     output:
-        tuple val(sample_id), path("*.fastq"), emit: basecalledSeq
+        tuple val(sample_id), path("*.fastq"), path("*.log"), path("*.txt"), path("*.js"), emit: basecalledSeq
+        
 
     script:
 
     // SHELL
     """
-    guppy_basecaller
+    guppy_basecaller --input_path $reads --save_path . --flowcell ${params.guppy_flowcell} --kit ${params.guppy_kit}
     """
 }
