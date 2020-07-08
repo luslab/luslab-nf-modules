@@ -1,6 +1,6 @@
 # You can use this file to create a conda environment for this pipeline:
 #   conda env create -f environment.yml
-name: nfcore-star-0.1
+name: nfcore-module-star
 channels:
   - conda-forge
   - bioconda
@@ -11,7 +11,6 @@ dependencies:
   - perl=5.26.2
 
   ## bioconda packages, see above
-  - star=2.7.3a
+  - star=2.6.1d
   - perl-io-uncompress-bunzip2
   - perl-io-uncompress-gunzip
-
