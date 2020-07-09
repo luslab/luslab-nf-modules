@@ -11,10 +11,10 @@ process guppy_basecaller {
     container "luslab/nf-modules-guppy:latest"
 
     input:
-        tuple val(sample_id), path(reads)
+        path(reads)
 
     output:
-        tuple val(sample_id), path("*.fastq"), path("*.log"), path("*.txt"), path("*.js"), emit: basecalledSeq
+        path("*.fastq"), path("*.log"), path("*.txt"), path("*.js"), emit: basecalledSeq
         
 
     script:

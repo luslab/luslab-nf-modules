@@ -26,7 +26,7 @@ include guppy_basecaller from '../main.nf'
 //Define test data 
 
 testData = [
-    ['Samples', "$baseDir/input"],
+    ["$baseDir/input"],
 ] 
 
 //Define test data input channel
