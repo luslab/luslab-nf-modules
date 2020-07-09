@@ -14,7 +14,7 @@ process guppy_basecaller {
         path(reads)
 
     output:
-        path("*.fastq"), path("*.log"), path("*.txt"), path("*.js"), emit: basecalledSeq
+        tuple path("*.fastq"), path("*.log"), path("*.txt"), path("*.js"), emit: basecalledSeq
         
 
     script:
