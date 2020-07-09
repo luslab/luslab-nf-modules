@@ -10,9 +10,8 @@ log.info ("Starting tests for guppy...")
 /* Define params
 --------------------------------------------------------------------------------------*/
 
-params.guppy_output_path = "$baseDir/output"
 params.guppy_flowcell = "FLO-MIN106"
-params.guppy_kit = "SQK-LSK108"
+params.guppy_kit = "SQK-RAD002"
 
 /*------------------------------------------------------------------------------------*/
 /* Module inclusions
@@ -27,7 +26,7 @@ include guppy_basecaller from '../main.nf'
 //Define test data 
 
 testData = [
-    ['Sample1', "$baseDir/input"],
+    ['Samples', "$baseDir/input"],
 ] 
 
 //Define test data input channel
