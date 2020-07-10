@@ -8,7 +8,8 @@ process guppy_basecaller {
     publishDir "${params.outdir}/guppy",
         mode: "copy", overwrite: true
     
-    container "luslab/nf-modules-guppy:latest"
+    //container "luslab/nf-modules-guppy:latest"
+    container "luslab/nf-modules-guppy:gpu"
 
     input:
         path(reads)
