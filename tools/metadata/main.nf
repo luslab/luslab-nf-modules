@@ -15,3 +15,14 @@ workflow simple_metadata {
     emit:
         metadata
 }
+
+workflow simple_metadata_directory {
+    take: filePath
+    main: 
+        Channel
+            .fromPath ( filePath )
+            .map { row -> [ row.directory ] }
+            .set { metadata }
+    emit:
+        metadataDir
+}
