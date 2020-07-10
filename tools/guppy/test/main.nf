@@ -25,14 +25,11 @@ include guppy_basecaller from '../main.nf'
 
 //Define test data 
 
-testData = [
-    ["$baseDir/input"],
-] 
+testData = "$baseDir/input"
 
 //Define test data input channel
 Channel
-    .from(testData)
-    .map { row -> [ row[0], [file(row[1], checkIfExists: true)]]}
+    .fromPath(testData, checkIfExists: true)
     .set {ch_fast5}
 
 /*------------------------------------------------------------------------------------*/
