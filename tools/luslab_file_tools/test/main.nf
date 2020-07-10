@@ -23,7 +23,7 @@ include decompress from '../main.nf'
 --------------------------------------------------------------------------------------*/
 
 testData = [
-    ['Sample1', "$baseDir/../../../workflows/fast_flows/test/input/21.fa.gz"]
+    ['Sample1', "$baseDir/../../../test_data/fasta/homo-hg37-21.fa.gz"]
 ]
 
 Channel
