@@ -27,4 +27,3 @@ process region2bed {
     > custom_region.bed
     """
 }
-
