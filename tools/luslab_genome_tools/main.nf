@@ -6,7 +6,7 @@ nextflow.preview.dsl = 2
 // Converts region in the format - "chrX:15560138-15602945 to a bed file for downstream use"
 process region2bed {
     input:
-        tuple val(region)
+        val region 
 
     output:
         path "custom_region.bed", emit: bedFile
