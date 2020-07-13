@@ -29,7 +29,7 @@ process guppy_basecaller {
         """
     } else {
         """
-        guppy_basecaller --input_path $reads --save_path . --flowcell ${params.guppy_flowcell} --kit ${params.guppy_kit} -x auto
+        guppy_basecaller --input_path $reads --save_path . --flowcell ${params.guppy_flowcell} --kit ${params.guppy_kit} -x cuda:all:100%
         """
     }
 }
