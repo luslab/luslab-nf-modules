@@ -1,8 +1,8 @@
 name: workflow-testing
 
 on:
-  push:
-    branches: [ feat-model-module ]
+#  push:
+#    branches: [ feat-model-module ]
   pull_request:
     branches: [ master ]
 
