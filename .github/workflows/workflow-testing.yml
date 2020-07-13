@@ -1,0 +1,25 @@
+name: workflow-testing
+
+on:
+  push:
+    branches: [ feat-model-module ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  test-modules:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        nxf_ver: ['20.01.0', '']
+        module-name: ['fast_flows']
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install Nextflow
+        run: |
+          export NXF_VER=${{matrix.nxf_ver}}
+          wget -qO- get.nextflow.io | bash
+          sudo mv nextflow /usr/local/bin/ 
+      - name: Module testing
+        run: |
+          nextflow run ${GITHUB_WORKSPACE}/workflows/${{matrix.module-name}}/test/main.nf 
