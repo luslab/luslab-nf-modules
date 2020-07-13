@@ -20,6 +20,6 @@ jobs:
           export NXF_VER=${{matrix.nxf_ver}}
           wget -qO- get.nextflow.io | bash
           sudo mv nextflow /usr/local/bin/ 
-      - name: Module testing
+      - name: Workflow testing
         run: |
           nextflow run ${GITHUB_WORKSPACE}/workflows/${{matrix.module-name}}/test/main.nf 
