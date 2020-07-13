@@ -39,6 +39,6 @@ workflow {
     // Call subset
     subset_genome( decompress_noid.out.file, params.region )
 
-    // View output
+    // View outputs
     subset_genome.out.fastaSubset | view
 }
