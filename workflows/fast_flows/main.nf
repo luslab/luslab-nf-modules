@@ -3,22 +3,24 @@
 // Specify DSL2
 nextflow.preview.dsl = 2
 
-include region2bed from '../tools/luslab_genome_tools/main.nf'
+include region2bed from '../../tools/luslab_genome_tools/main.nf'
+include seqtk_subseq from '../../tools/seqtk/main.nf'
+include samtools_faidx from '../../tools/samtools/main.nf'
 
 // Define workflow to subset and index a genome region fasta file
 workflow subset_genome {
-    take: filePath, region
+    take: fasta
+    take: region
     main:
-        // Create channels from inputs
-        Channel
-            .fromPath( filePath, checkIfExists: true )
-            .set { ch_genome }
-        Channel
-            .from( region )
-            .set { ch_region }
-
         // Create bed from region
-        region2bed( ch_region )
-    //emit:
-        //metadata
+        region2bed( region )
+
+        // Subset fasta file
+        seqtk_subseq( fasta.combine(region2bed.out.bedFile) )
+
+        // Index the fasta file
+        samtools_faidx( seqtk_subseq.out.subsetFasta )
+
+    emit:
+        fastaSubset = samtools_faidx.out.indexedFiles
 }
