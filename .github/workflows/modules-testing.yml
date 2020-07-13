@@ -1,8 +1,8 @@
 name: module-testing
 
 on:
-  push:
-    branches: [ feat-model-module ]
+#  push:
+#    branches: [ feat-model-module ]
   pull_request:
     branches: [ master ]
 
@@ -12,7 +12,7 @@ jobs:
     strategy:
       matrix:
         nxf_ver: ['20.01.0', '']
-        module-name: ['umi_tools','fastqc','cutadapt','bedtools','samtools', 'get_crosslinks','get_crosslinks_coverage','icount','seqtk','paraclu']
+        module-name: ['umi_tools','fastqc','cutadapt','bedtools','samtools', 'get_crosslinks','get_crosslinks_coverage','icount','seqtk','paraclu','luslab_genome_tools', 'luslab_file_tools']
     steps:
       - uses: actions/checkout@v2
       - name: Install Nextflow
@@ -22,7 +22,7 @@ jobs:
           sudo mv nextflow /usr/local/bin/ 
       - name: Docker build
         run: |
-          docker build -t luslab/nf-modules-${{matrix.module-name}}:latest tools/${{matrix.module-name}}
+        test -f tools/${{matrix.module-name}}/Dockerfile && docker build -t luslab/nf-modules-${{matrix.module-name}}:latest tools/${{matrix.module-name}}
       - name: Module testing
         run: |
           nextflow run ${GITHUB_WORKSPACE}/tools/${{matrix.module-name}}${{matrix.submodule-name}}/test/main.nf 

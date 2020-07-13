@@ -1,0 +1,9 @@
+# This file creates a conda environment for the bowtie2 module
+#   conda env create -f environment.yml
+name: nfcore-module-bowtie2
+channels:
+  - conda-forge
+  - bioconda
+  - defaults
+dependencies:
+  - bowtie2=2.4.1
