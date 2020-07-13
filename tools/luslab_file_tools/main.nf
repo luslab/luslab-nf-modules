@@ -17,3 +17,18 @@ process decompress {
     cat $input_file | gzip -dv - > "\${FILE%.*}"
     """
 }
+
+// Decompresses file to output (assumes running base system on linux)"
+process decompress_noid {
+    input:
+      path input_file
+
+    output:
+        path "*.*", emit: file
+
+    script: 
+    """
+    FILE=$input_file
+    cat $input_file | gzip -dv - > "\${FILE%.*}"
+    """
+}
