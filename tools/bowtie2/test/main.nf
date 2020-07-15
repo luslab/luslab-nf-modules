@@ -17,52 +17,36 @@ params.verbose = true
 /* Module inclusions
 --------------------------------------------------------------------------------------*/
 
-include bowtie2_align from '../main.nf' 
+include {bowtie2_align; bowtie2_build} from '../main.nf' 
 
 /*------------------------------------------------------------------------------------*/
 /* Define input channels
 --------------------------------------------------------------------------------------*/
 
-testDataSingleEnd= [
-    ['Sample1', "$baseDir/input/sample1_r1.fq.gz"],
-    ['Sample2', "$baseDir/input/sample2_r1.fq.gz"],
-    ['Sample3', "$baseDir/input/sample3_r1.fq.gz"],
-    ['Sample4', "$baseDir/input/sample4_r1.fq.gz"],
-    ['Sample5', "$baseDir/input/sample5_r1.fq.gz"],
-    ['Sample6', "$baseDir/input/sample6_r1.fq.gz"]
-]
-
 testDataPairedEnd= [
-    ['Sample1', "$baseDir/input/sample1_r1.fq.gz", "$baseDir/input/sample1_r2.fq.gz" ],
-    ['Sample2', "$baseDir/input/sample2_r1.fq.gz", "$baseDir/input/sample2_r2.fq.gz"],
-    ['Sample3', "$baseDir/input/sample3_r1.fq.gz", "$baseDir/input/sample3_r2.fq.gz"],
-    ['Sample4', "$baseDir/input/sample4_r1.fq.gz", "$baseDir/input/sample4_r2.fq.gz"],
-    ['Sample5', "$baseDir/input/sample5_r1.fq.gz", "$baseDir/input/sample5_r2.fq.gz"],
-    ['Sample6', "$baseDir/input/sample6_r1.fq.gz", "$baseDir/input/sample6_r2.fq.gz"]
+    ['Sample1', "$baseDir/input/sample1_r1.fq.gz", "$baseDir/input/sample1_r2.fq.gz"]
 ]
 
-//Define test data input channels
+//Channel
+//    .from(testDataPairedEnd)
+//    .map { row -> [ row[0], [file(row[1], checkIfExists: true), file(row[2], checkIfExists: true)]]}
+//    .set {ch_fastq_paired_end}
 
-//Single end
 Channel
-    .from(testDataSingleEnd)
-    .map { row -> [ row[0], file(row[1], checkIfExists: true) ] }
-    .set {ch_fastq_single_end}
+    .from("$baseDir/../../../test_data/fasta/homo-hg37-21.fa.gz")
+    .set {ch_fasta}
 
-//Paired-end
-Channel
-    .from(testDataPairedEnd)
-    .map { row -> [ row[0], [file(row[1], checkIfExists: true), file(row[2], checkIfExists: true)]]}
-    .set {ch_fastq_paired_end}
 /*------------------------------------------------------------------------------------*/
 /* Run tests
 --------------------------------------------------------------------------------------*/
   
 workflow {
+    bowtie2_build( ch_fasta )
+
     // Run cutadapt
     //cutadapt ( ch_fastq_single_end )
-    cutadapt ( ch_fastq_paired_end )
+   // bowtie2_align ( ch_fastq_paired_end )
 
     // Collect file names and view output
-    cutadapt.out.trimmedReads | view
+   // cutadapt.out.trimmedReads | view
 }

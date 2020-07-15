@@ -29,3 +29,37 @@ process bowtie2_align {
         bowtie2
         """
 }
+
+process bowtie2_build {
+    publishDir "${params.outdir}/bowtie2",
+        mode: "copy", overwrite: true
+    
+    container 'luslab/nf-modules-bowtie2:latest'
+
+    input:
+        path fasta
+
+    output:
+        path "*.bt2*", emit: bowtieIndex
+        path "*.log", emit: report
+
+    script:
+        // Check main args string exists and strip whitespace
+        args = ''
+        if(params.bowtie2_build_args && params.bowtie2_build_args != '') {
+            ext_args = params.bowtie2_build_args
+            args += " " + ext_args.trim()
+        }
+
+         // Construct CL line
+        command = "bowtie2-build${args} --threads ${task.cpus} $fasta ${fasta.simpleName} > summary.log"
+
+        // Log
+        if (params.verbose){
+            println ("[MODULE] bowtie2-build command: " + command)
+        }
+
+        """
+        $command
+        """
+}
