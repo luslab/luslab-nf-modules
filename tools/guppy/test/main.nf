@@ -18,6 +18,7 @@ params.guppy_kit = "SQK-RAD002"
 --------------------------------------------------------------------------------------*/
 
 include guppy_basecaller from '../main.nf'
+include guppy_qc from '../main.nf'
 
 /*------------------------------------------------------------------------------------*/
 /* Define input channels
@@ -39,7 +40,9 @@ Channel
 workflow {
     // Run guppy_basecaller
     guppy_basecaller ( ch_fast5 )
+    guppy_qc ( guppy_basecaller.out.summary )
 
     // Collect file names and view output
     guppy_basecaller.out.basecalledSeq | view
+    guppy_qc.out.report | view
 }
