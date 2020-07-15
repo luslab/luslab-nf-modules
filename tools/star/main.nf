@@ -56,7 +56,7 @@ process star_map {
     }
 
     // Add optional input parameters
-    if ( params.sjdbGTFfile != '' ) {
+    if ( params.sjdbGTFfile && (params.sjdbGTFfile != '' )) {
       args += "--sjdbGTFfile ${params.sjdbGTFfile} "
     }
     if ( params.sjdbFileChrStartEnd != '' ) {
