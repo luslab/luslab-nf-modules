@@ -8,11 +8,11 @@ process guppy_basecaller {
     publishDir "${params.outdir}/guppy",
         mode: "copy", overwrite: true
     
-    //if (params.num_gpu == 0){
+    if (params.num_gpu == 0){
     container "luslab/nf-modules-guppy:cpu"
-   // } else {
-    //container "luslab/nf-modules-guppy:gpu"
-    //}
+    } else {
+    container "luslab/nf-modules-guppy:gpu"
+    }
 
     input:
         path(reads)
@@ -24,15 +24,15 @@ process guppy_basecaller {
     script:
 
     // SHELL
-   // if (params.num_gpu == 0){
+    if (params.num_gpu == 0){
     """
     guppy_basecaller --input_path $reads --save_path . --flowcell ${params.guppy_flowcell} --kit ${params.guppy_kit}
     """
-    //} else {
-        //"""
-        //guppy_basecaller --input_path $reads --save_path . --flowcell ${params.guppy_flowcell} --kit ${params.guppy_kit} -x cuda:all:100%
-        //"""
-    //}
+    } else {
+    """
+    guppy_basecaller --input_path $reads --save_path . --flowcell ${params.guppy_flowcell} --kit ${params.guppy_kit} -x cuda:all:100%
+    """
+    }
 }
 
 process guppy_qc {
