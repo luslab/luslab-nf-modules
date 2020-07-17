@@ -1,0 +1,9 @@
+# This file creates a conda environment for the guppy module
+#   conda env create -f environment.yml
+name: nfcore-module-guppy-qc
+channels:
+  - conda-forge
+  - bioconda
+  - defaults
+dependencies:
+  - pycoqc=2.5.0.21
