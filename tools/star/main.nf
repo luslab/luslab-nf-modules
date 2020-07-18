@@ -20,7 +20,7 @@ process star_map {
       tuple val(sample_id), path("*.bam"), optional: true, emit: bamFiles
       tuple val(sample_id), path("*SJ.out.tab"), optional: true, emit: sjFiles
       tuple val(sample_id), path("*.junction"), optional: true, emit: chJunctions
-      tuple val(sample_id), path("ReadsPerGene.out.tab"),  optional: true, emit: readsPerGene
+      tuple val(sample_id), path("*.ReadsPerGene.out.tab"),  optional: true, emit: readsPerGene
       tuple val(sample_id), path("*Log.final.out"), emit: finalLogFiles
       tuple val(sample_id), path("*Log.out"), emit: outLogFiles
       tuple val(sample_id), path("*Log.progress.out"), emit: progressLogFiles
