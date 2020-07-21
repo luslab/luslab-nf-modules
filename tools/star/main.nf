@@ -7,7 +7,7 @@ nextflow.preview.dsl = 2
 process star_map {
     tag "${sample_id}"
 
-    publishDir "${params.outdir}/star/map",
+    publishDir "${params.outdir}/star_map",
         mode: "copy", overwrite: true
 
     container 'luslab/nf-modules-star:2.7.5a' // 2.6.1d 2.7.3a

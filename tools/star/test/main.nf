@@ -26,10 +26,10 @@ include star_map as map_pe from '../main.nf'
 // Define input channels
 
 // Single-end test reads
-/*testMetaDataSingleEnd = [
+testMetaDataSingleEnd = [
   ['Sample1', "../hs_chr20/single_end/prpf8-hela-eif4a3-sirna-20190611-ju-2_trimmed_chr20_0_64444167.fq.gz"],
   ['Sample2', "../hs_chr20/single_end/prpf8-hela-eif4a3-sirna-20190611-ju-4_trimmed_chr20_0_64444167.fq.gz"]
-]*/
+]
 
 /*testMetaDataSingleEnd = [
   ['Sample1', "$baseDir/input/hs_chr6_1Mbp/single_end/prpf8_eif4a3_rep1.Unmapped.fq"],
@@ -37,29 +37,29 @@ include star_map as map_pe from '../main.nf'
 ]*/
 
 // Paired-end test reads
-testMetaDataPairedEnd = [
+/*testMetaDataPairedEnd = [
   ['Sample1', "$baseDir/input/hs_chr6_1Mbp/paired_end/ENCFF282NGP_chr6_3400000_3500000_1000reads_1.fq.bz2", "$baseDir/input/hs_chr6_1Mbp/paired_end/ENCFF282NGP_chr6_3400000_3500000_1000reads_2.fq.bz2"]
-]
+]*/
 
 // Channel for single-end reads 
-/* Channel
+Channel
     .from( testMetaDataSingleEnd )
     .map { row -> [ row[0], file(row[1], checkIfExists: true) ] }
     .combine( Channel.fromPath( params.genome_index ) )
-    .set { ch_testData_single_end } */
+    .set { ch_testData_single_end }
 
 // Channel for paired-end reads
-Channel
+/*Channel
     .from( testMetaDataPairedEnd )
     .map { row -> [ row[0], [file(row[1], checkIfExists: true), file(row[2], checkIfExists: true)] ] }
     .combine( Channel.fromPath( params.genome_index ) )
-    .set { ch_testData_paired_end }
+    .set { ch_testData_paired_end }*/
 
 // Run tests
 workflow {
     // Run single-end read mapping
-    //log.info ("Run single-end read mapping...")
-    //map_se ( ch_testData_single_end )
+    log.info ("Run single-end read mapping...")
+    map_se ( ch_testData_single_end )
 
     // Collect file names and view output for single-end read mapping
     /*map_se.out.bamFiles.collect() | view
@@ -70,8 +70,8 @@ workflow {
     map_se.out.progressLogFiles.collect() | view */
 
     // Run paired-end read mapping
-    log.info ("Run paired-end read mapping...")
-    map_pe ( ch_testData_paired_end )
+    //log.info ("Run paired-end read mapping...")
+    //map_pe ( ch_testData_paired_end )
 
     // Collect file names and view output for paired-end read mapping
     /*map_pe.out.bamFiles.collect() | view
