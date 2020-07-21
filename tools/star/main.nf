@@ -24,7 +24,7 @@ process star_map {
       tuple val(sample_id), path("*.Log.final.out"), emit: finalLogFiles
       tuple val(sample_id), path("*.Log.out"), emit: outLogFiles
       tuple val(sample_id), path("*.Log.progress.out"), emit: progressLogFiles
-      path "*Log.final.out", emit: report
+      path "*.Log.final.out", emit: report
 
     script:
 
