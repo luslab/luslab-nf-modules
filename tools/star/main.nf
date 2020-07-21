@@ -34,8 +34,11 @@ process star_map {
     // Add the main arguments
     args = "--genomeDir $star_index --readFilesIn $reads "
 
-    // Add custom arguments
+    // Check and add custom arguments
     if ( params.star_map_args ) {
+      if ( params.star_map_args =~ /(--solo)/ ) {
+        exit 1, ("This module does not support STARsolo (--solo* options). For processing of single-cell RNA-seq data with STAR please use a dedicated module. Exit.")
+      }
       ext_args = params.star_map_args
       args += ext_args.trim() + " "
     }
