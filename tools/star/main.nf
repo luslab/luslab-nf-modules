@@ -32,12 +32,18 @@ process star_map {
     args = ""
 
     // Add the main arguments
-    args = "--genomeDir $star_index --readFilesIn $reads "
+    args = "--runMode alignReads --genomeDir $star_index --readFilesIn $reads "
 
     // Check and add custom arguments
     if ( params.star_map_args ) {
       if ( params.star_map_args =~ /(--solo)/ ) {
-        exit 1, ("This module does not support STARsolo (--solo* options). For processing of single-cell RNA-seq data with STAR please use a dedicated module. Exit.")
+        exit 1, "Error: This module does not support STARsolo (--solo* options). For processing of single-cell RNA-seq data with STAR please use a dedicated module. Exit."
+      }
+      if ( params.star_map_args =~ /(--runMode)/ ) {
+        exit 1, "Error: --runMode is automatically set to 'alignReads'. You do not need to provide it manually. Exit."
+      }
+      if ( params.star_map_args =~ /(--parametersFiles)/ ) {
+        exit 1, "Error: Parameter files (--parametersFiles option) are not supported in this module. Please provide all options not covered by input channels and module parameters via the star_map_args parameter. Exit."
       }
       ext_args = params.star_map_args
       args += ext_args.trim() + " "
