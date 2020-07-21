@@ -9,7 +9,7 @@ log.info ("Starting tests for STAR mapping...")
 // Define main params
 params.genome_index = "../hs_chr20/reduced_star_index/2.7.5a"
 //params.genome_index = "tools/star/test/input/hs_chr6_1Mbp/reduced_star_index/2.7.5a" //_SAnBases_7" // 2.6.1c 2.7.1a
-params.star_map_args = '--outFilterMultimapNmax 20 --quantMode GeneCounts' //--quantMode TranscriptomeSAM GeneCounts' // '--quantMode GeneCounts'
+params.star_map_args = '--outFilterMultimapNmax 20' //'--quantMode GeneCounts' //--quantMode TranscriptomeSAM GeneCounts' // '--quantMode GeneCounts'
 params.verbose = true
 
 // Define optional input

@@ -35,7 +35,7 @@ process star_map {
     args = "--genomeDir $star_index --readFilesIn $reads "
 
     // Add custom arguments
-    if (params.star_map_args) {
+    if ( params.star_map_args ) {
       ext_args = params.star_map_args
       args += ext_args.trim() + " "
     }
@@ -48,21 +48,21 @@ process star_map {
 
     // Add compression parameters 
     test_file_name = "$reads"
-    if ("$test_file_name" =~ /(.gz$)/) {
+    if ( "$test_file_name" =~ /(.gz$)/ ) {
       args += "--readFilesCommand gunzip -c "
     } 
-    if ("$test_file_name" =~ /(.bz2$)/) {
+    if ( "$test_file_name" =~ /(.bz2$)/ ) {
       args += "--readFilesCommand bunzip2 -c "
     }
 
     // Add optional input parameters
-    if ( params.sjdbGTFfile && (params.sjdbGTFfile != '' )) {
+    if ( params.sjdbGTFfile ) {
       args += "--sjdbGTFfile ${params.sjdbGTFfile} "
     }
-    if ( params.sjdbFileChrStartEnd != '' ) {
+    if ( params.sjdbFileChrStartEnd ) {
       args += "--sjdbFileChrStartEnd ${params.sjdbFileChrStartEnd} "
     }
-    if ( params.varVCFfile != '' ) {
+    if ( params.varVCFfile ) {
       args += "--varVCFfile ${params.varVCFfile} "
     }
 
