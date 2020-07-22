@@ -4,7 +4,7 @@
 nextflow.preview.dsl = 2
 
 // Process definition
-process star_map {
+process star_alignReads {
     tag "${sample_id}"
 
     publishDir "${params.outdir}/star_map",
