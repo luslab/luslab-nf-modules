@@ -52,9 +52,4 @@ workflow {
     star_genomeGenerate ( ch_testData_fasta )
     star_alignReads ( ch_testData_single_end
                           .combine( star_genomeGenerate.out.genomeIndex ) )
-
-    // Collect file names and view output for single-end read mapping
-    //star_genomeGenerate.out.genomeIndex.collect() | view
-    //star_genomeGenerate.out.chrNameFile.collect() | view
-    //star_genomeGenerate.out.report.collect() | view
 }

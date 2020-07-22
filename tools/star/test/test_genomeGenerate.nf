@@ -11,7 +11,7 @@ Test STAR genome indexing module
 log.info ("Starting tests for STAR genome indexing...")
 
 // Define main params
-params.star_genomeGenerate_args = '--genomeSAindexNbases 9 --parametersFiles f' 
+params.star_genomeGenerate_args = '--genomeSAindexNbases 9' 
 params.verbose = true
 
 // Define optional input
