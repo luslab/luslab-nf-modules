@@ -29,10 +29,10 @@ process star_genomeGenerate {
     // Check and add custom arguments
     if ( params.star_genomeGenerate_args ) {
       if ( params.star_genomeGenerate_args =~ /(--genomeDir)/ ) {
-        exit 1, "Error: This module does not support manual setting of --genomeDir. The genome index will appear in ${params.outdir}/star_genomeGenerate/genome_index . Exit."
+        exit 1, "Error: This module does not support manual setting of --genomeDir. The genome index will appear in ${params.outdir}/star_genomeGenerate/genome_index. Exit."
       }
       if ( params.star_genomeGenerate_args =~ /(--runMode)/ ) {
-        exit 1, "Error: --runMode is automatically set to 'alignReads'. You do not need to provide it manually. Exit."
+        exit 1, "Error: --runMode is automatically set to 'genomeGenerate'. You do not need to provide it manually. Exit."
       }
       if ( params.star_genomeGenerate_args =~ /(--parametersFiles)/ ) {
         exit 1, "Error: Parameter files (--parametersFiles option) are not supported in this module. Please provide all options not covered by input channels and module parameters via the star_genomeGenerate_args parameter. Exit."
