@@ -26,7 +26,7 @@ include guppy_qc from '../main.nf'
 
 //Define test data 
 
-testData = "$baseDir/input"
+testData = "../test_data/fast5"
 
 //Define test data input channel
 Channel

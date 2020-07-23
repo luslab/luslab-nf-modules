@@ -7,12 +7,8 @@ nextflow.preview.dsl = 2
 process guppy_basecaller {
     publishDir "${params.outdir}/guppy",
         mode: "copy", overwrite: true
-    
-    if (params.num_gpus == 0){
-    container "luslab/nf-modules-guppy:cpu"
-    } else {
-    container "luslab/nf-modules-guppy:gpu"
-    }
+
+    container params.num_gpus == 0 ? "luslab/nf-modules-guppy:cpu" : "luslab/nf-modules-guppy:gpu"
 
     input:
         path(reads)
