@@ -83,6 +83,6 @@ workflow {
     map_pe.out.sjFiles.collect() | view
     map_pe.out.finalLogFiles.collect() | view
     map_pe.out.outLogFiles.collect() | view
-    map_pe.out.progressLogFiles.collect() | view */
-    //map_pe.out.readsPerCount.collect() | view
+    map_pe.out.progressLogFiles.collect() | view 
+    map_pe.out.readsPerCount.collect() | view */
 }
