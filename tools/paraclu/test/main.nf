@@ -1,7 +1,7 @@
 #!/usr/bin/env nextflow
 
 // Define DSL2
-nextflow.preview.dsl=2
+nextflow.enable.dsl=2
 
 // Log
 log.info ("Starting paraclu module testing")
@@ -18,7 +18,7 @@ params.paraclu_min_density_increase = 2
 /* Module inclusions 
 --------------------------------------------------------------------------------------*/
 
-include paraclu from '../main.nf'
+include {paraclu} from '../main.nf'
 
 /*------------------------------------------------------------------------------------*/
 /* Defining input channels
