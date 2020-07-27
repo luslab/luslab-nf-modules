@@ -3,9 +3,9 @@
 // Specify DSL2
 nextflow.enable.dsl=2
 
-include region2bed from '../../tools/luslab_genome_tools/main.nf'
-include seqtk_subseq from '../../tools/seqtk/main.nf'
-include samtools_faidx from '../../tools/samtools/main.nf'
+include {region2bed} from '../../tools/luslab_genome_tools/main.nf'
+include {seqtk_subseq} from '../../tools/seqtk/main.nf'
+include {samtools_faidx} from '../../tools/samtools/main.nf'
 
 // Define workflow to subset and index a genome region fasta file
 workflow subset_genome {
