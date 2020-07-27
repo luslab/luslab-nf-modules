@@ -1,8 +1,8 @@
 name: docker-linting
 
 on:
-#  push:
-#    branches: [ feat-model-module ]
+  push:
+    branches: [ feat-mod-guppy ]
   pull_request:
     branches: [ master ]
 
