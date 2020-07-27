@@ -12,12 +12,9 @@ jobs:
     strategy:
         matrix:
           module-name: ['bedtools','cutadapt','fastqc','get_crosslinks','get_crosslinks_coverage','guppy','icount','paraclu','peka','samtools','umi_tools','seqtk']
-          include: 
-            - module-name: 'guppy'
-            - prefix: 'cpu.'
     steps:
       - uses: actions/checkout@v2
       - name: Lint Dockerfile
         uses: brpaz/hadolint-action@master
         with:
-          dockerfile: tools/${{matrix.module-name}}/${{prefix}}Dockerfile
+          dockerfile: tools/${{matrix.module-name}}/Dockerfile
