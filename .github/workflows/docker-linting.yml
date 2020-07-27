@@ -20,4 +20,4 @@ jobs:
       - name: Lint Dockerfile
         uses: brpaz/hadolint-action@master
         with:
-          dockerfile: tools/${{matrix.module-name}}/${{matrix.prefix}}Dockerfile
+          dockerfile: tools/${{matrix.module-name}}/${{prefix}}Dockerfile
