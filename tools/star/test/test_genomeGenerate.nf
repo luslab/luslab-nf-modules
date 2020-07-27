@@ -7,7 +7,7 @@ nextflow.preview.dsl=2
 Test STAR genome indexing module
 ==============================*/
 
-// Log
+
 log.info ("Starting tests for STAR genome indexing...")
 
 // Define main params
