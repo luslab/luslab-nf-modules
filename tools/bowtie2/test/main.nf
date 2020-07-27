@@ -34,7 +34,7 @@ Channel
     .set {ch_fastq_paired_end}
 
  Channel
-    .from("$baseDir/../../../test_data/fasta/homo-hg37-21.fa.gz")
+    .fromPath("$baseDir/../../../test_data/fasta/homo-hg37-21.fa.gz")
     .set {ch_fasta}
 
 /*------------------------------------------------------------------------------------*/
