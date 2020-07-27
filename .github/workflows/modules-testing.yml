@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        nxf_ver: [20.07.1','']
+        nxf_ver: ['20.07.1','']
         module-name: ['umi_tools','fastqc','cutadapt','bedtools','samtools', 'get_crosslinks','get_crosslinks_coverage','icount','seqtk','paraclu','luslab_genome_tools', 'luslab_file_tools', 'bowtie2']
     steps:
       - uses: actions/checkout@v2

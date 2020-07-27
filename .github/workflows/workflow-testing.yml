@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        nxf_ver: [20.07.1','']
+        nxf_ver: ['20.07.1','']
         module-name: ['fast_flows']
     steps:
       - uses: actions/checkout@v2
