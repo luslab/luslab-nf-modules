@@ -1,7 +1,7 @@
 #!/usr/bin/env nextflow
 
 // Specify DSL2
-nextflow.preview.dsl = 2
+nextflow.enable.dsl=2
 
 include region2bed from '../../tools/luslab_genome_tools/main.nf'
 include seqtk_subseq from '../../tools/seqtk/main.nf'
