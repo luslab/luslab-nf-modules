@@ -1,0 +1,4 @@
+sample_id,read1,meta_test1,meta_test2,meta_test3
+sample1,$baseDir/../test_data/fastq/ENCFF721JZG.sub.fastq.gz,something1,something2,something3
+sample2,$baseDir/../test_data/fastq/ENCFF721JZG.sub.fastq.gz,something4,something5,something6
+sample3,$baseDir/../test_data/fastq/ENCFF721JZG.sub.fastq.gz,something7,something8,something9
