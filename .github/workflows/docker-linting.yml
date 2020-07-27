@@ -14,7 +14,7 @@ jobs:
           module-name: ['bedtools','cutadapt','fastqc','get_crosslinks','get_crosslinks_coverage','guppy','icount','paraclu','peka','samtools','umi_tools','seqtk']
           include: 
             - module-name: 'guppy'
-            - prefix: 'cpu.','gpu.','fq.'
+            - prefix: 'cpu.'
     steps:
       - uses: actions/checkout@v2
       - name: Lint Dockerfile
