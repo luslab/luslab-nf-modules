@@ -1,7 +1,7 @@
 #!/usr/bin/env nextflow
 
 // Define DSL2
-nextflow.preview.dsl=2
+nextflow.enable.dsl=2
 
 // Log
 log.info ("Starting test pipeline for multiqc")
@@ -11,7 +11,7 @@ params.verbose = true
 /* Module inclusions 
 --------------------------------------------------------------------------------------*/
 
-include multiqc from '../main.nf'
+include {multiqc} from '../main.nf'
 
 /*------------------------------------------------------------------------------------*/
 

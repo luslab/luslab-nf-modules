@@ -1,7 +1,7 @@
 #!/usr/bin/env nextflow
 
 // Define DSL2
-nextflow.preview.dsl=2
+nextflow.enable.dsl=2
 
 // Log
 log.info ("Starting tests for umi_tools dedup...")
@@ -17,7 +17,7 @@ params.verbose = true
 /* Module inclusions
 --------------------------------------------------------------------------------------*/
 
-include umitools_dedup from '../main.nf'
+include {umitools_dedup} from '../main.nf'
 
 /*------------------------------------------------------------------------------------*/
 /* Define input channels
