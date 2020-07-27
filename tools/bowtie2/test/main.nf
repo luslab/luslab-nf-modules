@@ -44,7 +44,7 @@ Channel
 workflow {
     bowtie2_build( ch_fasta )
 
-    bowtie2_align ( ch_fastq_paired_end.merge(bowtie2_build.out.bowtieIndex.map{x -> [x]}) )
+    bowtie2_align ( ch_fastq_paired_end.combine(bowtie2_build.out.bowtieIndex.map{x -> [x]}) )
 
     bowtie2_align.out.alignedReads | view
 }
