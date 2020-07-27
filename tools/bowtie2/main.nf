@@ -41,6 +41,7 @@ process bowtie2_align {
 
         """
         $command
+        cat bowtie2_stats.txt
         """
 }
 
