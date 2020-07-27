@@ -20,7 +20,7 @@ params.samtools_view_region = 'chr21'
 --------------------------------------------------------------------------------------*/
 
 include {samtools_index; samtools_view; samtools_faidx} from '../main.nf'
-include decompress_noid from '../../../tools/luslab_file_tools/main.nf'
+include {decompress_noid} from '../../../tools/luslab_file_tools/main.nf'
 
 /*------------------------------------------------------------------------------------*/
 /* Define input channels

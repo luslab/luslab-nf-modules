@@ -16,7 +16,7 @@ params.fai = "$baseDir/input/GRCh38.primary_assembly.genome_chr6_34000000_350000
 /* Module inclusions
 --------------------------------------------------------------------------------------*/
 
-include getcrosslinks from '../main.nf'
+include {getcrosslinks} from '../main.nf'
 
 /*------------------------------------------------------------------------------------*/
 /* Define input channels

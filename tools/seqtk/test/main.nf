@@ -19,12 +19,12 @@ params.seqtk_subsample_number = 100
 /* Module inclusions
 --------------------------------------------------------------------------------------*/
 
-include seqtk_subsample from '../main.nf'
-include seqtk_subsample as seqtk_subsample_pe from '../main.nf'
-include seqtk_subseq from '../main.nf'
-include seqtk_subseq as seqtk_subseq2 from '../main.nf'
-include decompress_noid from '../../../tools/luslab_file_tools/main.nf'
-include region2bed from '../../../tools/luslab_genome_tools/main.nf'
+include {seqtk_subsample} from '../main.nf'
+include {seqtk_subsample as seqtk_subsample_pe} from '../main.nf'
+include {seqtk_subseq} from '../main.nf'
+include {seqtk_subseq as seqtk_subseq2} from '../main.nf'
+include {decompress_noid} from '../../../tools/luslab_file_tools/main.nf'
+include {region2bed} from '../../../tools/luslab_genome_tools/main.nf'
 
 /*------------------------------------------------------------------------------------*/
 /* Define input channels

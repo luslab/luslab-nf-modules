@@ -18,7 +18,7 @@ params.verbose = true
 /* Module inclusions 
 --------------------------------------------------------------------------------------*/
 
-include bedtools_intersect from '../main.nf'
+include {bedtools_intersect} from '../main.nf'
 
 /*------------------------------------------------------------------------------------*/
 /* Define input channels

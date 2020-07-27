@@ -17,7 +17,7 @@ params.verbose = true
 /* Module inclusions
 --------------------------------------------------------------------------------------*/
 
-include cutadapt from '../main.nf' 
+include {cutadapt} from '../main.nf' 
 
 /*------------------------------------------------------------------------------------*/
 /* Define input channels

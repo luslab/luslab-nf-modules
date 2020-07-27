@@ -16,7 +16,7 @@ params.verbose = true
 /* Module inclusions
 --------------------------------------------------------------------------------------*/
 
-include region2bed from '../main.nf'
+include {region2bed} from '../main.nf'
 
 /*------------------------------------------------------------------------------------*/
 /* Define input channels

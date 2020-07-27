@@ -18,7 +18,7 @@ params.icount_fdr = 0.05
 /* Module inclusions 
 --------------------------------------------------------------------------------------*/
 
-include icount from '../main.nf'
+include {icount} from '../main.nf'
 
 /*------------------------------------------------------------------------------------*/
 /* Define input channels

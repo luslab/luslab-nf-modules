@@ -16,7 +16,7 @@ params.verbose = true
 /* Module inclusions
 --------------------------------------------------------------------------------------*/
 
-include decompress from '../main.nf'
+include {decompress} from '../main.nf'
 
 /*------------------------------------------------------------------------------------*/
 /* Define input channels

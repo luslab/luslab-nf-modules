@@ -18,7 +18,7 @@ params.paraclu_min_density_increase = 2
 /* Module inclusions 
 --------------------------------------------------------------------------------------*/
 
-include paraclu from '../main.nf'
+include {paraclu} from '../main.nf'
 
 /*------------------------------------------------------------------------------------*/
 /* Defining input channels

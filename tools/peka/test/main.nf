@@ -32,7 +32,7 @@ params.peka_repeats = "masked"
 /* Module inclusions 
 --------------------------------------------------------------------------------------*/
 
-include peka from '../main.nf'
+include {peka} from '../main.nf'
 
 /*------------------------------------------------------------------------------------*/
 /* Define input channels

@@ -15,7 +15,7 @@ log.info ("Starting tests for get_crosslinks_coverage...")
 /* Module inclusions
 --------------------------------------------------------------------------------------*/
 
-include getcrosslinkscoverage from '../main.nf'
+include {getcrosslinkscoverage} from '../main.nf'
 
 /*------------------------------------------------------------------------------------*/
 /* Define input channels

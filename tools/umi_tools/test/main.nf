@@ -17,7 +17,7 @@ params.verbose = true
 /* Module inclusions
 --------------------------------------------------------------------------------------*/
 
-include umitools_dedup from '../main.nf'
+include {umitools_dedup} from '../main.nf'
 
 /*------------------------------------------------------------------------------------*/
 /* Define input channels
