@@ -28,5 +28,5 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
           repository: luslab/nf-modules-${{matrix.module-name}}
           path: tools/${{matrix.module-name}}
-          dockerfile: ${{matrix.docker-file}}
+          dockerfile: tools/${{matrix.module-name}}/${{matrix.docker-file}}
           tags:  ${{matrix.tag}}
