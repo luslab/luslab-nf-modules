@@ -24,7 +24,7 @@ RUN apt-get update --fix-missing && \
         apt-transport-https=1.2.32ubuntu0.1 \
         wget=1.17.1-1ubuntu1.5 && \
     wget -q https://mirror.oxfordnanoportal.com/software/analysis/ont_guppy_${PACKAGE_VERSION}-1~xenial_amd64.deb && \
-    dpkg -i --ignore-depends=nvidia-384,libcuda1-384 /tmp/ont_guppy_${PACKAGE_VERSION}-1~xenial_amd64.deb && \
+    dpkg -i --ignore-depends=nvidia-384,libcuda1-384 ont_guppy_${PACKAGE_VERSION}-1~xenial_amd64.deb && \
     rm ./*.deb && \
     apt-get autoremove --purge --yes && \
     apt-get clean && \
