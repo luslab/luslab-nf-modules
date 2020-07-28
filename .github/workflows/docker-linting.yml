@@ -11,9 +11,9 @@ jobs:
         matrix:
           docker-name: ['Dockerfile']
           module-name: ['bedtools','cutadapt','fastqc','get_crosslinks','get_crosslinks_coverage','guppy','icount','paraclu','peka','samtools','umi_tools','seqtk']
-        include:
-          - docker-name: ['Dockerfile.cpu','Dockerfile.gpu']
-            module-name: ['guppy']
+          include:
+            - docker-name: ['Dockerfile.cpu','Dockerfile.gpu']
+              module-name: ['guppy']
     steps:
       - uses: actions/checkout@v2
       - name: Lint Dockerfile
