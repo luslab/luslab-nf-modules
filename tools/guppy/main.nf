@@ -35,7 +35,7 @@ process guppy_qc {
     publishDir "${params.outdir}/guppy",
         mode: "copy", overwrite: true
 
-    container "luslab/nf-modules-guppy:qc"
+    container "luslab/nf-modules-guppy:cpu"
 
     input:
         path(summary) 
