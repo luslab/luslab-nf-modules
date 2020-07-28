@@ -14,7 +14,6 @@ jobs:
           include:
             - docker-name: 'Dockerfile.cpu'
               module-name: 'guppy'
-          include:
             - docker-name: 'Dockerfile.gpu'
               module-name: 'guppy'
     steps:

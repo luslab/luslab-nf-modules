@@ -16,7 +16,6 @@ jobs:
               - tag: 'cpu'
                 docker-file: 'Dockerfile.cpu'
                 module-name: 'guppy'
-            include:
               - tag: 'gpu'
                 docker-file: 'Dockerfile.gpu'
                 module-name: 'guppy'

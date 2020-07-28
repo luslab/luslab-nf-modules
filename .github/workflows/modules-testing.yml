@@ -18,7 +18,6 @@ jobs:
           - nxf_ver: '20.07.1'
             docker-name: 'Dockerfile.cpu'
             module-name: 'guppy'
-        include:
           - nxf_ver: ''
             docker-name: 'Dockerfile.cpu'
             module-name: 'guppy'
