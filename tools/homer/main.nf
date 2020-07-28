@@ -8,8 +8,7 @@ process homer_annotatePeaks {
     publishDir "${params.outdir}/homer",
         mode: "copy", overwrite: true
 
-    // container 'luslab/nf-modules-homer:latest'
-    container '3cbadc849383'
+    container 'luslab/nf-modules-homer:latest'
 
     input:
         tuple val(sample_id), path(peaks)

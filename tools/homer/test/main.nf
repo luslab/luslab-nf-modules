@@ -10,8 +10,8 @@ log.info ("Starting tests for homer...")
 /* Define params
 --------------------------------------------------------------------------------------*/
 params.verbose = true
-params.gtf = "/Users/alex/dev/genomes/galgal6/Gallus_gallus.GRCg6a.97.gtf"
-params.fasta = "/Users/alex/dev/genomes/galgal6/Gallus_gallus.GRCg6a.dna.toplevel.fa"
+params.gtf = "$baseDir/input/chr1.gtf"
+params.fasta = "$baseDir/input/Gallus_gallus.sub.fa"
 
 /*------------------------------------------------------------------------------------*/
 /* Module inclusions 
@@ -24,9 +24,8 @@ include {homer_annotatePeaks} from '../main.nf'
 /*------------------------------------------------------------------------------------*/
 
 // Define test data
-
 homerData = [
-    ['ATAC_R1', "./input/testPeaks.bed"]
+    ['S1', "./input/testPeaks.bed"]
 ]
 
 // Define test data input channel
