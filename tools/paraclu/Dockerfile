@@ -17,7 +17,7 @@ RUN apt-get update \
 # Install conda packages
 COPY environment.yml /
 RUN conda env create -f /environment.yml && conda clean -a
-ENV PATH /opt/conda/envs/nfcore-paraclu-0.1/bin:$PATH
+ENV PATH /opt/conda/envs/nfcore-module-paraclu/bin:$PATH
 
 # Install Paraclu
 WORKDIR /home

@@ -1,0 +1,66 @@
+# Set the base image to Ubuntu 16.04
+FROM ubuntu:16.04
+
+LABEL author="Chris Cheshire <chris.cheshire@crick.ac.uk>" 
+
+ARG PACKAGE_VERSION=3.6.0
+ARG DEBIAN_FRONTEND=noninteractive
+
+RUN apt-get update --fix-missing && \
+    apt-get install -y --no-install-recommends \
+        libzmq5=4.1.4-7ubuntu0.1 \
+        libhdf5-cpp-11=1.8.16+docs-4ubuntu1.1 \
+        libcurl4-openssl-dev=7.47.0-1ubuntu2.15 \
+        libssl-dev=1.0.2g-1ubuntu4.16 \
+        libhdf5-10=1.8.16+docs-4ubuntu1.1 \
+        libboost-regex1.58.0=1.58.0+dfsg-5ubuntu3.1 \
+        libboost-log1.58.0=1.58.0+dfsg-5ubuntu3.1 \
+        libboost-atomic1.58.0=1.58.0+dfsg-5ubuntu3.1 \
+        libboost-chrono1.58.0=1.58.0+dfsg-5ubuntu3.1 \
+        libboost-date-time1.58.0=1.58.0+dfsg-5ubuntu3.1 \
+        libboost-filesystem1.58.0=1.58.0+dfsg-5ubuntu3.1 \
+        libboost-program-options1.58.0=1.58.0+dfsg-5ubuntu3.1 \
+        libboost-iostreams1.58.0=1.58.0+dfsg-5ubuntu3.1 \
+        bzip2=1.0.6-8ubuntu0.2 \
+        ca-certificates=20190110~16.04.1 \
+        curl=7.47.0-1ubuntu2.15 \
+        git=1:2.7.4-0ubuntu1.9 \
+        procps=2:3.3.10-4ubuntu2.5 \
+        apt-transport-https=1.2.32ubuntu0.1 \
+        wget=1.17.1-1ubuntu1.5 && \
+        apt-get autoremove --purge --yes && \
+        apt-get clean && \
+        rm -rf /var/lib/apt/lists/*
+
+# Install guppy
+RUN wget -q https://mirror.oxfordnanoportal.com/software/analysis/ont_guppy_cpu_${PACKAGE_VERSION}-1~xenial_amd64.deb && \
+    dpkg -i ./*.deb && \
+    rm ./*.deb
+ 
+# Install conda
+ENV LANG=C.UTF-8 LC_ALL=C.UTF-8
+ENV PATH /opt/conda/bin:$PATH
+
+RUN wget --quiet https://repo.anaconda.com/miniconda/Miniconda3-4.5.11-Linux-x86_64.sh -O ~/miniconda.sh && \
+    /bin/bash ~/miniconda.sh -b -p /opt/conda && \
+    rm ~/miniconda.sh && \
+    /opt/conda/bin/conda clean -tipsy && \
+    ln -s /opt/conda/etc/profile.d/conda.sh /etc/profile.d/conda.sh && \
+    echo ". /opt/conda/etc/profile.d/conda.sh" >> ~/.bashrc && \
+    echo "conda activate base" >> ~/.bashrc
+
+ENV TINI_VERSION v0.16.1
+ADD https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini /usr/bin/tini
+RUN chmod +x /usr/bin/tini
+
+ENTRYPOINT [ "/usr/bin/tini", "--" ]
+CMD [ "/bin/bash" ]
+
+# Update conda 
+RUN conda update -n base -c defaults conda
+
+# Install conda packages
+#RUN conda install -c anaconda python=3.7
+COPY environment.yml /
+RUN conda env create -f /environment.yml && conda clean -a
+ENV PATH /opt/conda/envs/nfcore-module-guppy/bin:$PATH

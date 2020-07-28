@@ -1,8 +1,6 @@
 name: docker-linting
 
 on:
-  push:
-    branches: [ feat-model-module ]
   pull_request:
     branches: [ master ]
 
@@ -11,10 +9,16 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
         matrix:
+          docker-name: ['Dockerfile']
           module-name: ['bedtools','cutadapt','fastqc','get_crosslinks','get_crosslinks_coverage','icount','paraclu','peka','samtools','umi_tools','seqtk']
+          include:
+            - docker-name: 'Dockerfile.cpu'
+              module-name: 'guppy'
+            - docker-name: 'Dockerfile.gpu'
+              module-name: 'guppy'
     steps:
       - uses: actions/checkout@v2
       - name: Lint Dockerfile
         uses: brpaz/hadolint-action@master
         with:
-          dockerfile: tools/${{matrix.module-name}}/Dockerfile
+          dockerfile: tools/${{matrix.module-name}}/${{matrix.docker-name}}

@@ -1,9 +1,9 @@
 #!/usr/bin/env nextflow
 
 // Specify DSL2
-nextflow.preview.dsl = 2
+nextflow.enable.dsl=2
 
-// Main process
+// Random subsample of FASTQ file
 process seqtk_subsample {
     publishDir "${params.outdir}/seqtk",
         mode: "copy", overwrite: true
@@ -56,4 +56,36 @@ process seqtk_subsample {
             gzip ${reads[0].simpleName}.sub.fastq && gzip ${reads[1].simpleName}.sub.fastq
             """
         }
+}
+
+// Subset FASTA or FASTQ file with bed
+process seqtk_subseq {
+    publishDir "${params.outdir}/seqtk",
+        mode: "copy", overwrite: true
+
+    container 'luslab/nf-modules-seqtk:latest'
+    
+    input:
+      tuple path(input), path(bed)
+
+    output:
+        path "*.sub.*", emit: subsetFile
+        
+    script:
+        //Check extension
+        ext = "fa"
+        if ("$input" =~ /(fq.gz$)/) {
+            ext = "fq"
+        }
+
+        // Construct and log command
+        seqtk_command = "seqtk subseq $input $bed > ${input.simpleName}.sub.${ext}"
+        if (params.verbose){
+            println ("[MODULE] seqtk subseq command: " + seqtk_command)
+        }
+
+        //SHELL
+        """
+        ${seqtk_command}
+        """
 }

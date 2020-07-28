@@ -1,23 +1,28 @@
-FROM continuumio/miniconda3:4.8.2
+FROM nfcore/base:1.7
 LABEL authors="chris.cheshire@crick.ac.uk" \
       description="Docker image containing all requirements for the nf-core peka module"
+      
 # Install apt packages
 RUN apt-get update \
  && apt-get install -y --no-install-recommends \
- git=1:2.20.1-2+deb10u3 \
- apt-utils=1.8.2 \
- unzip=6.0-23+deb10u1 \
- procps=2:3.3.15-2 \
- build-essential=12.6 \
- zlib1g-dev=1:1.2.11.dfsg-1 \
+ apt-utils=1.4.10 \
+ build-essential=12.3 \
+ zlib1g-dev=1:1.2.8.dfsg-5 \
  && apt-get clean \
  && rm -rf /var/lib/apt/lists/*
+
+# Update conda
+RUN conda update -n base -c defaults conda
+
 # Install conda packages
 COPY environment.yml /
 RUN conda env create -f /environment.yml && conda clean -a
-ENV PATH /opt/conda/envs/nfcore-peka-0.1/bin:$PATH
+ENV PATH /opt/conda/envs/nfcore-module-peka/bin:$PATH
 
 # Install PEKA
 WORKDIR /home
-RUN wget https://raw.githubusercontent.com/ulelab/imaps/master/src/imaps/sandbox/kmers.py 
-RUN mkdir src && mv kmers.py src/kmers.py
+RUN git clone https://github.com/ulelab/imaps.git --branch 0.5.1 --single-branch
+WORKDIR /home/imaps
+RUN pip install -e .
+WORKDIR /home
+RUN mkdir src && mv imaps/src/imaps/sandbox/kmers.py src/kmers.py

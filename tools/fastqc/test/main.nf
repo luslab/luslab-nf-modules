@@ -1,7 +1,7 @@
 #!/usr/bin/env nextflow
 
 // Define DSL2
-nextflow.preview.dsl=2
+nextflow.enable.dsl=2
 
 // Log
 log.info ("Starting tests for fastqc...")
@@ -17,7 +17,7 @@ params.verbose = true
 /* Module inclusions
 --------------------------------------------------------------------------------------*/
 
-include fastqc from '../main.nf' addParams(fastqc_reportname: 'test')
+include {fastqc} from '../main.nf' addParams(fastqc_reportname: 'test')
 
 /*------------------------------------------------------------------------------------*/
 /* Define input channels

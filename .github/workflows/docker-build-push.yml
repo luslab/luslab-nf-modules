@@ -9,7 +9,16 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
         matrix:
-            module-name: ['bedtools','cutadapt','fastqc','get_crosslinks','get_crosslinks_coverage','icount','paraclu','peka','samtools','star','umi_tools','seqtk']
+            tag: ['latest']
+            docker-file: ['Dockerfile']
+            module-name: ['bedtools','cutadapt','fastqc','get_crosslinks','get_crosslinks_coverage','icount','paraclu','peka','samtools','star','umi_tools','seqtk','bowtie2']
+            include:
+              - tag: 'cpu'
+                docker-file: 'Dockerfile.cpu'
+                module-name: 'guppy'
+              - tag: 'gpu'
+                docker-file: 'Dockerfile.gpu'
+                module-name: 'guppy'
     steps:
       - uses: actions/checkout@v2
       - name: Build and push image
@@ -19,4 +28,5 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
           repository: luslab/nf-modules-${{matrix.module-name}}
           path: tools/${{matrix.module-name}}
-          tags: latest
+          dockerfile: tools/${{matrix.module-name}}/${{matrix.docker-file}}
+          tags:  ${{matrix.tag}}

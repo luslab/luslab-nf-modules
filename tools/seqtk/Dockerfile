@@ -7,7 +7,7 @@ RUN apt-get update \
  && apt-get install -y --no-install-recommends \
  build-essential=12.3 \
  zlib1g-dev=1:1.2.8.dfsg-5 \
- && apt-get clean \
+ && apt-get clean -y \
  && rm -rf /var/lib/apt/lists/*
 
 # Setup exec folder

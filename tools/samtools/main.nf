@@ -1,7 +1,7 @@
 #!/usr/bin/env nextflow
 
 // Specify DSL2
-nextflow.preview.dsl = 2
+nextflow.enable.dsl=2
 
 // Samtools index
 process samtools_index {
@@ -71,5 +71,33 @@ process samtools_view {
     """
     ${view_command}
     samtools index -@ ${task.cpus} ${bam_bai[0].simpleName}.filt.bam
+    """
+}
+
+// Samtools faidx indexes fasta files
+process samtools_faidx {
+    publishDir "${params.outdir}/samtools/faidx",
+        mode: "copy", overwrite: true
+
+    container 'luslab/nf-modules-samtools:latest'
+
+    input:
+        path fasta
+
+    output:
+        tuple path("*.fa", includeInputs: true), path("*.fai"), emit: indexedFiles
+ 
+    script:
+
+    // Construct CL line
+    command = "samtools faidx $fasta"
+
+    // Log
+    if (params.verbose){
+        println ("[MODULE] samtools/faidx command: " + command)
+    }
+    
+    """
+    ${command}
     """
 }
