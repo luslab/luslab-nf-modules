@@ -26,12 +26,12 @@ include {bedtools_intersect} from '../main.nf'
 
 // Define test data
 testData = [
-    ['Sample1', "$baseDir/input/sample1.xl.bed.gz"],
-    ['Sample2', "$baseDir/input/sample2.xl.bed.gz"],
-    ['Sample3', "$baseDir/input/sample3.xl.bed.gz"],
-    ['Sample4', "$baseDir/input/sample4.xl.bed.gz"],
-    ['Sample5', "$baseDir/input/sample5.xl.bed.gz"],
-    ['Sample6', "$baseDir/input/sample6.xl.bed.gz"]
+    [[sample_id:sample1], "$baseDir/../../../test_data//sample1.xl.bed.gz"],
+    [[sample_id:sample2], "$baseDir/input/sample2.xl.bed.gz"],
+    [[sample_id:sample3], "$baseDir/input/sample3.xl.bed.gz"],
+    [[sample_id:sample4], "$baseDir/input/sample4.xl.bed.gz"],
+    [[sample_id:sample5], "$baseDir/input/sample5.xl.bed.gz"],
+    [[sample_id:sample6], "$baseDir/input/sample6.xl.bed.gz"]
 ]
 
 // Define regions file input channel
