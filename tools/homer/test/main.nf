@@ -10,8 +10,8 @@ log.info ("Starting tests for homer...")
 /* Define params
 --------------------------------------------------------------------------------------*/
 params.verbose = true
-params.gtf = "$baseDir/input/chr1.gtf"
-params.fasta = "$baseDir/input/Gallus_gallus.sub.fa"
+params.gtf = "$baseDir/../../../test_data/chr1.gtf"
+params.fasta = "$baseDir/../../../test_data/Gallus_gallus.sub.fa"
 
 /*------------------------------------------------------------------------------------*/
 /* Module inclusions 
@@ -25,7 +25,7 @@ include {homer_annotatePeaks} from '../main.nf'
 
 // Define test data
 homerData = [
-    ['S1', "./input/testPeaks.bed"]
+    ['S1', "$baseDir/../../../test_data/testPeaks.bed"]
 ]
 
 // Define test data input channel
