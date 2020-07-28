@@ -21,7 +21,7 @@ jobs:
             docker-name: 'Dockerfile.cpu'
             module-name: 'guppy'
           - nxf_ver: ''
-            tag: 'gpu'
+            tag: 'cpu'
             docker-name: 'Dockerfile.cpu'
             module-name: 'guppy'
     steps:
