@@ -35,7 +35,7 @@ RUN apt-get update --fix-missing && \
 # Install guppy
 RUN wget -q https://mirror.oxfordnanoportal.com/software/analysis/ont_guppy_cpu_${PACKAGE_VERSION}-1~xenial_amd64.deb && \
     dpkg -i *.deb && \
-    rm *.deb
+    rm ./*.deb
  
 # Install conda
 ENV LANG=C.UTF-8 LC_ALL=C.UTF-8
