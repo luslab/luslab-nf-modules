@@ -15,7 +15,7 @@ This module contains helper functions for luslab nextflow pipelines
 */
 
 // Define DSL2
-nextflow.preview.dsl=2
+nextflow.enable.dsl=2
 
 def build_debug_param_summary() {
     Set paramsKeySet = params.keySet()

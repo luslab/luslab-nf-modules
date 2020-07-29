@@ -1,0 +1,10 @@
+# You can use this file to create a conda environment for the homer module:
+#   conda env create -f environment.yml
+name: nfcore-module-homer
+channels:
+  - conda-forge
+  - bioconda
+  - defaults
+dependencies:
+  ## bioconda packages, see above
+  - homer=4.11

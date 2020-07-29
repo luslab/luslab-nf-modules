@@ -17,16 +17,15 @@ params.guppy_kit = "SQK-RAD002"
 /* Module inclusions
 --------------------------------------------------------------------------------------*/
 
-include guppy_basecaller from '../main.nf'
-include guppy_qc from '../main.nf'
+include {guppy_basecaller} from '../main.nf'
+include {guppy_qc} from '../main.nf'
 
 /*------------------------------------------------------------------------------------*/
 /* Define input channels
 --------------------------------------------------------------------------------------*/
 
 //Define test data 
-
-testData = "$baseDir/input"
+testData = "$baseDir/../../../test_data/fast5"
 
 //Define test data input channel
 Channel
