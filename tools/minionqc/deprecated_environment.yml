@@ -1,0 +1,8 @@
+# This file creates a conda environment for the get_crosslinks_coverage module
+#   conda env create -f environment.yml
+name: nfcore-module-minionqc
+channels:
+  - r
+dependencies:
+  - r=3.6.0
+  - r-base=3.6.1
