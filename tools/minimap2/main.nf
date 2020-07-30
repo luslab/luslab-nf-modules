@@ -20,7 +20,7 @@ process minimap2 {
         path fasta_file
 
     output:
-        tuple val(meta), path ("*.paf"), emit: mappedReads
+        tuple val(meta), path ("*.paf"), emit: alignedReads
 
     script:
 
