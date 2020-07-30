@@ -22,5 +22,3 @@ RUN R -e "install.packages('yaml', dependencies=TRUE, repos='https://cloud.r-pro
 
 # Get the actual minionQC code
 RUN curl https://raw.githubusercontent.com/roblanf/minion_qc/master/MinIONQC.R > /MinIONQC.R && chmod +x /MinIONQC.R
-RUN pwd
-RUN ls
