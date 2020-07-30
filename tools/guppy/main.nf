@@ -19,35 +19,56 @@ process guppy_basecaller {
         tuple val(meta), path(reads)
 
     output:
-        tuple path("*.fastq"), path("*.log"), path("*.txt"), path("*.js"), emit: basecalledSeq
-        path '*.txt', emit: summary
-        
+        tuple val(meta), path("*.fastq.gz"), emit: fastq
+        path "*.log", emit: log
+        tuple path("*.txt"), path("*.js"), emit: report
+
     script:
+        args = opts.args.trim()
+
+        command = ""
         if (params.num_gpus == 0){
-            """
-            guppy_basecaller --input_path $reads --save_path . --flowcell ${opts.flowcell} --kit ${opts.kit}
-            """
+            command = "guppy_basecaller $args --input_path $reads --save_path . --flowcell ${opts.flowcell} --kit ${opts.kit} --num-callers ${task.cpus} -–cpu_threads_per_caller ${opts.threads_per_caller} --records_per_fastq 0"
         } else {
-            """
-            guppy_basecaller --input_path $reads --save_path . --flowcell ${opts.flowcell} --kit ${opts.kit} -x cuda:all:100%
-            """
+            command = "guppy_basecaller $args --input_path $reads --save_path . --flowcell ${opts.flowcell} --kit ${opts.kit} --num-callers ${task.cpus} --records_per_fastq 0 -x cuda:all:100%"
         }
+
+        if (params.verbose){
+            println ("[MODULE] guppy command: " + command)
+        }
+
+        """
+        $command
+        """
 }
 
 process guppy_qc {
-    publishDir "${params.outdir}/guppy",
-        mode: "copy", overwrite: true
+    publishDir "${params.outdir}/${opts.publish_dir}",
+        mode: "copy", 
+        overwrite: true,
+        saveAs: { filename ->
+                      if (opts.publish_results == "none") null
+                      else filename }
 
     container "luslab/nf-modules-guppy:cpu"
 
     input:
-        path(summary) 
+        val opts
+        tuple path(summary), path(telemetry)
 
     output: 
         path '*.html', emit: report
 
     script:
-    """
-    pycoQC --summary_file $summary --html_outfile qc_report.html
-    """
+        prefix = opts.suffix ? "${opts.suffix}" : ""
+
+        command = "pycoQC --summary_file $summary --html_outfile ${prefix}qc_report.html"
+        if (params.verbose){
+            println ("[MODULE] guppy_qc command: " + command)
+        }
+
+        //SHELL
+        """
+        ${command}
+        """
 }
