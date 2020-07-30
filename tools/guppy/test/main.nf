@@ -10,8 +10,7 @@ log.info ("Starting tests for guppy...")
 /* Define params
 --------------------------------------------------------------------------------------*/
 
-params.guppy_flowcell = "FLO-MIN106"
-params.guppy_kit = "SQK-RAD002"
+params.verbose = true
 
 /*------------------------------------------------------------------------------------*/
 /* Module inclusions
@@ -24,12 +23,13 @@ include {guppy_qc} from '../main.nf'
 /* Define input channels
 --------------------------------------------------------------------------------------*/
 
-//Define test data 
-testData = "$baseDir/../../../test_data/fast5"
+testData = [
+    [[sample_id:"sample1"], "$baseDir/../../../test_data/fast5"]
+]
 
-//Define test data input channel
 Channel
-    .fromPath(testData, checkIfExists: true)
+    .from(testData)
+    .map { row -> [ row[0], file(row[1], checkIfExists: true) ] }
     .set {ch_fast5}
 
 /*------------------------------------------------------------------------------------*/
@@ -38,10 +38,12 @@ Channel
 
 workflow {
     // Run guppy_basecaller
-    guppy_basecaller ( ch_fast5 )
-    guppy_qc ( guppy_basecaller.out.summary )
+    guppy_basecaller ( params.modules['guppy_basecaller'], ch_fast5 )
+    guppy_qc ( params.modules['guppy_qc'], guppy_basecaller.out.report )
 
     // Collect file names and view output
-    guppy_basecaller.out.basecalledSeq | view
+    guppy_basecaller.out.fastq | view
+    guppy_basecaller.out.log | view
+    guppy_basecaller.out.report | view
     guppy_qc.out.report | view
 }
