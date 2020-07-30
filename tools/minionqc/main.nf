@@ -31,7 +31,7 @@ process minionqc {
 
     prefix = opts.suffix ? "${meta.sample_id}${opts.suffix}" : "${meta.sample_id}"
 
-    minionqc_command = "Rscript MinIONQC.R -p ${task.cpus} ${args} -o ${prefix}_minionqc -i $sequencing_summary"
+    minionqc_command = "Rscript /MinIONQC.R -p ${task.cpus} ${args} -o ${prefix}_minionqc -i $sequencing_summary"
 
     if (params.verbose){
         println ("[MODULE] minionqc command: " + minionqc_command)
