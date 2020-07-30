@@ -24,7 +24,7 @@ include {flye} from "../main.nf"
 --------------------------------------------------------------------------------------*/
 
 testDataNanopore= [
-    [[sample_id:"test-sample"], "/Users/alex/dev/repos/luslab-nf-modules/test_data/flye/fastq_runid_b002751b18e298acfe7b2ec51dfaa0961b5d290e_0_0.sub.fastq.gz"],
+    [[sample_id:"test-sample"], "$baseDir/../../../test_data/flye/fastq_runid_b002751b18e298acfe7b2ec51dfaa0961b5d290e_0_0.sub.fastq.gz"],
 ]
 
 //Define test data input channels
