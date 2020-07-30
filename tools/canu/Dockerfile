@@ -1,24 +1,16 @@
-#FROM nfcore/base:1.7
-FROM debian:unstable
-LABEL authors="michael.mansfield@oist.jp" \
-      description="Docker image containing all requirements for the nf-core minionqc module"
+FROM nfcore/base:1.7
+LABEL authors="Luscombe Lab" \
+      description="Docker image containing all requirements for the nf-core canu module"
 
-# Install all of R's dependencies, then install R
+# Install apt packages
 RUN apt-get update \
-  && apt-get install -y libblas-dev libcurl4-openssl-dev libicu-dev liblapack-dev libpcre2-dev libxml2-dev libssl-dev wget curl python3-pip ruby ruby-dev \
-  && apt-get install -y r-base \
-	&& apt-get install -y r-cran-ggplot2
+ && apt-get install -y --no-install-recommends \
+ build-essential=12.3 \
+ zlib1g-dev=1:1.2.8.dfsg-5 \
+ && apt-get clean -y \
+ && rm -rf /var/lib/apt/lists/*
 
-# Install R packages
-RUN R -e "install.packages('data.table', dependencies=TRUE, repos='https://cloud.r-project.org/')"
-RUN R -e "install.packages('futile.logger', dependencies=TRUE, repos='https://cloud.r-project.org/')"
-RUN R -e "install.packages('optparse', dependencies=TRUE, repos='https://cloud.r-project.org/')"
-RUN R -e "install.packages('plyr', dependencies=TRUE, repos='https://cloud.r-project.org/')"
-RUN R -e "install.packages('readr', dependencies=TRUE, repos='https://cloud.r-project.org/')"
-RUN R -e "install.packages('reshape2', dependencies=TRUE, repos='https://cloud.r-project.org/')"
-RUN R -e "install.packages('scales', dependencies=TRUE, repos='https://cloud.r-project.org/')"
-RUN R -e "install.packages('viridis', dependencies=TRUE, repos='https://cloud.r-project.org/')"
-RUN R -e "install.packages('yaml', dependencies=TRUE, repos='https://cloud.r-project.org/')"
-
-# Get the actual minionQC code
-RUN curl https://raw.githubusercontent.com/roblanf/minion_qc/master/MinIONQC.R > MinIONQC.R && chmod +x MinIONQC.R
+# Download canu
+RUN wget https://github.com/marbl/canu/releases/download/v2.0/canu-2.0.Linux-amd64.tar.xz
+RUN tar -xJf canu-2.0.*.tar.xz
+RUN ln -s canu-2.0/*/bin/canu /canu
