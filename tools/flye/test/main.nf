@@ -11,6 +11,7 @@ log.info ("Starting tests for Flye...")
 --------------------------------------------------------------------------------------*/
 
 params.verbose = true
+params.modules['flye'].genome_size = 200000
 
 /*------------------------------------------------------------------------------------*/
 /* Module inclusions
@@ -23,7 +24,7 @@ include {flye} from "../main.nf"
 --------------------------------------------------------------------------------------*/
 
 testDataNanopore= [
-    ["test-sample", "60m", "$baseDir/input/test-nanopore.fastq.gz"],
+    [[sample_id:"test-sample"], "/Users/alex/dev/repos/luslab-nf-modules/test_data/flye/fastq_runid_b002751b18e298acfe7b2ec51dfaa0961b5d290e_0_0.sub.fastq.gz"],
 ]
 
 //Define test data input channels
@@ -31,7 +32,7 @@ testDataNanopore= [
 //Single end
 Channel
     .from(testDataNanopore)
-    .map { row -> [ row[0], row[1], file(row[2], checkIfExists: true) ] }
+    .map { row -> [ row[0], file(row[1], checkIfExists: true) ] }
     .set {ch_fastq_data}
 
 /*------------------------------------------------------------------------------------*/
@@ -40,8 +41,8 @@ Channel
 
 workflow {
     // Run flye
-    flye ( ch_fastq_data )
+    flye ( params.modules['flye'], ch_fastq_data )
 
     // Collect file names and view output
-    flye.out.flyeAssembly | view
+    flye.out.assemblyFasta | view
 }
