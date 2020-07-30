@@ -16,20 +16,19 @@ process flye {
 
     input:
         val opts
-        tuple val(sample_id), val(genome_size), path(reads)
+        tuple val(meta), path(reads)
 
     output:
-        tuple val(sample_id), path("${sample_id}/*assembly"), emit: flyeAssembly
+        tuple val(meta), path("${meta.sample_id}/assembly.fasta"), emit: assemblyFasta
 
     script:
-
-		//Build the command line options
-    flye_command = "flye --genome-size ${genome_size} \
+	//Build the command line options
+    flye_command = "flye --genome-size ${opts.genome_size} \
 			--threads ${task.cpus} \
-			--out-dir ${sample_id} \
+			--out-dir ${meta.sample_id} \
 			--nano-raw $reads"
 
-		//SHELL
+	//SHELL
     """
     ${flye_command}
     """
