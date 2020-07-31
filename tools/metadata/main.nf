@@ -23,16 +23,16 @@ def processRow(LinkedHashMap row) {
         String key = entry.getKey();
         String value = entry.getValue();
     
-        if(key != "sample_id" && key != "read1" && key != "read2") {
+        if(key != "sample_id" && key != "data1" && key != "data2") {
             meta.put(key, value)
         }
     }
 
     def array = []
     if (row.read2 == null) {
-        array = [ meta, [ file(row.read1, checkIfExists: true) ] ]
+        array = [ meta, [ file(row.data1, checkIfExists: true) ] ]
     } else {
-        array = [ meta, [ file(row.read1, checkIfExists: true), file(row.read2, checkIfExists: true) ] ]
+        array = [ meta, [ file(row.data1, checkIfExists: true), file(row.data2, checkIfExists: true) ] ]
     }
     return array
 }

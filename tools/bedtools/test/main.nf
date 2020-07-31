@@ -12,12 +12,14 @@ log.info ("Starting tests for bedtools...")
 
 params.modules['bedtools_intersect'].args = '-wa -wb -s'
 params.verbose = true
+bedChannelExpected = 7
 
 /*------------------------------------------------------------------------------------*/
 /* Module inclusions 
 --------------------------------------------------------------------------------------*/
 
 include {bedtools_intersect} from '../main.nf'
+include {assert_channel_count} from '../../../workflows/test_flows/main.nf'
 
 /*------------------------------------------------------------------------------------*/
 /* Define input channels
@@ -34,9 +36,8 @@ testData = [
 ]
 
 // Define regions file input channel
-Channel
-    .fromPath("$baseDir/../../../test_data/gtf/regions_GENCODE_v30.gtf.gz")
-    .set {ch_test_regions_file}
+Channel.value(file("$baseDir/../../../test_data/gtf/regions_GENCODE_v30.gtf.gz"))
+       .set {ch_test_regions_file}
 
 // Define test data input channel
 Channel
@@ -54,4 +55,7 @@ workflow {
 
     // Collect file names and view output
     bedtools_intersect.out.bed | view
+
+    //Check count
+    assert_channel_count( bedtools_intersect.out.bed, "bed", 6)
 }
