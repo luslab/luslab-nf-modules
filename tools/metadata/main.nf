@@ -15,6 +15,19 @@ workflow fastq_metadata {
         metadata
 }
 
+workflow smartseq2_fastq_metadata {
+    take: filePath
+    main:
+        Channel
+            .fromPath( filePath )
+            .splitCsv(header:true)
+            .map { row -> processRow(row) }
+            .flatMap { row -> unlistFastqDir(row)}
+            .set { metadata }
+    emit:
+        metadata
+}
+
 def processRow(LinkedHashMap row) {
     def meta = [:]
     meta.sample_id = row.sample_id
@@ -33,6 +46,27 @@ def processRow(LinkedHashMap row) {
         array = [ meta, [ file(row.read1, checkIfExists: true) ] ]
     } else {
         array = [ meta, [ file(row.read1, checkIfExists: true), file(row.read2, checkIfExists: true) ] ]
+    }
+    return array
+}
+
+def unlistFastqDir(metadata){
+    def fastqList = []
+    def array = []
+    if(metadata[0].get("strip2").isEmpty()){
+        for (def fastq : metadata[1].flatten()){
+            String s1 = fastq.getName().replaceAll(metadata[0].get("strip1"), "")
+            metadata[0].put("cellID", s1)
+            array.add([ metadata[0], [file(fastq, checkIfExists: true)]])
+        }
+    } else {
+        fastqs = metadata[1].flatten().sort()
+
+        for (int i = 0; i <fastqs.size(); i++ ){
+            String s1 = fastqs.get(i).getName().replaceAll(metadata[0].get("strip1"), "")
+            metadata[0].put("cellID", s1)
+            array.add([ metadata[0], [file(fastqs.get(i), checkIfExists: true), file(fastqs.get(++i), checkIfExists: true)]])
+        }
     }
     return array
 }
