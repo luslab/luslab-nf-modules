@@ -34,9 +34,8 @@ testData = [
 ]
 
 // Define regions file input channel
-Channel
-    .fromPath("$baseDir/../../../test_data/gtf/regions_GENCODE_v30.gtf.gz")
-    .set {ch_test_regions_file}
+Channel.value(file("$baseDir/../../../test_data/gtf/regions_GENCODE_v30.gtf.gz"))
+       .set {ch_test_regions_file}
 
 // Define test data input channel
 Channel
