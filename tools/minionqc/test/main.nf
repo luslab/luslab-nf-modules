@@ -23,7 +23,7 @@ include {minionqc} from "../main.nf"
 --------------------------------------------------------------------------------------*/
 
 testDataGuppyOut= [
-    ["test-sample", "$baseDir/input/sequencing_summary.txt"],
+    [[sample_id:"test-sample"], "$baseDir/../../../test_data/guppy_sequencing_summary/sequencing_summary.txt"],
 ]
 
 //Define test data input channels
@@ -38,7 +38,7 @@ Channel
 
 workflow {
     // Run minionqc on the test set
-    minionqc ( ch_guppyout_data )
+    minionqc (params.modules['minionqc'], ch_guppyout_data )
 
     // Collect file names and view output
     minionqc.out.minionqcOutputs | view

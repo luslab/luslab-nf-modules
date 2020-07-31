@@ -21,4 +21,4 @@ RUN R -e "install.packages('viridis', dependencies=TRUE, repos='https://cloud.r-
 RUN R -e "install.packages('yaml', dependencies=TRUE, repos='https://cloud.r-project.org/')"
 
 # Get the actual minionQC code
-RUN curl https://raw.githubusercontent.com/roblanf/minion_qc/master/MinIONQC.R > MinIONQC.R && chmod +x MinIONQC.R
+RUN curl https://raw.githubusercontent.com/roblanf/minion_qc/master/MinIONQC.R > /MinIONQC.R && chmod +x /MinIONQC.R
