@@ -5,24 +5,30 @@ nextflow.enable.dsl=2
 
 // Process def
 process bowtie2_align {
-    publishDir "${params.outdir}/bowtie2_align",
-        mode: "copy", overwrite: true
+    publishDir "${params.outdir}/${opts.publish_dir}",
+        mode: "copy", 
+        overwrite: true,
+        saveAs: { filename ->
+                      if (opts.publish_results == "none") null
+                      else filename }
     
     container 'luslab/nf-modules-bowtie2:latest'
 
     input:
-        tuple val(sample_id), path(reads), path(index)
+        val opts
+        tuple val(meta), path(reads)
+        path index
 
     output:
-        tuple val(sample_id), path("*.sam"), emit: alignedReads
+        tuple val(meta), path("*.sam"), emit: sam
         path "*stats.txt", emit: report
 
     script:
         args = "-p ${task.cpus} --no-unal"
         files = ''
 
-        if(params.bowtie2_args && params.bowtie2_args != '') {
-            ext_args = params.bowtie2_args
+        if(opts.args && opts.args != '') {
+            ext_args = opts.args
             args += ' ' + ext_args.trim()
         }
 
@@ -34,7 +40,9 @@ process bowtie2_align {
             files = '-U ' + reads[0]
         }
 
-        command = "bowtie2 -x ${index[0].simpleName} $args $files 2>bowtie2_stats.txt > ${sample_id}.sam"
+        prefix = opts.suffix ? "${meta.sample_id}${opts.suffix}" : "${meta.sample_id}"
+
+        command = "bowtie2 -x ${index[0].simpleName} $args $files 2>bowtie2_stats.txt > ${prefix}.sam"
         if (params.verbose){
             println ("[MODULE] bowtie2 command: " + command)
         }
@@ -46,12 +54,17 @@ process bowtie2_align {
 }
 
 process bowtie2_build {
-    publishDir "${params.outdir}/bowtie2_build",
-        mode: "copy", overwrite: true
+    publishDir "${params.outdir}/${opts.publish_dir}",
+        mode: "copy", 
+        overwrite: true,
+        saveAs: { filename ->
+                      if (opts.publish_results == "none") null
+                      else filename }
     
     container 'luslab/nf-modules-bowtie2:latest'
 
     input:
+        val opts 
         path fasta
 
     output:
@@ -61,8 +74,8 @@ process bowtie2_build {
     script:
         // Check main args string exists and strip whitespace
         args = ''
-        if(params.bowtie2_build_args && params.bowtie2_build_args != '') {
-            ext_args = params.bowtie2_build_args
+        if(opts.args && opts.arg != '') {
+            ext_args = opts.arg
             args += " " + ext_args.trim()
         }
 
