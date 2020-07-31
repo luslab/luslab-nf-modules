@@ -47,5 +47,5 @@ workflow {
     minimap2 (params.modules['minimap2'], ch_test_fastq, ch_test_fasta )
 
     // Collect and view output
-    minimap2.out.mappedReads | view
+    minimap2.out.alignedReads | view
 }

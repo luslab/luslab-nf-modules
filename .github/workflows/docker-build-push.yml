@@ -11,7 +11,7 @@ jobs:
         matrix:
             tag: ['latest']
             docker-file: ['Dockerfile']
-            module-name: ['homer','bedtools','cutadapt','fastqc','get_crosslinks','get_crosslinks_coverage','icount','paraclu','peka','samtools','star','umi_tools','seqtk','bowtie2']
+            module-name: ['homer','bedtools','cutadapt','fastqc','get_crosslinks','get_crosslinks_coverage','icount','paraclu','peka','samtools','star','umi_tools','seqtk','bowtie2', 'minionqc']
             include:
               - tag: 'cpu'
                 docker-file: 'Dockerfile.cpu'
