@@ -36,7 +36,7 @@ process cutadapt {
         if (readList.size > 1){
             cutadapt_command = "cutadapt ${args} -o ${reads[0].simpleName}.trimmed.fq.gz -p ${reads[1].simpleName}.trimmed.fq.gz $reads > ${prefix}.txt"
         } else {
-            cutadapt_command = "cutadapt ${args} -o ${meta.sample_id}.trimmed.fq.gz $reads > ${prefix}.txt"
+            cutadapt_command = "cutadapt ${args} -o ${reads[0].simpleName}.trimmed.fq.gz $reads > ${prefix}.txt"
         }
         // Log
         if (params.verbose){
