@@ -1,4 +1,4 @@
 sample_id,data1,strip1,strip2
-ss8,/Users/alex/dev/repos/luslab-nf-modules/test_data/fastq/smartseq2/ss8_9/*fastq.gz,-1234.sub.fastq.gz,
-ss11,/Users/alex/dev/repos/luslab-nf-modules/test_data/fastq/smartseq2/ss11_123fq/*fastq.gz,_1.sub.fastq.gz,_2.sub.fastq.gz
-ss15,/Users/alex/dev/repos/luslab-nf-modules/test_data/fastq/smartseq2/ss15_123fq/*fastq.gz,_1.sub.fastq.gz,_2.sub.fastq.gz
+ss8,$baseDir/../test_data/fastq/smartseq2/ss8_9/*fastq.gz,-1234.sub.fastq.gz,
+ss11,$baseDir/../test_data/fastq/smartseq2/ss11_123fq/*fastq.gz,_1.sub.fastq.gz,_2.sub.fastq.gz
+ss15,$baseDir/../test_data/fastq/smartseq2/ss15_123fq/*fastq.gz,_1.sub.fastq.gz,_2.sub.fastq.gz
