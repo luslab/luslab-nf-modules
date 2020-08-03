@@ -28,7 +28,7 @@ process guppy_basecaller {
 
         command = ""
         if (params.num_gpus == 0){
-            command = "guppy_basecaller $args --input_path $reads --save_path . --flowcell ${opts.flowcell} --kit ${opts.kit} --num-callers ${task.cpus} -–cpu_threads_per_caller ${opts.threads_per_caller} --records_per_fastq 0"
+            command = "guppy_basecaller $args --input_path $reads --save_path . --flowcell ${opts.flowcell} --kit ${opts.kit} --num-callers ${task.cpus} --cpu_threads_per_caller ${opts.threads_per_caller} --records_per_fastq 0"
         } else {
             command = "guppy_basecaller $args --input_path $reads --save_path . --flowcell ${opts.flowcell} --kit ${opts.kit} --num-callers ${task.cpus} --records_per_fastq 0 -x cuda:all:100%"
         }
