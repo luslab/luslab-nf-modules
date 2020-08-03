@@ -4,7 +4,7 @@
 nextflow.enable.dsl=2
 
 // Log
-log.info ("Starting tests for minimap2...")
+log.info ("Starting tests for tantan...")
 
 /*------------------------------------------------------------------------------------*/
 /* Define params
