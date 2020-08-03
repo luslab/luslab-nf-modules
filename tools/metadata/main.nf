@@ -42,7 +42,7 @@ def processRow(LinkedHashMap row) {
     }
 
     def array = []
-    if (row.read2 == null) {
+    if (row.data2 == null) {
         array = [ meta, [ file(row.data1, checkIfExists: true) ] ]
     } else {
         array = [ meta, [ file(row.data1, checkIfExists: true), file(row.data2, checkIfExists: true) ] ]
