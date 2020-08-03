@@ -64,5 +64,5 @@ workflow {
     cutadapt ( params.modules['cutadapt'], ch_fastq_paired_end )
 
     // Collect file names and view output
-    cutadapt.out.trimmedReads | view
+    cutadapt.out.fastq | view
 }

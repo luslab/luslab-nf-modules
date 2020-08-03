@@ -19,7 +19,7 @@ process cutadapt {
         tuple val(meta), path(reads)
 
     output:
-        tuple val(meta), path("*.trimmed.fq.gz"), emit: trimmedReads
+        tuple val(meta), path("*.trimmed.fq.gz"), emit: fastq
         path "*.txt", emit: report
 
     script:
@@ -32,22 +32,19 @@ process cutadapt {
         prefix = opts.suffix ? "${meta.sample_id}${opts.suffix}" : "${meta.sample_id}"
 
         // Construct CL line
-        cutadapt_command = "cutadapt ${args} -o ${meta.sample_id}.trimmed.fq.gz $reads > ${meta.sample_id}_cutadapt.txt"
-
+        readList = reads.collect{it.toString()}
+        if (readList.size > 1){
+            cutadapt_command = "cutadapt ${args} -o ${reads[0].simpleName}.trimmed.fq.gz -p ${reads[1].simpleName}.trimmed.fq.gz $reads > ${prefix}.txt"
+        } else {
+            cutadapt_command = "cutadapt ${args} -o ${meta.sample_id}.trimmed.fq.gz $reads > ${prefix}.txt"
+        }
         // Log
         if (params.verbose){
             println ("[MODULE] cutadapt command: " + cutadapt_command)
         }
 
         //SHELL
-        readList = reads.collect{it.toString()}
-        if (readList.size > 1){
-            """
-            cutadapt ${args} -o ${reads[0].simpleName}.trimmed.fq.gz -p ${reads[1].simpleName}.trimmed.fq.gz $reads > ${meta.sample_id}_cutadapt.txt
-            """
-        } else {
-            """
-            ${cutadapt_command}
-            """
-        }
+        """
+        ${cutadapt_command}
+        """
 }
