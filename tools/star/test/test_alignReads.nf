@@ -86,3 +86,5 @@ workflow {
     map_pe.out.progressLogFiles.collect() | view 
     map_pe.out.readsPerCount.collect() | view */
 }
+
+//A new comment line
