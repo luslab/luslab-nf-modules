@@ -6,7 +6,7 @@ nextflow.preview.dsl = 2
 // Process definition
 process guppy_basecaller {
     publishDir "${params.outdir}/${opts.publish_dir}",
-        mode: "copy", 
+        mode: "copy",
         overwrite: true,
         saveAs: { filename ->
                       if (opts.publish_results == "none") null
@@ -44,7 +44,7 @@ process guppy_basecaller {
 
 process guppy_qc {
     publishDir "${params.outdir}/${opts.publish_dir}",
-        mode: "copy", 
+        mode: "copy",
         overwrite: true,
         saveAs: { filename ->
                       if (opts.publish_results == "none") null
@@ -56,7 +56,7 @@ process guppy_qc {
         val opts
         tuple path(summary), path(telemetry)
 
-    output: 
+    output:
         path '*.html', emit: report
 
     script:
