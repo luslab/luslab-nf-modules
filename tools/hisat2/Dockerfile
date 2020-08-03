@@ -5,4 +5,4 @@ LABEL authors="alex.thiery@crick.ac.uk" \
 # Install conda packages
 COPY environment.yml /
 RUN conda env create -f /environment.yml && conda clean -a
-ENV PATH /opt/conda/envs/nfcore-module-homer/bin:$PATH
+ENV PATH /opt/conda/envs/nfcore-module-hisat2/bin:$PATH
