@@ -17,7 +17,8 @@ params.verbose = true
 /* Module inclusions
 --------------------------------------------------------------------------------------*/
 
-include {cutadapt} from '../main.nf' 
+include {cutadapt} from '../main.nf'
+include {assert_channel_count} from '../../../workflows/test_flows/main.nf'
 
 /*------------------------------------------------------------------------------------*/
 /* Define input channels
@@ -65,4 +66,7 @@ workflow {
 
     // Collect file names and view output
     cutadapt.out.fastq | view
+
+    //Check count
+    assert_channel_count( cutadapt.out.fastq, "fastq", 6)
 }
