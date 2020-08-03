@@ -28,9 +28,9 @@ process guppy_basecaller {
 
         command = ""
         if (params.num_gpus == 0){
-            command = "guppy_basecaller $args --input_path $reads --save_path . --flowcell ${opts.flowcell} --kit ${opts.kit} --num-callers ${task.cpus} --cpu_threads_per_caller ${opts.threads_per_caller} --records_per_fastq 0"
+            command = "guppy_basecaller --compress_fastq --flowcell ${opts.flowcell} --kit ${opts.kit} --num_callers ${opts.num_callers} --cpu_threads_per_caller ${opts.cpu_threads_per_caller} --chunks_per_caller ${opts.chunks_per_caller} --chunk_size ${opts.chunk_size} --records_per_fastq 0 --input_path $reads --save_path ."
         } else {
-            command = "guppy_basecaller $args --input_path $reads --save_path . --flowcell ${opts.flowcell} --kit ${opts.kit} --num-callers ${task.cpus} --records_per_fastq 0 -x cuda:all:100%"
+            command = "guppy_basecaller --compress_fastq --flowcell ${opts.flowcell} --kit ${opts.kit} --num_callers ${opts.num_callers} --cpu_threads_per_caller ${opts.cpu_threads_per_caller} --chunks_per_caller ${opts.chunks_per_caller} --chunk_size ${opts.chunk_size} --gpu_runners_per_device ${opts.gpu_runners_per_device} --records_per_fastq 0 --input_path $reads --save_path . -x cuda:all:100% "
         }
 
         if (params.verbose){
