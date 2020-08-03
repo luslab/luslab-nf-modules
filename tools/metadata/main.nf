@@ -56,16 +56,18 @@ def enumerateFastqDir(metadata){
     if(metadata[0].strip2.isEmpty()){
         for (def fastq : metadata[1].flatten()){
             String s1 = fastq.getName().replaceAll(metadata[0].strip1, "")
-            metadata[0].put("cellID", s1)
-            array.add([ metadata[0], [file(fastq, checkIfExists: true)]])
+            temp_meta = metadata[0].getClass().newInstance(metadata[0])
+            temp_meta.put("cellID", s1)
+            array.add([ temp_meta, [file(fastq, checkIfExists: true)]])
         }
     } else {
         fastqs = metadata[1].flatten().sort()
 
         for (int i = 0; i <fastqs.size(); i++ ){
             String s1 = fastqs.get(i).getName().replaceAll(metadata[0].strip1, "")
-            metadata[0].put("cellID", s1)
-            array.add([ metadata[0], [file(fastqs.get(i), checkIfExists: true), file(fastqs.get(++i), checkIfExists: true)]])
+            temp_meta = metadata[0].getClass().newInstance(metadata[0])
+            temp_meta.put("cellID", s1)
+            array.add([ temp_meta, [file(fastqs.get(i), checkIfExists: true), file(fastqs.get(++i), checkIfExists: true)]])
         }
     }
     return array
