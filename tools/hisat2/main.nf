@@ -10,7 +10,7 @@ process hisat2_build {
                       if (opts.publish_results == "none") null
                       else filename }
 
-    container 'f10927148e38'
+    container 'luslab/nf-modules-hisat2:latest'
 
     input:
         val opts
@@ -36,7 +36,7 @@ process hisat2_align {
                       if (opts.publish_results == "none") null
                       else filename }
 
-    container 'f10927148e38'
+    container 'luslab/nf-modules-hisat2:latest'
 
     input:
         val opts
