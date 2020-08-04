@@ -4,7 +4,7 @@ LABEL authors="charles.plessy@oist.jp" \
 
 # Install apt packages
 RUN apt-get update \
-	&& apt-get install -y tantan \
+	&& apt-get install --no-install-recommends -y tantan=22-1 \
 	&& apt-get clean \
 	&& rm -rf /var/lib/apt/lists/*
 
