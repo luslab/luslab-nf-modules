@@ -16,7 +16,9 @@ params.verbose = true
 /* Module inclusions
 --------------------------------------------------------------------------------------*/
 
-include {hisat2_build; hisat2_align} from '../main.nf' 
+include {hisat2_build; hisat2_splice_sites; hisat2_align as hisat2_align_se; hisat2_align as hisat2_align_pe} from "$baseDir/../main.nf"
+    
+include {assert_channel_count as assert_channel_count_se; assert_channel_count as assert_channel_count_pe} from "$baseDir/../../../workflows/test_flows/main.nf"
 
 /*------------------------------------------------------------------------------------*/
 /* Define input channels
@@ -24,13 +26,13 @@ include {hisat2_build; hisat2_align} from '../main.nf'
 
 
 testDataSingleEnd= [
-    [[sample_id:'Sample1'], "/Users/alex/dev/repos/luslab-nf-modules/test_data/hisat2/se_1_trimmed.fq.gz"],
-    [[sample_id:'Sample1'], "/Users/alex/dev/repos/luslab-nf-modules/test_data/hisat2/se_2.trimmed.fq.gz"]
+    [[sample_id:'Sample1'], "$baseDir/../../../test_data/hisat2/se_1_trimmed.fq.gz"],
+    [[sample_id:'Sample2'], "$baseDir/../../../test_data/hisat2/se_2.trimmed.fq.gz"]
 ]
 
 testDataPairedEnd= [
-    [[sample_id:'Sample1'], "/Users/alex/dev/repos/luslab-nf-modules/test_data/hisat2/pe_1a.trimmed.fq.gz", "/Users/alex/dev/repos/luslab-nf-modules/test_data/hisat2/pe_1b.trimmed.fq.gz"],
-    [[sample_id:'Sample2'], "/Users/alex/dev/repos/luslab-nf-modules/test_data/hisat2/pe_2a.trimmed.fq.gz", "/Users/alex/dev/repos/luslab-nf-modules/test_data/hisat2/pe_2b.trimmed.fq.gz"]
+    [[sample_id:'Sample1'], "$baseDir/../../../test_data/hisat2/pe_1a.trimmed.fq.gz", "$baseDir/../../../test_data/hisat2/pe_1b.trimmed.fq.gz"],
+    [[sample_id:'Sample2'], "$baseDir/../../../test_data/hisat2/pe_2a.trimmed.fq.gz", "$baseDir/../../../test_data/hisat2/pe_2b.trimmed.fq.gz"]
 ]
 
 
@@ -49,23 +51,31 @@ Channel
     .set {ch_fastq_paired_end}
 
 Channel
-    .from("/Users/alex/dev/repos/luslab-nf-modules/test_data/hisat2/Gallus_gallus.sub.fa")
+    .from("$baseDir/../../../test_data/hisat2/Gallus_gallus.sub.fa")
     .set {ch_genome}
 
 Channel
-    .from("/Users/alex/dev/repos/luslab-nf-modules/test_data/hisat2/galgal6_splice_sites_subset.txt")
-    .set {ch_splice_sites}
+    .from("$baseDir/../../../test_data/hisat2/chr1.gtf")
+    .set {ch_gtf}
 
 /*------------------------------------------------------------------------------------*/
 /* Run tests
 --------------------------------------------------------------------------------------*/
   
 workflow {
-    // Run hisat2
-    //hisat2 ( ch_fastq_single_end )
+
     hisat2_build ( params.modules['hisat2'], ch_genome )
-    hisat2_align ( params.modules['hisat2'], ch_fastq_paired_end, hisat2_build.out.genome_index, ch_splice_sites )
+    hisat2_splice_sites ( params.modules['hisat2'], ch_gtf )
+
+    // Run hisat2 for single end data
+    hisat2_align_se ( params.modules['hisat2'], ch_fastq_single_end, hisat2_build.out.genome_index.collect(), hisat2_splice_sites.out.splice_sites.collect() )
+    hisat2_align_pe ( params.modules['hisat2'], ch_fastq_paired_end, hisat2_build.out.genome_index.collect(), hisat2_splice_sites.out.splice_sites.collect() )
 
     // Collect file names and view output
-    hisat2_align.out.sam | view
+    hisat2_align_se.out.sam | view
+    hisat2_align_pe.out.sam | view
+
+    //Check count
+    assert_channel_count_se ( hisat2_align_se.out.sam, "sam", 2)
+    assert_channel_count_pe ( hisat2_align_pe.out.sam, "sam", 2)
 }

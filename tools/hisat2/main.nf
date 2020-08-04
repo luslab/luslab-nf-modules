@@ -28,6 +28,33 @@ process hisat2_build {
         """
 }
 
+process hisat2_splice_sites {
+    publishDir "${params.outdir}/${opts.publish_dir}",
+        mode: "copy", 
+        overwrite: true,
+        saveAs: { filename ->
+                      if (opts.publish_results == "none") null
+                      else filename }
+
+    container 'luslab/nf-modules-hisat2:latest'
+
+    input:
+        val opts
+        path gtf
+
+    output:
+        path "splice_sites.txt", emit: splice_sites
+
+    script:
+
+        //SHELL
+        """
+        mkdir hisat2_index
+        hisat2_extract_splice_sites.py ${gtf} > splice_sites.txt
+        """
+}
+ 
+
 process hisat2_align {
     publishDir "${params.outdir}/${opts.publish_dir}",
         mode: "copy", 
