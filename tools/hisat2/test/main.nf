@@ -16,7 +16,7 @@ params.verbose = true
 /* Module inclusions
 --------------------------------------------------------------------------------------*/
 
-include {hisat2_build; hisat2_splice_sites; hisat2_align as hisat2_align_se; hisat2_align as hisat2_align_pe} from "$baseDir/../main.nf"
+include {hisat2_build; hisat2_splice_sites; hisat2_splice_align as hisat2_splice_align_se; hisat2_splice_align as hisat2_splice_align_pe} from "$baseDir/../main.nf"
     
 include {assert_channel_count as assert_channel_count_se; assert_channel_count as assert_channel_count_pe} from "$baseDir/../../../workflows/test_flows/main.nf"
 
@@ -68,14 +68,14 @@ workflow {
     hisat2_splice_sites ( params.modules['hisat2'], ch_gtf )
 
     // Run hisat2 for single end data
-    hisat2_align_se ( params.modules['hisat2'], ch_fastq_single_end, hisat2_build.out.genome_index.collect(), hisat2_splice_sites.out.splice_sites.collect() )
-    hisat2_align_pe ( params.modules['hisat2'], ch_fastq_paired_end, hisat2_build.out.genome_index.collect(), hisat2_splice_sites.out.splice_sites.collect() )
+    hisat2_splice_align_se ( params.modules['hisat2'], ch_fastq_single_end, hisat2_build.out.genome_index.collect(), hisat2_splice_sites.out.splice_sites.collect() )
+    hisat2_splice_align_pe ( params.modules['hisat2'], ch_fastq_paired_end, hisat2_build.out.genome_index.collect(), hisat2_splice_sites.out.splice_sites.collect() )
 
     // Collect file names and view output
-    hisat2_align_se.out.sam | view
-    hisat2_align_pe.out.sam | view
+    hisat2_splice_align_se.out.sam | view
+    hisat2_splice_align_pe.out.sam | view
 
     //Check count
-    assert_channel_count_se ( hisat2_align_se.out.sam, "sam", 2)
-    assert_channel_count_pe ( hisat2_align_pe.out.sam, "sam", 2)
+    assert_channel_count_se ( hisat2_splice_align_se.out.sam, "sam", 2)
+    assert_channel_count_pe ( hisat2_splice_align_pe.out.sam, "sam", 2)
 }
