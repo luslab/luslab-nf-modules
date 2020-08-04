@@ -9,7 +9,7 @@ RUN apt-get update \
 	&& rm -rf /var/lib/apt/lists/*
 
 # Not installing from Bioconda, because tantan is version 13 in bioconda,
-# but version 22 in Debian stable...
+# but version 22 in Debian stable, on which nfcore/base:1.10 is built.
 ## Install conda packages
 #COPY environment.yml /
 #RUN conda env create -f /environment.yml && conda clean -a
