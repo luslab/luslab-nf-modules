@@ -17,14 +17,14 @@ process hisat2_build {
         path genome
 
     output:
-        path "hisat2_index", emit: genome_index
+        path "${opts.index_dir}", emit: genome_index
 
     script:
 
         //SHELL
         """
-        mkdir hisat2_index
-        hisat2-build ${genome} hisat2_index/index
+        mkdir ${opts.index_dir}
+        hisat2-build ${genome} ${opts.index_dir}/${opts.prefix}
         """
 }
 
@@ -37,20 +37,19 @@ process hisat2_splice_sites {
                       else filename }
 
     container 'luslab/nf-modules-hisat2:latest'
-
     input:
         val opts
         path gtf
 
     output:
-        path "splice_sites.txt", emit: splice_sites
+        path "${opts.prefix}${opts.suffix}", emit: splice_sites
 
     script:
 
         //SHELL
         """
         mkdir hisat2_index
-        hisat2_extract_splice_sites.py ${gtf} > splice_sites.txt
+        hisat2_extract_splice_sites.py ${gtf} > ${opts.prefix}${opts.suffix}
         """
 }
  
