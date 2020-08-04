@@ -64,15 +64,15 @@ Channel
   
 workflow {
 
-    hisat2_build ( params.modules['hisat2'], ch_genome )
-    hisat2_splice_sites ( params.modules['hisat2'], ch_gtf )
+    hisat2_build ( params.modules['hisat2_build'], ch_genome )
+    hisat2_splice_sites ( params.modules['hisat2_splice_sites'], ch_gtf )
 
     // Run hisat2 for single end data
-    hisat2_splice_align_se ( params.modules['hisat2'], ch_fastq_single_end, hisat2_build.out.genome_index.collect(), hisat2_splice_sites.out.splice_sites.collect() )
-    hisat2_splice_align_pe ( params.modules['hisat2'], ch_fastq_paired_end, hisat2_build.out.genome_index.collect(), hisat2_splice_sites.out.splice_sites.collect() )
+    hisat2_splice_align_se ( params.modules['hisat2_splice_align'], ch_fastq_single_end, hisat2_build.out.genome_index.collect(), hisat2_splice_sites.out.splice_sites.collect() )
+    hisat2_splice_align_pe ( params.modules['hisat2_splice_align'], ch_fastq_paired_end, hisat2_build.out.genome_index.collect(), hisat2_splice_sites.out.splice_sites.collect() )
 
-    hisat2_align_se ( params.modules['hisat2'], ch_fastq_single_end, hisat2_build.out.genome_index.collect() )
-    hisat2_align_pe ( params.modules['hisat2'], ch_fastq_paired_end, hisat2_build.out.genome_index.collect() )
+    hisat2_align_se ( params.modules['hisat2_align'], ch_fastq_single_end, hisat2_build.out.genome_index.collect() )
+    hisat2_align_pe ( params.modules['hisat2_align'], ch_fastq_paired_end, hisat2_build.out.genome_index.collect() )
 
     // Collect file names and view output
     hisat2_splice_align_se.out.sam | view
