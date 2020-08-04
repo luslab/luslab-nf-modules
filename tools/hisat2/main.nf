@@ -117,7 +117,6 @@ process hisat2_align {
         val opts
         tuple val(meta), path(reads)
         path genome_index
-        path splice_sites
 
     output:
         tuple val(meta), path("*.sam"), emit: sam
