@@ -45,11 +45,11 @@ process star_genomeGenerate {
     args += "--runThreadN $task.cpus "
 
     // Add optional input parameters
-    if ( params.sjdbGTFfile ) {
-      args += "--sjdbGTFfile ${params.sjdbGTFfile} "
+    if ( params.star_genomeGenerate_sjdbGTFfile ) {
+      args += "--sjdbGTFfile ${params.star_genomeGenerate_sjdbGTFfile} "
     }
-    if ( params.sjdbFileChrStartEnd ) {
-      args += "--sjdbFileChrStartEnd ${params.sjdbFileChrStartEnd} "
+    if ( params.star_genomeGenerate_sjdbFileChrStartEnd ) {
+      args += "--sjdbFileChrStartEnd ${params.star_genomeGenerate_sjdbFileChrStartEnd} "
     }
 
     // Add memory constraints
@@ -133,14 +133,14 @@ process star_alignReads {
     }
 
     // Add optional input parameters
-    if ( params.sjdbGTFfile ) {
-      args += "--sjdbGTFfile ${params.sjdbGTFfile} "
+    if ( params.star_alignReads_sjdbGTFfile ) {
+      args += "--sjdbGTFfile ${params.star_alignReads_sjdbGTFfile} "
     }
-    if ( params.sjdbFileChrStartEnd ) {
-      args += "--sjdbFileChrStartEnd ${params.sjdbFileChrStartEnd} "
+    if ( params.star_alignReads_sjdbFileChrStartEnd ) {
+      args += "--sjdbFileChrStartEnd ${params.star_alignReads_sjdbFileChrStartEnd} "
     }
-    if ( params.varVCFfile ) {
-      args += "--varVCFfile ${params.varVCFfile} "
+    if ( params.star_alignReads_varVCFfile ) {
+      args += "--varVCFfile ${params.star_alignReads_varVCFfile} "
     }
 
     // Add memory constraints
