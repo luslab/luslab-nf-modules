@@ -7,4 +7,4 @@ channels:
   - defaults
 dependencies:
   ## bioconda packages, see above
-  - htseq=0.12.4-1
+  - htseq=0.12.4
