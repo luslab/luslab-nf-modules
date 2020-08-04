@@ -1,7 +1,7 @@
 #!/usr/bin/env nextflow
 
 // Define DSL2
-nextflow.preview.dsl=2
+nextflow.enable.dsl=2
 
 /*==============================
 Test STAR genome indexing module
@@ -15,17 +15,15 @@ params.star_genomeGenerate_args = '--genomeSAindexNbases 9'
 params.verbose = true
 
 // Define optional input
-params.star_genomeGenerate_sjdbGTFfile = "$baseDir/../../../../hs_chr20/raw_genome/Homo_sapiens.GRCh38.100.chr20.gtf" //"$baseDir/input/raw_genome/gencode.v30.primary_assembly.annotation_chr6_34000000_35000000_first_gene.gtf"
-//params.sjdbGTFfile = "$baseDir/input/hs_chr6_1Mbp/raw_genome/gencode.v30.primary_assembly.annotation_chr6_34000000_35000000_first_gene.gtf" //"gencode.v30.primary_assembly.annotation_chr6_34000000_35000000.gtf"
-//"$baseDir/input/raw_genome/gencode.v30.primary_assembly.annotation_chr6_34000000_35000000.gtf" 
-params.star_genomeGenerate_sjdbFileChrStartEnd = "$baseDir/../../../../hs_chr20/raw_genome/Sample1.SJ.out.tab" //"$baseDir/input/raw_genome/Sample1.SJ.out.tab"
+params.star_genomeGenerate_sjdbGTFfile = "$baseDir/../../../test_data/gtf/gencode.v30.primary_assembly.annotation_chr6_34000000_35000000.gtf" 
+params.star_genomeGenerate_sjdbFileChrStartEnd = "$baseDir/../../../test_data/star_splice_junctions/Sample1.SJ.out.tab"
 
 // Module inclusions
-include star_genomeGenerate from '../main.nf'
+include { star_genomeGenerate } from '../main.nf'
 
 // Channel for FASTA file(s) 
 Channel
-    .fromPath("$baseDir/../../../../hs_chr20/raw_genome/chr20.fa")
+    .fromPath("$baseDir/../../../test_data/fasta/GRCh38.primary_assembly.genome_chr6_34000000_35000000.fa")
     .set { ch_testData_fasta }
 
 // Run tests

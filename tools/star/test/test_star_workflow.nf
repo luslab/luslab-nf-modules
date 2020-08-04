@@ -1,7 +1,7 @@
 #!/usr/bin/env nextflow
 
 // Define DSL2
-nextflow.preview.dsl=2
+nextflow.enable.dsl=2
 
 /*==============================
 Test STAR genome indexing module

@@ -1,7 +1,7 @@
 #!/usr/bin/env nextflow
 
 // Define DSL2
-nextflow.preview.dsl=2
+nextflow.enable.dsl=2
 
 /*======================
 Test STAR mapping module
@@ -11,38 +11,30 @@ Test STAR mapping module
 log.info ("Starting tests for STAR mapping...")
 
 // Define main params
-params.genome_index = "../hs_chr20/reduced_star_index/2.7.5a"
-//params.genome_index = "tools/star/test/input/hs_chr6_1Mbp/reduced_star_index/2.7.5a" //_SAnBases_7" // 2.6.1c 2.7.1a
+params.genome_index = "$baseDir/../../../test_data/star_index/hs_chr6_1Mb/2.7.5a"
 params.star_alignReads_args = '--outFilterMultimapNmax 20 --quantMode TranscriptomeSAM' //--quantMode TranscriptomeSAM GeneCounts' // '--quantMode GeneCounts'
 params.verbose = true
 
 // Define optional input
-params.star_alignReads_sjdbGTFfile = "$baseDir/../../../../hs_chr20/raw_genome/Homo_sapiens.GRCh38.100.chr20.gtf" //"$baseDir/input/raw_genome/gencode.v30.primary_assembly.annotation_chr6_34000000_35000000_first_gene.gtf"
-//params.sjdbGTFfile = "$baseDir/input/hs_chr6_1Mbp/raw_genome/gencode.v30.primary_assembly.annotation_chr6_34000000_35000000_first_gene.gtf" //"gencode.v30.primary_assembly.annotation_chr6_34000000_35000000.gtf"
-//"$baseDir/input/raw_genome/gencode.v30.primary_assembly.annotation_chr6_34000000_35000000.gtf" 
-params.star_alignReads_sjdbFileChrStartEnd = '' //"$baseDir/../../../../hs_chr20/raw_genome/Sample1.SJ.out.tab" //"$baseDir/input/raw_genome/Sample1.SJ.out.tab"
+params.star_alignReads_sjdbGTFfile = "$baseDir/../../../test_data/gtf/gencode.v30.primary_assembly.annotation_chr6_34000000_35000000.gtf"
+params.star_alignReads_sjdbFileChrStartEnd = '' // "$baseDir/../../../test_data/star_splice_junctions/Sample1.SJ.out.tab"
 params.star_alignReads_varVCFfile = ''
 
 // Module inclusions
-include star_alignReads as map_se from '../main.nf'
-include star_alignReads as map_pe from '../main.nf'
+include { star_alignReads as map_se } from '../main.nf'
+include { star_alignReads as map_pe } from '../main.nf'
 
 // Define input channels
 
 // Single-end test reads
 testMetaDataSingleEnd = [
-  ['Sample1', "../hs_chr20/single_end/prpf8-hela-eif4a3-sirna-20190611-ju-2_trimmed_chr20_0_64444167.fq.gz"],
-  ['Sample2', "../hs_chr20/single_end/prpf8-hela-eif4a3-sirna-20190611-ju-4_trimmed_chr20_0_64444167.fq.gz"]
+  ['Sample1', "$baseDir/../../../test_data/fastq/prpf8_eif4a3_rep1.Unmapped.fq"],
+  ['Sample2', "$baseDir/../../../test_data/fastq/prpf8_eif4a3_rep2.Unmapped.fq"]
 ]
-
-/*testMetaDataSingleEnd = [
-  ['Sample1', "$baseDir/input/hs_chr6_1Mbp/single_end/prpf8_eif4a3_rep1.Unmapped.fq"],
-  ['Sample2', "$baseDir/input/hs_chr6_1Mbp/single_end/prpf8_eif4a3_rep2.Unmapped.fq"]
-]*/
 
 // Paired-end test reads
 /*testMetaDataPairedEnd = [
-  ['Sample1', "$baseDir/input/hs_chr6_1Mbp/paired_end/ENCFF282NGP_chr6_3400000_3500000_1000reads_1.fq.bz2", "$baseDir/input/hs_chr6_1Mbp/paired_end/ENCFF282NGP_chr6_3400000_3500000_1000reads_2.fq.bz2"]
+  ['Sample1', "$baseDir/../../../test_data/fastq/ENCFF282NGP_chr6_3400000_3500000_1000reads_1.fq.bz2", "$baseDir/../../../test_data/fastq/ENCFF282NGP_chr6_3400000_3500000_1000reads_2.fq.bz2"]
 ]*/
 
 // Channel for single-end reads 
@@ -87,4 +79,3 @@ workflow {
     map_pe.out.readsPerCount.collect() | view */
 }
 
-//A new comment line
