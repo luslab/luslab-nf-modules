@@ -19,7 +19,7 @@ params.samtools_view_region = 'chr21'
 /* Module inclusions 
 --------------------------------------------------------------------------------------*/
 
-include {samtools_index; samtools_view; samtools_faidx} from '../main.nf'
+include {samtools_index; samtools_view; samtools_faidx; samtools_sort} from '../main.nf'
 include {decompress_noid} from '../../../tools/luslab_file_tools/main.nf'
 
 /*------------------------------------------------------------------------------------*/
@@ -60,8 +60,10 @@ workflow {
     // Run samtools index
     samtools_view ( ch_testDataView )
 
+    samtools_sort ( params.modules['samtools_sort'], samtools_view.out )
+
     // View output
-    samtools_view.out.bamFiles | view
+    samtools_sort.out.bam | view
 
     //Test samtools faidx
     decompress_noid( ch_fasta )

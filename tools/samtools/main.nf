@@ -101,3 +101,41 @@ process samtools_faidx {
     ${command}
     """
 }
+
+
+process samtools_sort {
+    publishDir "${params.outdir}/${opts.publish_dir}",
+        mode: "copy", 
+        overwrite: true,
+        saveAs: { filename ->
+                      if (opts.publish_results == "none") null
+                      else filename }
+
+    container 'luslab/nf-modules-samtools:latest'
+
+    input:
+        val opts
+        tuple val(meta), path(reads)
+
+    output:
+        tuple val(meta), path("*.bam"), emit: bam
+
+    script:
+        args = ""
+        if(opts.args && opts.args != '') {
+            ext_args = opts.args
+            args += ext_args.trim()
+        }
+
+        prefix = opts.suffix ? "${meta.sample_id}${opts.suffix}" : "${meta.sample_id}"
+
+        sort_command = "samtools sort -0 $reads ${args} > ${prefix}.bed"
+        if (params.verbose){
+            println ("[MODULE] samtools/sort command: " + sort_command)
+        }
+
+        //SHELL
+        """
+        ${sort_command}
+        """
+}
