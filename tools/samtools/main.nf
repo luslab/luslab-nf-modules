@@ -139,3 +139,46 @@ process samtools_sort {
         ${sort_command}
         """
 }
+
+
+// Samtools view
+process samtools_view2 {
+    publishDir "${params.outdir}/${opts.publish_dir}",
+        mode: "copy", 
+        overwrite: true,
+        saveAs: { filename ->
+                      if (opts.publish_results == "none") null
+                      else filename }
+
+    container 'luslab/nf-modules-samtools:latest'
+
+    input:
+        val opts
+        tuple val(meta), path(reads)
+
+    output:
+        tuple val(meta), path(prefix), emit: x
+ 
+    script:
+
+        // Check main args string exists and strip whitespace
+        args = ""
+        if(opts.args && opts.args != '') {
+            ext_args = opts.args
+            args += ext_args.trim()
+        }
+
+        prefix = opts.suffix ? "${meta.sample_id}${opts.suffix}" : "${meta.sample_id}"
+
+        // Construct CL line
+        view_command = "samtools view ${args} -@ ${task.cpus}"
+
+        // Log
+        if (params.verbose){
+            println ("[MODULE] samtools/view command: " + view_command)
+        }
+        
+    """
+    ${view_command}
+    """
+}
