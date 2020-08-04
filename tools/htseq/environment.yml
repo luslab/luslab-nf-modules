@@ -1,0 +1,10 @@
+# You can use this file to create a conda environment for the homer module:
+#   conda env create -f environment.yml
+name: nfcore-module-htseq
+channels:
+  - conda-forge
+  - bioconda
+  - defaults
+dependencies:
+  ## bioconda packages, see above
+  - htseq=0.12.4-1
