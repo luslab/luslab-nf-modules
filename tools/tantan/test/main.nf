@@ -16,7 +16,7 @@ params.verbose = true
 /* Module inclusions
 --------------------------------------------------------------------------------------*/
 
-include {tantan} from '../main.nf'
+include {tantan; tantan_to_GFF3} from '../main.nf'
 
 /*------------------------------------------------------------------------------------*/
 /* Define input channels
@@ -40,4 +40,5 @@ channel
 
 workflow {
     tantan (params.modules['tantan'], ch_test_fasta)
+    tantan_to_GFF3(params.modules['tantan_to_GFF3'], tantan.out.tantanRepeats)
 }
