@@ -19,8 +19,8 @@ process cutadapt {
         tuple val(meta), path(reads)
 
     output:
-        tuple val(meta), path("*.trimmed.fq.gz"), emit: fastq
-        path "*.txt", emit: report
+        tuple val(meta), path("*.fq.gz"), emit: fastq
+        path "*.log", emit: report
 
     script:
         args = ""
@@ -34,9 +34,9 @@ process cutadapt {
         // Construct CL line
         readList = reads.collect{it.toString()}
         if (readList.size > 1){
-            cutadapt_command = "cutadapt ${args} -o ${reads[0].simpleName}.trimmed.fq.gz -p ${reads[1].simpleName}.trimmed.fq.gz $reads > ${prefix}.txt"
+            cutadapt_command = "cutadapt ${args} -o ${prefix}.1.fq.gz -p ${prefix}.2.fq.gz $reads > ${meta.sample_id}_cutadapt.log"
         } else {
-            cutadapt_command = "cutadapt ${args} -o ${reads[0].simpleName}.trimmed.fq.gz $reads > ${prefix}.txt"
+            cutadapt_command = "cutadapt ${args} -o ${prefix}.fq.gz $reads > ${meta.sample_id}_cutadapt.log"
         }
         // Log
         if (params.verbose){
