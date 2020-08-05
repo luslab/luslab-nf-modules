@@ -29,17 +29,17 @@ process star_genomeGenerate {
     args = "--runMode genomeGenerate --genomeDir genome_index --genomeFastaFiles $fasta "
 
     // Check and add custom arguments
-    if ( params.star_genomeGenerate_args ) {
-      if ( params.star_genomeGenerate_args =~ /(--genomeDir)/ ) {
+    if ( opts.args ) {
+      if ( opts.args =~ /(--genomeDir)/ ) {
         exit 1, "Error: This module does not support manual setting of --genomeDir. The genome index will appear in ${params.outdir}/star_genomeGenerate/genome_index. Exit."
       }
-      if ( params.star_genomeGenerate_args =~ /(--runMode)/ ) {
+      if ( opts.args =~ /(--runMode)/ ) {
         exit 1, "Error: --runMode is automatically set to 'genomeGenerate'. You do not need to provide it manually. Exit."
       }
-      if ( params.star_genomeGenerate_args =~ /(--parametersFiles)/ ) {
+      if ( opts.args =~ /(--parametersFiles)/ ) {
         exit 1, "Error: Parameter files (--parametersFiles option) are not supported in this module. Please provide all options not covered by input channels and module parameters via the star_genomeGenerate_args parameter. Exit."
       }
-      ext_args = params.star_genomeGenerate_args
+      ext_args = opts.args
       args += ext_args.trim() + " "
     }
 
@@ -47,11 +47,11 @@ process star_genomeGenerate {
     args += "--runThreadN $task.cpus "
 
     // Add optional input parameters
-    if ( params.star_genomeGenerate_sjdbGTFfile ) {
-      args += "--sjdbGTFfile ${params.star_genomeGenerate_sjdbGTFfile} "
+    if ( opts.sjdbGTFfile ) {
+      args += "--sjdbGTFfile ${opts.sjdbGTFfile} "
     }
-    if ( params.star_genomeGenerate_sjdbFileChrStartEnd ) {
-      args += "--sjdbFileChrStartEnd ${params.star_genomeGenerate_sjdbFileChrStartEnd} "
+    if ( opts.sjdbFileChrStartEnd ) {
+      args += "--sjdbFileChrStartEnd ${opts.sjdbFileChrStartEnd} "
     }
 
     // Add memory constraints
