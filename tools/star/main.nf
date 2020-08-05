@@ -77,53 +77,58 @@ process star_genomeGenerate {
 process star_alignReads {
     tag "${sample_id}"
 
-    publishDir "${params.outdir}/star_alignReads",
-        mode: "copy", overwrite: true
+    publishDir "${params.outdir}/${opts.publish_dir}",
+        mode: "copy", 
+        overwrite: true,
+        saveAs: { filename ->
+                      if (opts.publish_results == "none") null
+                      else filename }
 
     container 'luslab/nf-modules-star:2.7.5a' // 2.6.1d 2.7.3a
 
     input:
-      tuple val(sample_id), path(reads), path(star_index)
+      val opts
+      tuple val(meta), path(reads) 
+      path(star_index) 
 
     output:
-      tuple val(sample_id), path("*.sam"), optional: true, emit: samFiles
-      tuple val(sample_id), path("*.bam"), optional: true, emit: bamFiles
-      tuple val(sample_id), path("*.SJ.out.tab"), optional: true, emit: sjFiles
-      tuple val(sample_id), path("*.junction"), optional: true, emit: chJunctions
-      tuple val(sample_id), path("*.ReadsPerGene.out.tab"),  optional: true, emit: readsPerGene
-      tuple val(sample_id), path("*.Log.final.out"), emit: finalLogFiles
-      tuple val(sample_id), path("*.Log.out"), emit: outLogFiles
-      tuple val(sample_id), path("*.Log.progress.out"), emit: progressLogFiles
+      tuple val(meta), path("*.sam"), optional: true, emit: samFiles
+      tuple val(meta), path("*.bam"), optional: true, emit: bamFiles
+      tuple val(meta), path("*.SJ.out.tab"), optional: true, emit: sjFiles
+      tuple val(meta), path("*.junction"), optional: true, emit: chJunctions
+      tuple val(meta), path("*.ReadsPerGene.out.tab"),  optional: true, emit: readsPerGene
+      tuple val(meta), path("*.Log.final.out"), emit: finalLogFiles
+      tuple val(meta), path("*.Log.out"), emit: outLogFiles
+      tuple val(meta), path("*.Log.progress.out"), emit: progressLogFiles
       path "*.Log.final.out", emit: report
 
     script:
-
-    // Initialise argument string
-    args = ""
 
     // Add the main arguments
     args = "--runMode alignReads --genomeDir $star_index --readFilesIn $reads "
 
     // Check and add custom arguments
-    if ( params.star_alignReads_args ) {
-      if ( params.star_alignReads_args =~ /(--solo)/ ) {
+    if ( opts.args ) {
+      if ( opts.args =~ /(--solo)/ ) {
         exit 1, "Error: This module does not support STARsolo (--solo* options). For processing of single-cell RNA-seq data with STAR please use a dedicated module. Exit."
       }
-      if ( params.star_alignReads_args =~ /(--runMode)/ ) {
+      if ( opts.args =~ /(--runMode)/ ) {
         exit 1, "Error: --runMode is automatically set to 'alignReads'. You do not need to provide it manually. Exit."
       }
-      if ( params.star_alignReads_args =~ /(--parametersFiles)/ ) {
+      if ( opts.args =~ /(--parametersFiles)/ ) {
         exit 1, "Error: Parameter files (--parametersFiles option) are not supported in this module. Please provide all options not covered by input channels and module parameters via the star_alignReads_args parameter. Exit."
       }
-      ext_args = params.star_alignReads_args
+      ext_args = opts.args
       args += ext_args.trim() + " "
     }
+
+    prefix = opts.suffix ? "${meta.sample_id}${opts.suffix}" : "${meta.sample_id}"
 
     // Add the number of threads
     args += "--runThreadN $task.cpus "
 
     // Add output file name prefix
-    args += "--outFileNamePrefix ${sample_id}. "
+    args += "--outFileNamePrefix ${prefix}. "
 
     // Add compression parameters 
     test_file_name = "$reads"
@@ -135,14 +140,14 @@ process star_alignReads {
     }
 
     // Add optional input parameters
-    if ( params.star_alignReads_sjdbGTFfile ) {
-      args += "--sjdbGTFfile ${params.star_alignReads_sjdbGTFfile} "
+    if ( opts.sjdbGTFfile ) {
+      args += "--sjdbGTFfile ${opts.sjdbGTFfile} "
     }
-    if ( params.star_alignReads_sjdbFileChrStartEnd ) {
-      args += "--sjdbFileChrStartEnd ${params.star_alignReads_sjdbFileChrStartEnd} "
+    if ( opts.sjdbFileChrStartEnd ) {
+      args += "--sjdbFileChrStartEnd ${opts.sjdbFileChrStartEnd} "
     }
-    if ( params.star_alignReads_varVCFfile ) {
-      args += "--varVCFfile ${params.star_alignReads_varVCFfile} "
+    if ( opts.varVCFfile ) {
+      args += "--varVCFfile ${opts.varVCFfile} "
     }
 
     // Add memory constraints
