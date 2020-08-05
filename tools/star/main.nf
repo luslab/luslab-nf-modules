@@ -5,12 +5,17 @@ nextflow.enable.dsl=2
 
 // Generate genome index
 process star_genomeGenerate {
-    publishDir "${params.outdir}/star_genomeGenerate",
-        mode: "copy", overwrite: true
+    publishDir "${params.outdir}/${opts.publish_dir}",
+        mode: "copy", 
+        overwrite: true,
+        saveAs: { filename ->
+                      if (opts.publish_results == "none") null
+                      else filename }
 
     container 'luslab/nf-modules-star:2.7.5a'
 
     input:
+      val opts
       path(fasta)
 
     output:
@@ -19,9 +24,6 @@ process star_genomeGenerate {
       path "genome_index/Log.out", emit: report
 
     script:
-
-    // Initialise argument string
-    args = ""
 
     // Add the main arguments
     args = "--runMode genomeGenerate --genomeDir genome_index --genomeFastaFiles $fasta "

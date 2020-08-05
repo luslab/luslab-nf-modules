@@ -30,7 +30,7 @@ Channel
 workflow {
     // Run genome indexing
     log.info ("Run genome indexing...")
-    star_genomeGenerate ( ch_testData_fasta )
+    star_genomeGenerate ( params.modules['star_genomeGenerate'], ch_testData_fasta )
 
     // Collect file names and view output for single-end read mapping
     star_genomeGenerate.out.genomeIndex.collect() | view
