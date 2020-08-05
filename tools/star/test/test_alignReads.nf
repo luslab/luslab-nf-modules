@@ -17,7 +17,6 @@ params.verbose = true
 // Define optional input
 params.modules['star_alignReads'].sjdbGTFfile = "$baseDir/../../../test_data/gtf/gencode.v30.primary_assembly.annotation_chr6_34000000_35000000.gtf"
 params.modules['star_alignReads'].sjdbFileChrStartEnd = '' // "$baseDir/../../../test_data/star_splice_junctions/Sample1.SJ.out.tab"
-params.modules['star_alignReads'].varVCFfile = ''
 
 // Module inclusions
 include { star_alignReads as map_se } from '../main.nf'
