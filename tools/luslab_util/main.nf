@@ -15,7 +15,7 @@ This module contains helper functions for luslab nextflow pipelines
 */
 
 // Define DSL2
-nextflow.preview.dsl=2
+nextflow.enable.dsl=2
 
 def build_debug_param_summary() {
     Set paramsKeySet = params.keySet()
@@ -90,6 +90,13 @@ def check_max(obj, type) {
     } catch (all) {
       println "   ### ERROR ###   Max cpus '${params.max_cpus}' is not valid! Using default value: $obj"
       return obj
+    }
+  } else if (type == 'gpus') {
+    try {
+      return Math.min( obj, params.max_gpus as int )
+    } catch (all) {
+      println "   ### ERROR ###   Max gpus '${params.max_gpus}' is not valid! Using default value: $obj"
+      return obj as String
     }
   }
 }

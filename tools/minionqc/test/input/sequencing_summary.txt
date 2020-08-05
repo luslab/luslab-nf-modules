@@ -1,0 +1,1 @@
+../../../../test_data/guppy_sequencing_summary/sequencing_summary.txt

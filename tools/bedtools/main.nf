@@ -1,40 +1,41 @@
 #!/usr/bin/env nextflow
 
-// Specify DSL2
-nextflow.preview.dsl = 2
+nextflow.enable.dsl=2
 
-//Process definition
 process bedtools_intersect {
-    publishDir "${params.outdir}/bedtools/intersect",
-        mode: "copy", overwrite: true
+    publishDir "${params.outdir}/${opts.publish_dir}",
+        mode: "copy", 
+        overwrite: true,
+        saveAs: { filename ->
+                      if (opts.publish_results == "none") null
+                      else filename }
 
     container 'luslab/nf-modules-bedtools:latest'
 
-    input: 
-        tuple val(sample_id), path(reads), path(regions_file)
+    input:
+        val opts
+        tuple val(meta), path(reads)
+        path regions_file
 
-    output: 
-        tuple val(sample_id), path("${sample_id}.annotated.bed"), emit: annotatedBed
+    output:
+        tuple val(meta), path("*.bed"), emit: bed
 
     script:
+        args = ""
+        if(opts.args && opts.args != '') {
+            ext_args = opts.args
+            args += ext_args.trim()
+        }
 
-    // Check main args string exists and strip whitespace
-    args = ""
-    if(params.bedtools_intersect_args && params.bedtools_intersect_args != '') {
-        ext_args = params.bedtools_intersect_args
-        args += " " + ext_args.trim()
-    }
+        prefix = opts.suffix ? "${meta.sample_id}${opts.suffix}" : "${meta.sample_id}"
 
-    // Construct CL line
-    intersect_command = "bedtools intersect -a ${regions_file} -b $reads ${args} > ${sample_id}.annotated.bed"
+        intersect_command = "bedtools intersect -a ${regions_file} -b $reads ${args} > ${prefix}.bed"
+        if (params.verbose){
+            println ("[MODULE] bedtools/intersect command: " + intersect_command)
+        }
 
-    // Log
-    if (params.verbose){
-        println ("[MODULE] bedtools/intersect command: " + intersect_command)
-    }
-
-    //SHELL
-    """
-    ${intersect_command}
-    """
+        //SHELL
+        """
+        ${intersect_command}
+        """
 }

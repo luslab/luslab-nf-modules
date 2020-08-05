@@ -11,8 +11,8 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        nxf_ver: ['20.01.0', '']
-        module-name: ['fast_flows']
+        nxf_ver: ['20.07.1','']
+        module-name: ['test_flows','fast_flows']
     steps:
       - uses: actions/checkout@v2
       - name: Install Nextflow

@@ -1,8 +1,7 @@
 #!/usr/bin/env nextflow
 
 // Define DSL2
-nextflow.preview.dsl=2
-
+nextflow.enable.dsl=2
 // Log
 log.info ("Starting tests for fast_flows...")
 
@@ -18,8 +17,8 @@ params.region = "21:40000000-40100000"
 /* Module inclusions
 --------------------------------------------------------------------------------------*/
 
-include decompress_noid from '../../../tools/luslab_file_tools/main.nf'
-include subset_genome from '../main.nf'
+include {decompress_noid} from '../../../tools/luslab_file_tools/main.nf'
+include {subset_genome} from '../main.nf'
 
 /*------------------------------------------------------------------------------------*/
 /* Define input channels

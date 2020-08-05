@@ -1,7 +1,7 @@
 #!/usr/bin/env nextflow
 
 // Define DSL2
-nextflow.preview.dsl=2
+nextflow.enable.dsl=2
 
 // Log
 log.info ("Starting tests for peka...")
@@ -32,7 +32,7 @@ params.peka_repeats = "masked"
 /* Module inclusions 
 --------------------------------------------------------------------------------------*/
 
-include peka from '../main.nf'
+include {peka} from '../main.nf'
 
 /*------------------------------------------------------------------------------------*/
 /* Define input channels
