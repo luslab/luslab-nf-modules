@@ -1,26 +1,48 @@
 FROM nfcore/base:1.7
-LABEL authors="chris.cheshire@crick.ac.uk" \
+LABEL authors="alex.thiery@crick.ac.uk" \
       description="Docker image containing all requirements for the nf-core bedtools module"
 
-RUN apt-get update && apt-get install -y \
-    software-properties-common
+# Update and install system libraries
+RUN apt-get update --yes && \
+    apt-get install --yes --no-install-recommends  \
+    zlib1g-dev \
+    libbz2-dev \
+    liblzma-dev \
+    gcc \
+    mono-mcs \
+    build-essential \
+    cmake \
+    less \
+    libbamtools-dev \
+    libboost-dev \
+    libboost-iostreams-dev \
+    libboost-log-dev \
+    libboost-system-dev \
+    libboost-test-dev \
+    libcurl4-openssl-dev \
+    libssl-dev \
+    libz-dev \
+    nano \
+    pandoc && \
+    rm -rf /var/lib/apt/lists/*
+    
+# Update conda
+RUN conda update -n base -c defaults conda
 
-RUN add-apt-repository ppa:deadsnakes/ppa
-
-RUN apt install \
-    python3.7 \
-    python3-pip
-
+# Set channels
+RUN conda config --add channels defaults
+RUN conda config --add channels conda-forge
 
 # Install conda packages
-COPY environment.yml /
-RUN conda env create -f /environment.yml && conda clean -a
-ENV PATH /opt/conda/envs/nfcore-module-velocyto/bin:$PATH
+RUN conda install -y python=3.6 \
+    numpy=1.16.1 \
+    scipy=1.2.0 \
+    cython=0.29.4 \
+    numba=0.41.0 \
+    matplotlib=3.0.2 \
+    scikit-learn=0.20.2 \
+    h5py=2.9.0 \
+    click=7.0
 
-RUN pip install pysam
-RUN pip install velocyto
-
-# # Install conda packages
-# COPY environment.yml /
-# RUN conda env create -f /environment.yml && conda clean -a
-# ENV PATH /opt/conda/envs/nfcore-module-cutadapt/bin:$PATH
+RUN pip install pysam==0.15.2 \
+    velocyto==0.17.17
