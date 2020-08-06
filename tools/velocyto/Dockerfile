@@ -1,28 +1,28 @@
 FROM nfcore/base:1.7
 LABEL authors="alex.thiery@crick.ac.uk" \
-      description="Docker image containing all requirements for the nf-core bedtools module"
+      description="Docker image containing all requirements for the nf-core velocyto module"
 
 # Update and install system libraries
 RUN apt-get update --yes && \
     apt-get install --yes --no-install-recommends  \
-    zlib1g-dev \
-    libbz2-dev \
-    liblzma-dev \
+    # zlib1g-dev \
+    # libbz2-dev \
+    # liblzma-dev \
     gcc \
-    mono-mcs \
+    # mono-mcs \
     build-essential \
-    cmake \
-    less \
-    libbamtools-dev \
-    libboost-dev \
-    libboost-iostreams-dev \
-    libboost-log-dev \
-    libboost-system-dev \
-    libboost-test-dev \
-    libcurl4-openssl-dev \
-    libssl-dev \
-    libz-dev \
-    nano \
+    # cmake \
+    # less \
+    # libbamtools-dev \
+    # libboost-dev \
+    # libboost-iostreams-dev \
+    # libboost-log-dev \
+    # libboost-system-dev \
+    # libboost-test-dev \
+    # libcurl4-openssl-dev \
+    # libssl-dev \
+    # libz-dev \
+    # nano \
     pandoc && \
     rm -rf /var/lib/apt/lists/*
     
