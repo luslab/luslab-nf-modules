@@ -12,7 +12,7 @@ process velocyto_run_smartseq2 {
                       if (opts.publish_results == "none") null
                       else filename }
     
-    container 'luslab/nf-modules-velocyto:latest'
+    container "quay.io/biocontainers/velocyto.py:0.17.17--py37h3c125cd_1"
 
     input:
         val opts
