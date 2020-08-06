@@ -6,7 +6,7 @@ nextflow.preview.dsl = 2
 // Process definition
 process flye {
     publishDir "${params.outdir}/${opts.publish_dir}",
-        mode: "copy", 
+        mode: "copy",
         overwrite: true,
         saveAs: { filename ->
                       if (opts.publish_results == "none") null
@@ -20,6 +20,7 @@ process flye {
 
     output:
         tuple val(meta), path("${meta.sample_id}/assembly.fasta"), emit: assemblyFasta
+				tuple path("${meta.sample_id}/assembly_info.txt"), path("${meta.sample_id}/flye.log"), emit: log
 
     script:
 	//Build the command line options
