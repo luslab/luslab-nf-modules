@@ -10,7 +10,7 @@ jobs:
     strategy:
         matrix:
           docker-name: ['Dockerfile']
-          module-name: ['hisat2','flye','homer','bedtools','cutadapt','fastqc','get_crosslinks','get_crosslinks_coverage','icount','paraclu','peka','samtools','tantan','umi_tools','seqtk']
+          module-name: ['velocyto','hisat2','flye','homer','bedtools','cutadapt','fastqc','get_crosslinks','get_crosslinks_coverage','icount','paraclu','peka','samtools','tantan','umi_tools','seqtk']
           include:
             - docker-name: 'Dockerfile.cpu'
               module-name: 'guppy'
