@@ -6,7 +6,7 @@ nextflow.preview.dsl = 2
 // Process definition
 process guppy_basecaller {
     publishDir "${params.outdir}/${opts.publish_dir}",
-        mode: "copy", 
+        mode: "copy",
         overwrite: true,
         saveAs: { filename ->
                       if (opts.publish_results == "none") null
@@ -28,9 +28,9 @@ process guppy_basecaller {
 
         command = ""
         if (params.num_gpus == 0){
-            command = "guppy_basecaller $args --input_path $reads --save_path . --flowcell ${opts.flowcell} --kit ${opts.kit} --num-callers ${task.cpus} -–cpu_threads_per_caller ${opts.threads_per_caller} --records_per_fastq 0"
+            command = "guppy_basecaller $args --save_path . --flowcell ${opts.flowcell} --kit ${opts.kit} --num_callers ${opts.num_callers} --cpu_threads_per_caller ${task.cpus} --chunks_per_caller ${opts.chunks_per_caller} --chunk_size ${opts.chunk_size} --input_path $reads"
         } else {
-            command = "guppy_basecaller $args --input_path $reads --save_path . --flowcell ${opts.flowcell} --kit ${opts.kit} --num-callers ${task.cpus} --records_per_fastq 0 -x cuda:all:100%"
+            command = "guppy_basecaller $args --save_path . --flowcell ${opts.flowcell} --kit ${opts.kit} --num_callers ${opts.num_callers} --cpu_threads_per_caller ${opts.cpu_threads_per_caller} --chunks_per_caller ${opts.chunks_per_caller} --chunk_size ${opts.chunk_size} --gpu_runners_per_device ${opts.gpu_runners_per_device} --input_path $reads -x cuda:all:100% "
         }
 
         if (params.verbose){
@@ -44,7 +44,7 @@ process guppy_basecaller {
 
 process guppy_qc {
     publishDir "${params.outdir}/${opts.publish_dir}",
-        mode: "copy", 
+        mode: "copy",
         overwrite: true,
         saveAs: { filename ->
                       if (opts.publish_results == "none") null
@@ -56,7 +56,7 @@ process guppy_qc {
         val opts
         tuple path(summary), path(telemetry)
 
-    output: 
+    output:
         path '*.html', emit: report
 
     script:
