@@ -4,26 +4,9 @@ LABEL authors="alex.thiery@crick.ac.uk" \
 
 # Update and install system libraries
 RUN apt-get update --yes && \
-    apt-get install --yes --no-install-recommends  \
-    # zlib1g-dev \
-    # libbz2-dev \
-    # liblzma-dev \
-    gcc \
-    # mono-mcs \
-    build-essential \
-    # cmake \
-    # less \
-    # libbamtools-dev \
-    # libboost-dev \
-    # libboost-iostreams-dev \
-    # libboost-log-dev \
-    # libboost-system-dev \
-    # libboost-test-dev \
-    # libcurl4-openssl-dev \
-    # libssl-dev \
-    # libz-dev \
-    # nano \
-    pandoc && \
+    apt-get install --yes --no-install-recommends \
+    gcc=6.3.0 \
+    build-essential && \
     rm -rf /var/lib/apt/lists/*
     
 # Update conda
