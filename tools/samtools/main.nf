@@ -5,38 +5,46 @@ nextflow.enable.dsl=2
 
 // Samtools index
 process samtools_index {
-    publishDir "${params.outdir}/samtools/index",
-        mode: "copy", overwrite: true
+    publishDir "${params.outdir}/${opts.publish_dir}",
+        mode: "copy", 
+        overwrite: true,
+        saveAs: { filename ->
+                      if (opts.publish_results == "none") null
+                      else filename }
 
     container 'luslab/nf-modules-samtools:latest'
 
     input:
-        tuple val(sample_id), path(bam)
+        val opts
+        tuple val(meta), path(reads)
 
     output:
-        tuple val(sample_id), path("*.bam.bai"), emit: baiFiles
+        tuple val(meta), path(prefix), emit: bai
  
     script:
 
-    // Check main args string exists and strip whitespace
-    args = ""
-    if(params.samtools_index_args && params.samtools_index_args != '') {
-        ext_args = params.samtools_index_args
-        args += " " + ext_args.trim()
-    }
+        // Check main args string exists and strip whitespace
+        args = ""
+        if(opts.args && opts.args != '') {
+            ext_args = opts.args
+            args += ext_args.trim()
+        }
 
-    // Construct CL line
-    index_command = "samtools index ${args} -@ ${task.cpus} ${bam[0]}"
+        prefix = opts.suffix ? "${meta.sample_id}${opts.suffix}" : "${meta.sample_id}"
 
-    // Log
-    if (params.verbose){
-        println ("[MODULE] samtools/index command: " + index_command)
-    }
-    
+        // Construct CL line
+        index_command = "samtools index ${args} -@ ${task.cpus} ${reads[0]}"
+
+        // Log
+        if (params.verbose){
+            println ("[MODULE] samtools/index command: " + index_command)
+        }
+        
     """
     ${index_command}
     """
 }
+
 
 // Samtools view - only works for bam files - requires bam and bai
 process samtools_view {
@@ -102,7 +110,6 @@ process samtools_faidx {
     """
 }
 
-
 process samtools_sort {
     publishDir "${params.outdir}/${opts.publish_dir}",
         mode: "copy", 
@@ -157,7 +164,7 @@ process samtools_view2 {
         tuple val(meta), path(reads)
 
     output:
-        tuple val(meta), path(prefix), emit: x
+        tuple val(meta), path(prefix), emit: bam
  
     script:
 
