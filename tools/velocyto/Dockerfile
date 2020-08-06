@@ -35,7 +35,7 @@ RUN conda config --add channels conda-forge
 
 # Install conda packages
 RUN conda install -y python=3.6 \
-    numpy=1.16.1 \
+    numpy=1.19.1 \
     scipy=1.2.0 \
     cython=0.29.4 \
     numba=0.41.0 \
