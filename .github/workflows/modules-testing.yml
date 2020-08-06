@@ -33,8 +33,8 @@ jobs:
           sudo mv nextflow /usr/local/bin/ 
       - name: Docker build
         run: |
-           (test -f tools/${{matrix.module-name}}/${{matrix.docker-name}} && export DOCKER_EXISTS=true) || echo "Dockerfile does not exist, skipping step"
-           [[ -z "${DOCKER_EXISTS}" ]] && docker build -f tools/${{matrix.module-name}}/${{matrix.docker-name}} -t luslab/nf-modules-${{matrix.module-name}}:${{matrix.tag}} tools/${{matrix.module-name}}
+           test -f tools/${{matrix.module-name}}/${{matrix.docker-name}} && export DOCKER_EXISTS=true || echo "Dockerfile does not exist, skipping step"
+           [[ -v DOCKER_EXISTS ]] && docker build -f tools/${{matrix.module-name}}/${{matrix.docker-name}} -t luslab/nf-modules-${{matrix.module-name}}:${{matrix.tag}} tools/${{matrix.module-name}}
       - name: Module testing
         run: |
           nextflow run ${GITHUB_WORKSPACE}/tools/${{matrix.module-name}}/test/main.nf 
