@@ -46,9 +46,24 @@ Channel
 workflow {
     // Run genome indexing and then read mapping
     log.info ("Run STAR workflow: genomeGenerate -> alignReads...")
+    //index_ch = 
     star_genomeGenerate ( params.modules['star_genomeGenerate'], ch_testData_fasta )
+    //.genomeIndex
     // Connect the  star_alignReads to star_genomeGenerate module 
     star_alignReads ( params.modules['star_alignReads'], 
-                      ch_testData_single_end, 
-                      Channel.value ( file("${params.outdir}/${params.modules['star_genomeGenerate'].publish_dir}/genome_index") ) )                         
+                      //ch_testData_single_end,
+                      //index_ch )
+
+                      //star_genomeGenerate.out.genomeIndex )
+
+                      //star_genomeGenerate ( params.modules['star_genomeGenerate'], ch_testData_fasta ).genomeIndex )
+
+                      //Channel.value(file(star_genomeGenerate.out.genomeIndex)) )
+
+                      //Channel.value(star_genomeGenerate.out.genomeIndex) )
+
+                      //Channel.value(file("${params.outdir}/${params.modules['star_genomeGenerate'].publish_dir}/genome_index")) )  
+
+                      ch_testData_single_end
+                          .combine( star_genomeGenerate.out.genomeIndex ) )               
 }

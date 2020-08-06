@@ -75,7 +75,7 @@ process star_genomeGenerate {
 
 // Map reads
 process star_alignReads {
-    tag "${sample_id}"
+    tag "${meta.sample_id}"
 
     publishDir "${params.outdir}/${opts.publish_dir}",
         mode: "copy", 
@@ -88,8 +88,8 @@ process star_alignReads {
 
     input:
       val opts
-      tuple val(meta), path(reads) 
-      path star_index 
+      tuple val(meta), path(reads), path(star_index)
+      //path star_index 
 
     output:
       tuple val(meta), path("*.sam"), optional: true, emit: samFiles
