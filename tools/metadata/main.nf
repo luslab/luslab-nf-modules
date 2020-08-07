@@ -3,6 +3,8 @@
 // Specify DSL2
 nextflow.enable.dsl=2
 
+// import groovy.ui.OutputTransforms
+
 workflow fastq_metadata {
     take: filePath
     main:
@@ -22,11 +24,40 @@ workflow smartseq2_fastq_metadata {
             .fromPath( filePath )
             .splitCsv(header:true)
             .map { row -> processRow(row) }
+            .map { row -> [row[0], listfiles(row[1])]}
             .flatMap { row -> enumerateFastqDir(row)}
             .set { metadata }
     emit:
         metadata
 }
+
+def listfiles(dir){
+    array = []
+
+    files = dir.get(0).listFiles()
+    for(def file:files){
+        if(file.toString().matches('.*.gz')){
+            array.add(file)
+        }
+    }
+    return array
+}
+
+
+workflow test {
+    take: filePath
+    main:
+        Channel
+            .fromPath( filePath )
+            .splitCsv(header:true)
+            .map { row -> processRow(row) }
+            .map { row -> [row[0], row[1].get(0).listFiles()]}
+            .flatMap { row -> enumerateFastqDir(row)}
+            .set { metadata }
+    emit:
+        metadata
+}
+
 
 def processRow(LinkedHashMap row) {
     def meta = [:]
@@ -74,3 +105,6 @@ def enumerateFastqDir(metadata){
     }
     return array
 }
+
+
+

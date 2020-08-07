@@ -10,7 +10,7 @@ log.info ("Starting tests for metadata...")
 /* Module inclusions
 --------------------------------------------------------------------------------------*/
 
-include {fastq_metadata as meta_se; fastq_metadata as meta_pe; smartseq2_fastq_metadata} from '../main.nf'
+include {fastq_metadata as meta_se; fastq_metadata as meta_pe; smartseq2_fastq_metadata; test} from '../main.nf'
 include {assert_channel_count as meta_se_assert_channel_count; assert_channel_count as meta_pe_assert_channel_count; assert_channel_count as smartseq2_fastq_metadata_assert_channel_count;} from '../../../workflows/test_flows/main.nf'
 
 /*------------------------------------------------------------------------------------*/
