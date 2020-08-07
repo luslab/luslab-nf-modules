@@ -25,8 +25,8 @@ include {assert_channel_count} from '../../../workflows/test_flows/main.nf'
 --------------------------------------------------------------------------------------*/
 
 testDataPairedEnd= [
-    [[sample_id:"sample1"], "$baseDir/../../../test_data/fastq/ENCFF038BYR.sub.fastq.gz", "$baseDir/../../../test_data/fastq/ENCFF721JZG.sub.fastq.gz"],
-    [[sample_id:"sample2"], "$baseDir/../../../test_data/fastq/ENCFF038BYR.sub.fastq.gz", "$baseDir/../../../test_data/fastq/ENCFF721JZG.sub.fastq.gz"]
+    [[sample_id:"sample1"], "$baseDir/../../../test_data/htseq/s1a_sub.fastq.gz", "$baseDir/../../../test_data/htseq/s1b_sub.fastq.gz"],
+    [[sample_id:"sample2"], "$baseDir/../../../test_data/htseq/s2a_sub.fastq.gz", "$baseDir/../../../test_data/htseq/s2b_sub.fastq.gz"]
 ]
 
 Channel

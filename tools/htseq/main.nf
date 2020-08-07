@@ -7,7 +7,7 @@ process htseq_count {
     publishDir "${params.outdir}/${opts.publish_dir}",
         mode: "copy", overwrite: true
     
-    container 'luslab/nf-modules-htseq:latest'
+    container "quay.io/biocontainers/htseq:0.12.4--py37h70f9b12_1"
 
     input:
         val opts
@@ -32,7 +32,7 @@ process htseq_count {
 
         // Log
         if (params.verbose){
-            println ("[MODULE] cutadapt command: " + cutadapt_command)
+            println ("[MODULE] htseq_count command: " + htseq_command)
         }
 
         //SHELL
