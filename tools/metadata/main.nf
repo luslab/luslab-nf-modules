@@ -24,40 +24,24 @@ workflow smartseq2_fastq_metadata {
             .fromPath( filePath )
             .splitCsv(header:true)
             .map { row -> processRow(row) }
-            .map { row -> [row[0], listfiles(row[1])]}
-            .flatMap { row -> enumerateFastqDir(row)}
+            .map { row -> listfiles(row) }
+            .flatMap { row -> enumerateFastqDir(row) }
             .set { metadata }
     emit:
         metadata
 }
 
-def listfiles(dir){
-    array = []
-
-    files = dir.get(0).listFiles()
+def listfiles(row){
+    file_array = []
+    files = row[1].get(0).listFiles()
     for(def file:files){
         if(file.toString().matches('.*.gz')){
-            array.add(file)
+            file_array.add(file)
         }
     }
+    array = [row[0], [file_array]]
     return array
 }
-
-
-workflow test {
-    take: filePath
-    main:
-        Channel
-            .fromPath( filePath )
-            .splitCsv(header:true)
-            .map { row -> processRow(row) }
-            .map { row -> [row[0], row[1].get(0).listFiles()]}
-            .flatMap { row -> enumerateFastqDir(row)}
-            .set { metadata }
-    emit:
-        metadata
-}
-
 
 def processRow(LinkedHashMap row) {
     def meta = [:]
