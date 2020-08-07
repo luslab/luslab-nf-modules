@@ -20,9 +20,9 @@ process guppy_basecaller {
 
     output:
         tuple val(meta), path("*.fastq.gz"), emit: fastq
-        path("*.log") emit: log
-        path("*.txt"), emit: sequencing_summary
-				path("*.js"), emit: report
+        path "*.log" emit: log
+        path "*.txt", emit: sequencing_summary
+				path "*.js", emit: report
 
     script:
         args = opts.args.trim()
