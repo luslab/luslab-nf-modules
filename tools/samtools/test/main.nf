@@ -24,20 +24,25 @@ include {assert_channel_count} from '../../../workflows/test_flows/main.nf'
 --------------------------------------------------------------------------------------*/
 
 // Define test data
-testData = [
-    [[sample_id:'Sample1'], "$baseDir/../../../test_data/bam_bai/sample1.bam", "$baseDir/../../../test_data/bam_bai/sample1.bam.bai"],
-    [[sample_id:'Sample2'], "$baseDir/../../../test_data/bam_bai/sample2.bam", "$baseDir/../../../test_data/bam_bai/sample2.bam.bai"]
+testDataIndex = [
+    [[sample_id:'Sample1'], "$baseDir/../../../test_data/samtools/S1_chr1_test.bam"],
+    [[sample_id:'Sample2'], "$baseDir/../../../test_data/samtools/S2_chr1_test.bam"]
 ]
 
+// testDataView = [
+//     [[sample_id:'Sample1'], "$baseDir/../../../test_data/samtools/sample1.bam", "$baseDir/../../../test_data/samtools/sample1.bam.bai"],
+//     [[sample_id:'Sample2'], "$baseDir/../../../test_data/samtools/sample2.bam", "$baseDir/../../../test_data/samtools/sample2.bam.bai"]
+// ]
+
 Channel
-    .from( testData )
+    .from( testDataIndex )
     .map { row -> [ row[0], file(row[1], checkIfExists: true) ] }
     .set { ch_testDataIndex }
 
-Channel
-    .from( testData )
-    .map { row -> [ row[0], [file(row[1], checkIfExists: true), file(row[2], checkIfExists: true) ]] }
-    .set { ch_testDataView }
+// Channel
+//     .from( testDataView )
+//     .map { row -> [ row[0], [file(row[1], checkIfExists: true), file(row[2], checkIfExists: true) ]] }
+//     .set { ch_testDataView }
 
 Channel
     .from("$baseDir/../../../test_data/fasta/homo-hg37-21.fa.gz")
@@ -54,7 +59,7 @@ workflow {
     assert_channel_count( samtools_index.out.bai, "bai", 2)
 
     // Run samtools view
-    samtools_view ( params.modules['samtools_view'], ch_testDataView )
+    samtools_view ( params.modules['samtools_view'], ch_testDataIndex )
     samtools_view.out.bam | view
     assert_channel_count( samtools_view.out.bam, "bam", 2)
 

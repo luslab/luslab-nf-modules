@@ -19,7 +19,7 @@ process samtools_index {
         tuple val(meta), path(reads)
 
     output:
-        tuple val(meta), path("${prefix}"), emit: bai
+        tuple val(meta), path(prefix), emit: bai
  
     script:
 
@@ -33,7 +33,7 @@ process samtools_index {
         prefix = opts.suffix ? "${meta.sample_id}${opts.suffix}" : "${meta.sample_id}"
 
         // Construct CL line
-        index_command = "samtools index ${args} -@ ${task.cpus} ${reads[0]}"
+        index_command = "samtools index ${args} -@ ${task.cpus} ${reads} > ${prefix}"
 
         // Log
         if (params.verbose){
@@ -42,6 +42,7 @@ process samtools_index {
         
     """
     ${index_command}
+    echo ${prefix}
     """
 }
 
@@ -81,7 +82,7 @@ process samtools_view {
 
 
     // Construct CL line
-    view_command = "samtools view ${args} -@ ${task.cpus} -o ${prefix} ${reads} ${samtools_view_region}"
+    view_command = "samtools view ${args} -@ ${task.cpus} ${reads} ${samtools_view_region} > ${prefix}"
 
     // Log
     if (params.verbose){
@@ -168,47 +169,4 @@ process samtools_sort {
         """
         ${sort_command}
         """
-}
-
-
-// Samtools view
-process samtools_view2 {
-    publishDir "${params.outdir}/${opts.publish_dir}",
-        mode: "copy", 
-        overwrite: true,
-        saveAs: { filename ->
-                      if (opts.publish_results == "none") null
-                      else filename }
-
-    container 'luslab/nf-modules-samtools:latest'
-
-    input:
-        val opts
-        tuple val(meta), path(reads)
-
-    output:
-        tuple val(meta), path(prefix), emit: bam
- 
-    script:
-
-        // Check main args string exists and strip whitespace
-        args = ""
-        if(opts.args && opts.args != '') {
-            ext_args = opts.args
-            args += ext_args.trim()
-        }
-
-        prefix = opts.suffix ? "${meta.sample_id}${opts.suffix}" : "${meta.sample_id}"
-
-        // Construct CL line
-        view_command = "samtools view ${args} -@ ${task.cpus}"
-
-        // Log
-        if (params.verbose){
-            println ("[MODULE] samtools/view command: " + view_command)
-        }
-        
-    """
-    ${view_command}
-    """
 }
