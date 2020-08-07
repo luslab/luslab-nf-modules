@@ -25,17 +25,17 @@ include {assert_channel_count} from '../../../workflows/test_flows/main.nf'
 --------------------------------------------------------------------------------------*/
 
 testDataPairedEnd= [
-    [[sample_id:"sample1"], "$baseDir/../../../test_data/htseq/s1a_sub.fastq.gz", "$baseDir/../../../test_data/htseq/s1b_sub.fastq.gz"],
-    [[sample_id:"sample2"], "$baseDir/../../../test_data/htseq/s2a_sub.fastq.gz", "$baseDir/../../../test_data/htseq/s2b_sub.fastq.gz"]
+    [[sample_id:"sample1"], "$baseDir/../../../test_data/htseq/S1_chr1_test.bam"],
+    [[sample_id:"sample2"], "$baseDir/../../../test_data/htseq/S2_chr1_test.bam"]
 ]
 
 Channel
     .from(testDataPairedEnd)
-    .map { row -> [ row[0], [file(row[1], checkIfExists: true), file(row[2], checkIfExists: true)]]}
+    .map { row -> [ row[0], [file(row[1], checkIfExists: true)]]}
     .set {ch_fastq_paired_end}
 
  Channel
-    .fromPath("$baseDir/../../../test_data/fasta/homo-hg37-21.fa.gz")
+    .value(file("$baseDir/../../../test_data/htseq/chr1.gtf"))
     .set {ch_gtf}
 
 /*------------------------------------------------------------------------------------*/
