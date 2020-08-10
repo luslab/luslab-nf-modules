@@ -36,7 +36,7 @@ workflow {
     decompress_noid( ch_fasta )
 
     // Call subset
-    subset_genome( decompress_noid.out.file, params.region )
+    subset_genome( decompress_noid.out.file, params.region, params.modules['samtools_faidx'] )
 
     // View outputs
     subset_genome.out.fastaSubset | view
