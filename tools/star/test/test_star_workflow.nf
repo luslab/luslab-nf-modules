@@ -24,6 +24,7 @@ params.modules['star_alignReads'].sjdbFileChrStartEnd = "$baseDir/../../../test_
 // Module inclusions
 include { star_genomeGenerate } from '../main.nf'
 include { star_alignReads } from '../main.nf'
+include { assert_channel_count } from '../../../workflows/test_flows/main.nf'
 
 // Channel for FASTA file(s) 
 Channel
@@ -47,5 +48,21 @@ workflow {
     // Run genome indexing and then read mapping
     log.info ("Run STAR workflow: genomeGenerate -> alignReads...")
     star_genomeGenerate ( params.modules['star_genomeGenerate'], ch_testData_fasta )
-    star_alignReads ( params.modules['star_alignReads'], ch_testData_single_end, star_genomeGenerate.out.genomeIndex.collect() )           
+    star_alignReads ( params.modules['star_alignReads'], ch_testData_single_end, star_genomeGenerate.out.genomeIndex.collect() )   
+    
+    // Check count of output files from star_genomeGenerate
+    assert_channel_count( star_genomeGenerate.out.genomeIndex, "genomeIndex", 1 )
+    assert_channel_count( star_genomeGenerate.out.chrNameFile, "chrNameFile", 1 )
+    assert_channel_count( star_genomeGenerate.out.report, "report", 1 )
+
+    // Check count of output files from star_alignReads
+    assert_channel_count( star_alignReads.out.samFiles, "samFiles", 2 )
+    assert_channel_count( star_alignReads.out.bamFiles, "bamFiles", 2 )
+    assert_channel_count( star_alignReads.out.sjFiles, "sjFiles", 2 )
+    assert_channel_count( star_alignReads.out.chJunctions, "chJunctions", 0 )
+    assert_channel_count( star_alignReads.out.readsPerGene, "readsPerGene", 0 )
+    assert_channel_count( star_alignReads.out.finalLogFiles, "finalLogFiles", 2 )
+    assert_channel_count( star_alignReads.out.outLogFiles, "outLogFiles", 2 )
+    assert_channel_count( star_alignReads.out.progressLogFiles, "progressLogFiles", 2 )
+    assert_channel_count( star_alignReads.out.report, "report", 2 )      
 }

@@ -20,6 +20,7 @@ params.modules['star_genomeGenerate'].sjdbFileChrStartEnd = "$baseDir/../../../t
 
 // Module inclusions
 include { star_genomeGenerate } from '../main.nf'
+include { assert_channel_count } from '../../../workflows/test_flows/main.nf'
 
 // Channel for FASTA file(s) 
 Channel
@@ -36,4 +37,9 @@ workflow {
     star_genomeGenerate.out.genomeIndex.collect() | view
     star_genomeGenerate.out.chrNameFile.collect() | view
     star_genomeGenerate.out.report.collect() | view
+
+    // Check count of output files from star_genomeGenerate
+    assert_channel_count( star_genomeGenerate.out.genomeIndex, "genomeIndex", 1 )
+    assert_channel_count( star_genomeGenerate.out.chrNameFile, "chrNameFile", 1 )
+    assert_channel_count( star_genomeGenerate.out.report, "report", 1 )
 }

@@ -20,6 +20,7 @@ params.modules['star_alignReads'].sjdbFileChrStartEnd = "$baseDir/../../../test_
 
 // Module inclusions
 include { star_alignReads as map_se } from '../main.nf'
+include { assert_channel_count } from '../../../workflows/test_flows/main.nf'
 
 // Define input channels
 
@@ -45,4 +46,16 @@ workflow {
     // Run single-end read mapping
     log.info ("Run single-end read mapping...")
     map_se ( params.modules['star_alignReads'], ch_testData_single_end, ch_test_index_file )
+
+    // Check count of output files from star_alignReads
+    assert_channel_count( map_se.out.samFiles, "samFiles", 2 )
+    assert_channel_count( map_se.out.bamFiles, "bamFiles", 2 )
+    assert_channel_count( map_se.out.sjFiles, "sjFiles", 2 )
+    assert_channel_count( map_se.out.chJunctions, "chJunctions", 0 )
+    assert_channel_count( map_se.out.readsPerGene, "readsPerGene", 0 )
+    assert_channel_count( map_se.out.finalLogFiles, "finalLogFiles", 2 )
+    assert_channel_count( map_se.out.outLogFiles, "outLogFiles", 2 )
+    assert_channel_count( map_se.out.progressLogFiles, "progressLogFiles", 2 )
+    assert_channel_count( map_se.out.report, "report", 2 )
+        
 }
