@@ -88,8 +88,8 @@ process star_alignReads {
 
     input:
       val opts
-      tuple val(meta), path(reads), path(star_index)
-      //path star_index 
+      tuple val(meta), path(reads)
+      path star_index 
 
     output:
       tuple val(meta), path("*.sam"), optional: true, emit: samFiles
