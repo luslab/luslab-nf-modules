@@ -160,7 +160,7 @@ process samtools_sort {
 
         prefix = opts.suffix ? "${meta.sample_id}${opts.suffix}" : "${meta.sample_id}"
 
-        sort_command = "samtools sort ${args} -o $reads > ${prefix}"
+        sort_command = "samtools sort ${args} -o ${prefix} $reads"
         if (params.verbose){
             println ("[MODULE] samtools/sort command: " + sort_command)
         }
