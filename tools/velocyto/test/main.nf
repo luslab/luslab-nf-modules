@@ -11,14 +11,13 @@ log.info ("Starting tests for velocyto...")
 --------------------------------------------------------------------------------------*/
 
 params.verbose = true
-params.samtools_view_region = '1'
+
 
 /*------------------------------------------------------------------------------------*/
 /* Module inclusions
 --------------------------------------------------------------------------------------*/
 
-include {samtools_index; samtools_view; samtools_faidx} from "$baseDir/../../samtools/main.nf"
-include {velocyto_run_smartseq2} from '../main.nf'
+include {velocyto_run_smartseq2 as velocyto_run_smartseq2_a; velocyto_run_smartseq2 as velocyto_run_smartseq2_b} from '../main.nf'
 include {assert_channel_count} from "$baseDir/../../../workflows/test_flows/main.nf"
 
 /*------------------------------------------------------------------------------------*/
@@ -34,7 +33,13 @@ bam = [
 Channel
     .from(bam)
     .map { row -> [ row[0], file(row[1], checkIfExists: true) ] }
-    .set {ch_bam}
+    .set {ch_sc_bam}
+
+Channel
+    .from(bam)
+    .map { row -> [ [sample_id:"all_cells"], file(row[1], checkIfExists: true) ] }
+    .groupTuple(by: 0)
+    .set {ch_grouped_bam}
 
 Channel
     .value(file("$baseDir/../../../test_data/velocyto/chr1.gtf"))
@@ -45,12 +50,16 @@ Channel
 --------------------------------------------------------------------------------------*/
   
 workflow {
-
-    velocyto_run_smartseq2 ( params.modules['velocyto_run_smartseq2'], ch_bam, ch_gtf )
+    // Run velocyto for each cell indivudally (one output file per cell)
+    velocyto_run_smartseq2_a ( params.modules['velocyto_run_smartseq2'], ch_sc_bam, ch_gtf )
+    // Run velocyto for all cells grouped (single output file) - also output hdf5 file using '-d 1' argument
+    velocyto_run_smartseq2_b ( params.modules['velocyto_run_smartseq2_hdf5'], ch_grouped_bam, ch_gtf )
 
     // Collect file names and view output
-    velocyto_run_smartseq2.out.velocyto | view
+    velocyto_run_smartseq2_a.out.velocyto | view
+    velocyto_run_smartseq2_b.out.velocyto | view
 
     //Check count
-    assert_channel_count( velocyto_run_smartseq2.out.velocyto, "velocyto", 2)
+    assert_channel_count( velocyto_run_smartseq2_a.out.velocyto, "velocyto", 2)
+    assert_channel_count( velocyto_run_smartseq2_b.out.velocyto, "velocyto", 1)
 }
