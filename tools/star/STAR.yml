@@ -1,0 +1,52 @@
+name: STAR 
+version: 2.7.5a
+description: Tool for indexing the genome and mapping the reads 
+    - Genome Indexing
+    - Genome Mapping
+tools:
+    - STAR:
+        description: |
+            Tool for indexing the genome and mapping the reads  
+        homepage: https://hbctraining.github.io/Intro-to-rnaseq-hpc-O2/lessons/03_alignment.html
+        documentation: https://physiology.med.cornell.edu/faculty/skrabanek/lab/angsd/lecture_notes/STARmanual.pdf
+processes:
+    - genomeGenerate:
+        operation: |
+            Set command args to params.modules['star_genomeGenerate'].args
+            The program will execute with the following pattern:
+                STAR --runMode genomeGenerate --genomeDir genome_index --genomeFastaFiles GRCh38.primary_assembly.genome_chr6a.fa GRCh38.primary_assembly.genome_chr6b.fa --genomeSAindexNbases 9 --runThreadN 1 --sjdbGTFfile $baseDir/../../../test_data/gtf/gencode.v30.primary_assembly.annotation_chr6a_chr6b.gtf --sjdbFileChrStartEnd $baseDir/../../../test_data/star_splice_junctions/Sample1_chr6a_chr6b.SJ.out.tab 
+        description: |
+            This process will index the reference genome that will be used for the alignment of reads.
+        input:
+            - Genome (main):
+                type: FASTA
+                description: Fasta formatted Genome sequence
+            - Splice Junctions (optional):
+                type: GTF file, tab delimited file
+                description: Annotations for the splice junctions
+        output:
+            - genome_index:
+                type: Output Channel
+                description: This channel has indexed genome in binary format and text files with information about Chromosomes, genes, exons and splice junctions.
+
+    - alignReads:
+        operation: |
+            Set command args to params.modules['star_alignReads'].args
+            The program will execute with the following pattern:
+                STAR --runMode alignReads --genomeDir 2.7.5a --readFilesIn prpf8_eif4a3_rep1.Unmapped.fq --outFilterMultimapNmax 20 --quantMode TranscriptomeSAM --runThreadN 1 --outFileNamePrefix Sample1. --sjdbGTFfile $baseDir/../../../test_data/gtf/gencode.v30.primary_assembly.annotation_chr6_34000000_35000000.gtf --sjdbFileChrStartEnd $baseDir/../../../test_data/star_splice_junctions/Sample1.SJ.out.tab  
+        description: |
+            This process will map the input reads to the indexed reference genome
+        input:
+            - Reads:
+                type: FASTQ
+                description: Fasq formatted NGS reads
+            - Indexed Genome:
+                type: Binary 
+                description: Indexed reference genome generated in genomeGenerate process
+        output:
+            - star_alignReads:
+                type: Output Channel
+                description: This channel has output files in SAM, BAM format and if the module is run with an optional argument of       'quantseq' mode, a BAM filemapped to transcriptome is also generated along with various log files.    
+authors:
+    - @sidorov-si
+    - @Rahul1711arora
