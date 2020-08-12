@@ -84,7 +84,7 @@ process star_alignReads {
                       if (opts.publish_results == "none") null
                       else filename }
 
-    container 'luslab/nf-modules-star:2.7.5a' // 2.6.1d 2.7.3a
+    container 'luslab/nf-modules-star:2.7.5a'
 
     input:
       val opts
