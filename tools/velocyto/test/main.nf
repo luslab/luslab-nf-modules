@@ -52,5 +52,5 @@ workflow {
     velocyto_run_smartseq2.out.velocyto | view
 
     //Check count
-    assert_channel_count( velocyto_run_smartseq2.out.velocyto, "x", 2)
+    assert_channel_count( velocyto_run_smartseq2.out.velocyto, "velocyto", 2)
 }
