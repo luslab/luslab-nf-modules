@@ -31,10 +31,6 @@ bam = [
 ]
 
 //Define test data input channels
-
-// for file in $(find /Volumes/lab-luscomben/home/users/thierya/analysis/ailin_scRNAseq/output/alignment_200423/ss11/3_bams/*.bam | head -2); do rsync -azP $file /Users/alex/dev/repos/luslab-nf-modules/test_data/velocyto ; done
-
-//Single end
 Channel
     .from(bam)
     .map { row -> [ row[0], file(row[1], checkIfExists: true) ] }

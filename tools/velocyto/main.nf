@@ -20,7 +20,7 @@ process velocyto_run_smartseq2 {
         path gtf
 
     output:
-        tuple val(meta), path("${prefix}"), emit: velocyto
+        tuple val(meta), path("*loom"), emit: velocyto
 
     script:
         args = ""
@@ -31,7 +31,7 @@ process velocyto_run_smartseq2 {
 
         prefix = opts.suffix ? "${meta.sample_id}${opts.suffix}" : "${meta.sample_id}"
 
-        velocyto_command = "velocyto run-smartseq2 -o ${prefix} ${reads} ${gtf}"
+        velocyto_command = "velocyto run-smartseq2 -o ./ ${reads} ${gtf}"
         if (params.verbose){
             println ("[MODULE] velocyto/run_smartseq2 command: " + velocyto_command)
         }
