@@ -81,7 +81,7 @@ process bedtools_intersect {
 
 //Process definition
 process bedtools_subtract {
-    publishDir "${params.outdir}/bedtools/subtract",
+    publishDir "${params.outdir}/${opts.publish_dir}",
         mode: "copy", overwrite: true
 
     container 'luslab/nf-modules-bedtools:latest'
