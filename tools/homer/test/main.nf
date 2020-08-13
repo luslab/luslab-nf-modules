@@ -25,7 +25,7 @@ include {homer_annotatePeaks} from '../main.nf'
 
 // Define test data
 homerData = [
-    ['S1', "$baseDir/../../../test_data/homer/testPeaks.bed"]
+    [[sample_id:'S1'], "$baseDir/../../../test_data/homer/testPeaks.bed"]
 ]
 
 // Define test data input channel
@@ -41,7 +41,7 @@ Channel
 // Run workflow
 workflow {
     // annotate peak files
-    homer_annotatePeaks(ch_homerData, params.fasta, params.gtf)
+    homer_annotatePeaks(params.modules['homer_annotatePeaks'], ch_homerData, params.fasta, params.gtf)
 
     // View outputs
     homer_annotatePeaks.out | view

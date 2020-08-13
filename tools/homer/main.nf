@@ -5,24 +5,44 @@ nextflow.enable.dsl=2
 
 //Process definition
 process homer_annotatePeaks {
-    publishDir "${params.outdir}/homer",
-        mode: "copy", overwrite: true
-
-    container 'luslab/nf-modules-homer:latest'
+    publishDir "${params.outdir}/${opts.publish_dir}",
+    mode: "copy", 
+    overwrite: true,
+    saveAs: { filename ->
+                    if (opts.publish_results == "none") null
+                    else filename }
+    
+    container "quay.io/biocontainers/homer:4.11--pl526h2bce143_2"    
 
     input:
-        tuple val(sample_id), path(peaks)
+        val opts
+        tuple val(meta), path(peaks)
         path(fasta)
         path(gtf)
 
     output:
-        tuple val(sample_id), path("${sample_id}.annotatePeaks.txt")
+        tuple val(meta), path("${prefix}"), emit: annotatedPeaks
     
     script:
-    
+        args = ""
+        if(opts.args && opts.args != '') {
+            ext_args = opts.args
+            args += ext_args.trim()
+        }
+
+        prefix = opts.suffix ? "${meta.sample_id}${opts.suffix}" : "${meta.sample_id}"
+
+    // Construct CL line
+    annotatePeaks_command = "annotatePeaks.pl ${args} ${peaks} ${fasta} -gtf ${gtf} > ${prefix}"
+
+    // Log
+    if (params.verbose){
+        println ("[MODULE] homer/annotatePeaks command: " + annotatePeaks_command)
+    }
+
     //SHELL
     """
-    annotatePeaks.pl ${peaks} ${fasta} -gid -gtf ${gtf} > ${sample_id}.annotatePeaks.txt
+    ${annotatePeaks_command}
     """
 }
 
