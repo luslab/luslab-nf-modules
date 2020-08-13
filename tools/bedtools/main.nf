@@ -95,15 +95,13 @@ process bedtools_subtract {
         tuple val(meta), path("${prefix}")
 
     script:
+        args = ""
+        if(opts.args && opts.args != '') {
+            ext_args = opts.args
+            args += ext_args.trim()
+        }
 
-    // Check main args string exists and strip whitespace
-    args = ""
-    if(params.bedtools_subtract_args && params.bedtools_subtract_args != '') {
-        ext_args = params.bedtools_subtract_args
-        args += " " + ext_args.trim()
-    }
-
-    prefix = opts.suffix ? "${meta.sample_id}${opts.suffix}" : "${meta.sample_id}"
+        prefix = opts.suffix ? "${meta.sample_id}${opts.suffix}" : "${meta.sample_id}"
 
     // Construct CL line
     subtract_command = "bedtools subtract -a ${file_a} -b ${file_b} ${args} > ${prefix}"
