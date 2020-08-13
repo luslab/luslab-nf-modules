@@ -57,7 +57,7 @@ process bedtools_intersect {
         path(file_b)
 
     output:
-        tuple val(meta), path("*.bed"), emit: bed
+        tuple val(meta), path("${prefix}"), emit: bed
 
     script:
         args = ""
@@ -68,7 +68,7 @@ process bedtools_intersect {
 
         prefix = opts.suffix ? "${meta.sample_id}${opts.suffix}" : "${meta.sample_id}"
 
-        intersect_command = "bedtools intersect -a ${file_a} -b ${file_b} ${args} > ${prefix}.bed"
+        intersect_command = "bedtools intersect -a ${file_a} -b ${file_b} ${args} > ${prefix}"
         if (params.verbose){
             println ("[MODULE] bedtools/intersect command: " + intersect_command)
         }
@@ -106,7 +106,7 @@ process bedtools_subtract {
     prefix = opts.suffix ? "${meta.sample_id}${opts.suffix}" : "${meta.sample_id}"
 
     // Construct CL line
-    subtract_command = "bedtools subtract -a ${file_a} -b ${file_b} ${args} > '${prefix}'"
+    subtract_command = "bedtools subtract -a ${file_a} -b ${file_b} ${args} > ${prefix}"
 
     // Log
     if (params.verbose){
