@@ -11,15 +11,15 @@ Test STAR mapping module
 log.info ("Starting tests for STAR mapping...")
 
 // Define main params
-params.modules['star_alignReads'].args = '--outFilterMultimapNmax 20 --quantMode TranscriptomeSAM' 
+params.modules['star_align_reads'].args = '--outFilterMultimapNmax 20 --quantMode TranscriptomeSAM' 
 params.verbose = true
 
 // Define optional input
-params.modules['star_alignReads'].sjdbGTFfile = "$baseDir/../../../test_data/gtf/gencode.v30.primary_assembly.annotation_chr6_34000000_35000000.gtf"
-params.modules['star_alignReads'].sjdbFileChrStartEnd = "$baseDir/../../../test_data/star_splice_junctions/Sample1.SJ.out.tab"
+params.modules['star_align_reads'].sjdbGTFfile = "$baseDir/../../../test_data/gtf/gencode.v30.primary_assembly.annotation_chr6_34000000_35000000.gtf"
+params.modules['star_align_reads'].sjdbFileChrStartEnd = "$baseDir/../../../test_data/star_splice_junctions/Sample1.SJ.out.tab"
 
 // Module inclusions
-include { star_alignReads as map_pe } from '../main.nf'
+include { star_align_reads as map_pe } from '../main.nf'
 include { assert_channel_count } from '../../../workflows/test_flows/main.nf'
 
 // Define input channels
@@ -44,9 +44,9 @@ Channel
 workflow {
     // Run paired-end read mapping
     log.info ("Run paired-end read mapping...")
-    map_pe ( params.modules['star_alignReads'], ch_testData_paired_end, ch_test_index_file )
+    map_pe ( params.modules['star_align_reads'], ch_testData_paired_end, ch_test_index_file )
 
-    // Check count of output files from star_alignReads
+    // Check count of output files from star_align_reads
     assert_channel_count( map_pe.out.samFiles, "samFiles", 1 )
     assert_channel_count( map_pe.out.bamFiles, "bamFiles", 1 )
     assert_channel_count( map_pe.out.sjFiles, "sjFiles", 1 )

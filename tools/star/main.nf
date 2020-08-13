@@ -4,7 +4,7 @@
 nextflow.enable.dsl=2
 
 // Generate genome index
-process star_genomeGenerate {
+process star_genome_generate {
     publishDir "${params.outdir}/${opts.publish_dir}",
         mode: "copy", 
         overwrite: true,
@@ -31,13 +31,13 @@ process star_genomeGenerate {
     // Check and add custom arguments
     if ( opts.args ) {
       if ( opts.args =~ /(--genomeDir)/ ) {
-        exit 1, "Error: This module does not support manual setting of --genomeDir. The genome index will appear in ${params.outdir}/star_genomeGenerate/genome_index. Exit."
+        exit 1, "Error: This module does not support manual setting of --genomeDir. The genome index will appear in ${params.outdir}/star_genome_generate/genome_index. Exit."
       }
       if ( opts.args =~ /(--runMode)/ ) {
         exit 1, "Error: --runMode is automatically set to 'genomeGenerate'. You do not need to provide it manually. Exit."
       }
       if ( opts.args =~ /(--parametersFiles)/ ) {
-        exit 1, "Error: Parameter files (--parametersFiles option) are not supported in this module. Please provide all options not covered by input channels and module parameters via the star_genomeGenerate_args parameter. Exit."
+        exit 1, "Error: Parameter files (--parametersFiles option) are not supported in this module. Please provide all options not covered by input channels and module parameters via the params.modules['star_genome_generate'].args parameter. Exit."
       }
       ext_args = opts.args
       args += ext_args.trim() + " "
@@ -63,7 +63,7 @@ process star_genomeGenerate {
 
     // Log
     if (params.verbose) {
-        println ("[MODULE] star_genomeGenerate command: " + index_command)
+        println ("[MODULE] star_genome_generate command: " + index_command)
     }
 
     // Run read mapping with STAR
@@ -74,7 +74,7 @@ process star_genomeGenerate {
 }
 
 // Map reads
-process star_alignReads {
+process star_align_reads {
     tag "${meta.sample_id}"
 
     publishDir "${params.outdir}/${opts.publish_dir}",
@@ -116,7 +116,7 @@ process star_alignReads {
         exit 1, "Error: --runMode is automatically set to 'alignReads'. You do not need to provide it manually. Exit."
       }
       if ( opts.args =~ /(--parametersFiles)/ ) {
-        exit 1, "Error: Parameter files (--parametersFiles option) are not supported in this module. Please provide all options not covered by input channels and module parameters via the star_alignReads_args parameter. Exit."
+        exit 1, "Error: Parameter files (--parametersFiles option) are not supported in this module. Please provide all options not covered by input channels and module parameters via the params.modules['star_align_reads'].args parameter. Exit."
       }
       ext_args = opts.args
       args += ext_args.trim() + " "
@@ -160,7 +160,7 @@ process star_alignReads {
 
     // Log
     if (params.verbose) {
-        println ("[MODULE] star_alignReads command: " + map_command)
+        println ("[MODULE] star_align_reads command: " + map_command)
     }
 
     // Run read mapping with STAR

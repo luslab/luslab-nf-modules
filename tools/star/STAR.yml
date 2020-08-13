@@ -10,9 +10,9 @@ tools:
         homepage: https://github.com/alexdobin/STAR
         documentation: https://github.com/alexdobin/STAR/blob/master/doc/STARmanual.pdf
 processes:
-    - genomeGenerate:
+    - genome_generate:
         operation: |
-            Use params.modules['star_genomeGenerate'].args to set command params. Use other options from params.modules['star_genomeGenerate'] to set optional input files.
+            Use params.modules['star_genome_generate'].args to set command params. Use other options from params.modules['star_genome_generate'] to set optional input files.
             The program will execute with the following pattern:
                 STAR --runMode genomeGenerate --genomeDir genome_index --genomeFastaFiles {fasta1.fa [fasta2.fa ...]} {opts.args} --runThreadN {task.cpus} --sjdbGTFfile {opts.sjdbGTFfile} --sjdbFileChrStartEnd {opts.sjdbFileChrStartEnd}  
         description: |
@@ -34,9 +34,9 @@ processes:
             - report:
                 type: Text file
                 description: Log of the indexing process
-    - alignReads:
+    - align_reads:
         operation: |
-            Use params.modules['star_alignReads'].args to set command params. Use other options from params.modules['star_alignReads'] to set optional input files.
+            Use params.modules['star_align_reads'].args to set command params. Use other options from params.modules['star_align_reads'] to set optional input files.
             The program will execute with the following pattern:
                 STAR --runMode alignReads --genomeDir {star_index} --readFilesIn {reads} --runThreadN {task.cpus} --outFileNamePrefix {meta.sample_id[opts.suffix]} --sjdbGTFfile {opts.sjdbGTFfile} --sjdbFileChrStartEnd {opts.sjdbFileChrStartEnd} --varVCFfile {opts.varVCFfile}  
         description: |

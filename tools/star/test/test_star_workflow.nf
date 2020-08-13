@@ -8,22 +8,22 @@ Test STAR genome indexing module
 ==============================*/
 
 // Log
-log.info ("Starting tests for STAR workflow: genomeGenerate -> alignReads...")
+log.info ("Starting tests for STAR workflow: star_genome_generate -> star_align_reads...")
 
 // Define main params
-params.modules['star_genomeGenerate'].args = '--genomeSAindexNbases 9' 
-params.modules['star_alignReads'].args = '--outFilterMultimapNmax 20 --quantMode TranscriptomeSAM'
+params.modules['star_genome_generate'].args = '--genomeSAindexNbases 9' 
+params.modules['star_align_reads'].args = '--outFilterMultimapNmax 20 --quantMode TranscriptomeSAM'
 params.verbose = true
 
 // Define optional input
-params.modules['star_genomeGenerate'].sjdbGTFfile = "$baseDir/../../../test_data/gtf/gencode.v30.primary_assembly.annotation_chr6a_chr6b.gtf"
-params.modules['star_alignReads'].sjdbGTFfile = "$baseDir/../../../test_data/gtf/gencode.v30.primary_assembly.annotation_chr6a_chr6b.gtf" 
-params.modules['star_genomeGenerate'].sjdbFileChrStartEnd = "$baseDir/../../../test_data/star_splice_junctions/Sample1_chr6a_chr6b.SJ.out.tab"
-params.modules['star_alignReads'].sjdbFileChrStartEnd = "$baseDir/../../../test_data/star_splice_junctions/Sample1_chr6a_chr6b.SJ.out.tab"
+params.modules['star_genome_generate'].sjdbGTFfile = "$baseDir/../../../test_data/gtf/gencode.v30.primary_assembly.annotation_chr6a_chr6b.gtf"
+params.modules['star_align_reads'].sjdbGTFfile = "$baseDir/../../../test_data/gtf/gencode.v30.primary_assembly.annotation_chr6a_chr6b.gtf" 
+params.modules['star_genome_generate'].sjdbFileChrStartEnd = "$baseDir/../../../test_data/star_splice_junctions/Sample1_chr6a_chr6b.SJ.out.tab"
+params.modules['star_align_reads'].sjdbFileChrStartEnd = "$baseDir/../../../test_data/star_splice_junctions/Sample1_chr6a_chr6b.SJ.out.tab"
 
 // Module inclusions
-include { star_genomeGenerate } from '../main.nf'
-include { star_alignReads } from '../main.nf'
+include { star_genome_generate } from '../main.nf'
+include { star_align_reads } from '../main.nf'
 include { assert_channel_count } from '../../../workflows/test_flows/main.nf'
 
 // Channel for FASTA file(s) 
@@ -46,23 +46,23 @@ Channel
 // Run tests
 workflow {
     // Run genome indexing and then read mapping
-    log.info ("Run STAR workflow: genomeGenerate -> alignReads...")
-    star_genomeGenerate ( params.modules['star_genomeGenerate'], ch_testData_fasta )
-    star_alignReads ( params.modules['star_alignReads'], ch_testData_single_end, star_genomeGenerate.out.genomeIndex.collect() )   
+    log.info ("Run STAR workflow: star_genome_generate -> star_align_reads...")
+    star_genome_generate ( params.modules['star_genome_generate'], ch_testData_fasta )
+    star_align_reads ( params.modules['star_align_reads'], ch_testData_single_end, star_genome_generate.out.genomeIndex.collect() )   
     
-    // Check count of output files from star_genomeGenerate
-    assert_channel_count( star_genomeGenerate.out.genomeIndex, "genomeIndex", 1 )
-    assert_channel_count( star_genomeGenerate.out.chrNameFile, "chrNameFile", 1 )
-    assert_channel_count( star_genomeGenerate.out.report, "report", 1 )
+    // Check count of output files from star_genome_generate
+    assert_channel_count( star_genome_generate.out.genomeIndex, "genomeIndex", 1 )
+    assert_channel_count( star_genome_generate.out.chrNameFile, "chrNameFile", 1 )
+    assert_channel_count( star_genome_generate.out.report, "report", 1 )
 
-    // Check count of output files from star_alignReads
-    assert_channel_count( star_alignReads.out.samFiles, "samFiles", 2 )
-    assert_channel_count( star_alignReads.out.bamFiles, "bamFiles", 2 )
-    assert_channel_count( star_alignReads.out.sjFiles, "sjFiles", 2 )
-    assert_channel_count( star_alignReads.out.chJunctions, "chJunctions", 0 )
-    assert_channel_count( star_alignReads.out.readsPerGene, "readsPerGene", 0 )
-    assert_channel_count( star_alignReads.out.finalLogFiles, "finalLogFiles", 2 )
-    assert_channel_count( star_alignReads.out.outLogFiles, "outLogFiles", 2 )
-    assert_channel_count( star_alignReads.out.progressLogFiles, "progressLogFiles", 2 )
-    assert_channel_count( star_alignReads.out.report, "report", 2 )      
+    // Check count of output files from star_align_reads
+    assert_channel_count( star_align_reads.out.samFiles, "samFiles", 2 )
+    assert_channel_count( star_align_reads.out.bamFiles, "bamFiles", 2 )
+    assert_channel_count( star_align_reads.out.sjFiles, "sjFiles", 2 )
+    assert_channel_count( star_align_reads.out.chJunctions, "chJunctions", 0 )
+    assert_channel_count( star_align_reads.out.readsPerGene, "readsPerGene", 0 )
+    assert_channel_count( star_align_reads.out.finalLogFiles, "finalLogFiles", 2 )
+    assert_channel_count( star_align_reads.out.outLogFiles, "outLogFiles", 2 )
+    assert_channel_count( star_align_reads.out.progressLogFiles, "progressLogFiles", 2 )
+    assert_channel_count( star_align_reads.out.report, "report", 2 )      
 }
