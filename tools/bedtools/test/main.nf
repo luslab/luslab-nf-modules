@@ -10,7 +10,7 @@ log.info ("Starting tests for bedtools...")
 /* Define params
 --------------------------------------------------------------------------------------*/
 
-params.modules['bedtools_intersect'].args = '-wa -wb -s'
+params.modules['bedtools_intersect_regions'].args = '-wa -wb -s'
 params.verbose = true
 bedChannelExpected = 7
 
@@ -18,7 +18,7 @@ bedChannelExpected = 7
 /* Module inclusions 
 --------------------------------------------------------------------------------------*/
 
-include {bedtools_intersect} from '../main.nf'
+include {bedtools_intersect_regions} from '../main.nf'
 include {assert_channel_count} from '../../../workflows/test_flows/main.nf'
 
 /*------------------------------------------------------------------------------------*/
@@ -51,11 +51,11 @@ Channel
 
 workflow {
     // Run bedtools_intersect
-    bedtools_intersect (params.modules['bedtools_intersect'], ch_test_crosslinks, ch_test_regions_file )
+    bedtools_intersect_regions (params.modules['bedtools_intersect_regions'], ch_test_crosslinks, ch_test_regions_file )
 
     // Collect file names and view output
-    bedtools_intersect.out.bed | view
+    bedtools_intersect_regions.out.bed | view
 
     //Check count
-    assert_channel_count( bedtools_intersect.out.bed, "bed", 6)
+    assert_channel_count( bedtools_intersect_regions.out.bed, "bed", 6)
 }
