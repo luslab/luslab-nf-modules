@@ -45,17 +45,26 @@ Channel
     .map { row -> [ row[0], file(row[1], checkIfExists: true) ] }
     .set {ch_test_crosslinks}
 
+Channel
+    .from(testData)
+    .map { row -> [ row[0], file(row[1], checkIfExists: true) ] }
+    .set {ch_test_crosslinks}
+
 /*------------------------------------------------------------------------------------*/
 /* Run tests
 --------------------------------------------------------------------------------------*/
 
 workflow {
-    // Run bedtools_intersect
+    // Run bedtools_intersect_regions
     bedtools_intersect_regions (params.modules['bedtools_intersect_regions'], ch_test_crosslinks, ch_test_regions_file )
+    // Run bedtools_intersect (this is to intersect two specific samples)
+    bedtools_intersect (params.modules['bedtools_intersect'], ch_test_crosslinks.filter{it[0].sample_id == "sample1"}, ch_test_crosslinks.filter{it[0].sample_id == "sample2"}.map{it[1]} )
 
     // Collect file names and view output
     bedtools_intersect_regions.out.bed | view
+    bedtools_intersect.out.bed | view
 
     //Check count
     assert_channel_count( bedtools_intersect_regions.out.bed, "bed", 6)
+    assert_channel_count( bedtools_intersect.out.bed, "bed", 1)
 }
