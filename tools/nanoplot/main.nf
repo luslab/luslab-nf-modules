@@ -11,6 +11,7 @@ process nanoplot {
   container "luslab/nf-modules-nanoplot:latest"
 
   input:
+		val opts
     tuple val(sample_id), path(reads)
   output:
     tuple val(sample_id), path("*{pdf,html,log}"), emit: nanoplotOutputs
