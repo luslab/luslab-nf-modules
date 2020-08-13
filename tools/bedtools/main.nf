@@ -10,7 +10,7 @@ process bedtools_intersect_regions {
                       if (opts.publish_results == "none") null
                       else filename }
 
-    container 'luslab/nf-modules-bedtools:latest'
+    container 'quay.io/biocontainers/bedtools:2.29.2--hc088bd4_0'
 
     input:
         val opts
@@ -49,7 +49,7 @@ process bedtools_intersect {
                       if (opts.publish_results == "none") null
                       else filename }
 
-    container 'luslab/nf-modules-bedtools:latest'
+    container 'quay.io/biocontainers/bedtools:2.29.2--hc088bd4_0'
 
     input:
         val opts
@@ -88,7 +88,7 @@ process bedtools_subtract {
                       if (opts.publish_results == "none") null
                       else filename }
 
-    container 'luslab/nf-modules-bedtools:latest'
+    container 'quay.io/biocontainers/bedtools:2.29.2--hc088bd4_0'
 
     input:
         val opts
