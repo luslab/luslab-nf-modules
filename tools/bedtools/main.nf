@@ -53,8 +53,8 @@ process bedtools_intersect2 {
 
     input:
         val opts
-        tuple val(meta1), path(reads1)
-        tuple val(meta2), path(reads2)
+        tuple val(meta), path(file_a)
+        path(file_b)
 
     output:
         tuple val(meta), path("*.bed"), emit: bed
@@ -66,9 +66,9 @@ process bedtools_intersect2 {
             args += ext_args.trim()
         }
 
-        prefix = opts.suffix ? "${meta1.sample_id}-${meta2.sample_id}${opts.suffix}" : "${meta1.sample_id}-${meta2.sample_id}"
+        prefix = opts.suffix ? "${meta.sample_id}${opts.suffix}" : "${meta.sample_id}"
 
-        intersect_command = "bedtools intersect -a ${reads1} -b ${reads2} ${args} > ${prefix}.bed"
+        intersect_command = "bedtools intersect -a ${file_a} -b ${file_b} ${args} > ${prefix}.bed"
         if (params.verbose){
             println ("[MODULE] bedtools/intersect command: " + intersect_command)
         }
