@@ -4,7 +4,7 @@
 nextflow.enable.dsl=2
 
 //Process definition
-process homer_annotatePeaks {
+process homer_annotate_peaks {
     publishDir "${params.outdir}/${opts.publish_dir}",
     mode: "copy", 
     overwrite: true,
@@ -33,16 +33,16 @@ process homer_annotatePeaks {
         prefix = opts.suffix ? "${meta.sample_id}${opts.suffix}" : "${meta.sample_id}"
 
     // Construct CL line
-    annotatePeaks_command = "annotatePeaks.pl ${args} ${peaks} ${fasta} -gtf ${gtf} > ${prefix}"
+    annotate_peaks_command = "annotatePeaks.pl ${args} ${peaks} ${fasta} -gtf ${gtf} > ${prefix}"
 
     // Log
     if (params.verbose){
-        println ("[MODULE] homer/annotatePeaks command: " + annotatePeaks_command)
+        println ("[MODULE] homer/annotate peaks command: " + annotate_peaks_command)
     }
 
     //SHELL
     """
-    ${annotatePeaks_command}
+    ${annotate_peaks_command}
     """
 }
 
