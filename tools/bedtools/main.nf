@@ -29,9 +29,9 @@ process bedtools_intersect_regions {
 
         prefix = opts.suffix ? "${meta.sample_id}${opts.suffix}" : "${meta.sample_id}"
 
-        intersect_command = "bedtools intersect -a ${regions_file} -b $reads ${args} > ${prefix}.bed"
+        intersect_command = "bedtools intersect ${args} -a ${regions_file} -b $reads > ${prefix}"
         if (params.verbose){
-            println ("[MODULE] bedtools/intersect command: " + intersect_command)
+            println ("[MODULE] bedtools/intersect_regions command: " + intersect_command)
         }
 
         //SHELL
@@ -82,7 +82,11 @@ process bedtools_intersect {
 //Process definition
 process bedtools_subtract {
     publishDir "${params.outdir}/${opts.publish_dir}",
-        mode: "copy", overwrite: true
+        mode: "copy", 
+        overwrite: true,
+        saveAs: { filename ->
+                      if (opts.publish_results == "none") null
+                      else filename }
 
     container 'luslab/nf-modules-bedtools:latest'
 
@@ -92,7 +96,7 @@ process bedtools_subtract {
         path(file_b)
 
     output:
-        tuple val(meta), path("${prefix}")
+        tuple val(meta), path("${prefix}"), emit: bed
 
     script:
         args = ""
@@ -103,16 +107,13 @@ process bedtools_subtract {
 
         prefix = opts.suffix ? "${meta.sample_id}${opts.suffix}" : "${meta.sample_id}"
 
-    // Construct CL line
-    subtract_command = "bedtools subtract -a ${file_a} -b ${file_b} ${args} > ${prefix}"
+        subtract_command = "bedtools subtract -a ${file_a} -b ${file_b} ${args} > ${prefix}"
+        if (params.verbose){
+            println ("[MODULE] bedtools/subtract command: " + subtract_command)
+        }
 
-    // Log
-    if (params.verbose){
-        println ("[MODULE] bedtools/subtract command: " + subtract_command)
-    }
-
-    //SHELL
-    """
-    ${subtract_command}
-    """
+        //SHELL
+        """
+        ${subtract_command}
+        """
 }
