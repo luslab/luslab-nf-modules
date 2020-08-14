@@ -17,8 +17,8 @@ include { assert_channel_count } from '../../../workflows/test_flows/main.nf'
 
 // Define main params for both star_genome_generate and star_align_reads
 // Genome indexing
-params.modules['index_genome_only'].args = '--genomeSAindexNbases 9'
-params.modules['index_genome'].args = '--genomeSAindexNbases 9' 
+params.modules['index_genome_only'].args = '--genomeSAindexNbases 8'
+params.modules['index_genome'].args = '--genomeSAindexNbases 8' 
 // Read mapping
 params.modules['map_se'].args = '--outFilterMultimapNmax 20 --quantMode TranscriptomeSAM'
 params.modules['map_pe'].args = '--outFilterMultimapNmax 20 --quantMode TranscriptomeSAM'
