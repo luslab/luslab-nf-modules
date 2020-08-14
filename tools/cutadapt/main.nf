@@ -12,7 +12,7 @@ process cutadapt {
                     if (opts.publish_results == "none") null
                     else filename }
     
-    container 'luslab/nf-modules-cutadapt:latest'
+    container 'quay.io/biocontainers/cutadapt:2.10--py37hf01694f_1'
 
     input:
         val opts

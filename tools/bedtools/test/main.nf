@@ -10,15 +10,24 @@ log.info ("Starting tests for bedtools...")
 /* Define params
 --------------------------------------------------------------------------------------*/
 
-params.modules['bedtools_intersect'].args = '-wa -wb -s'
+params.modules['bedtools_intersect_regions'].args = '-wa -wb -s'
+
+params.modules['bedtools_intersect'].args = '-wa -wb'
+params.modules['bedtools_intersect'].suffix = '+sample2.intersected.bed'
+
+params.modules['bedtools_subtract'].args = '-A'
+params.modules['bedtools_subtract'].suffix = '-sample2.subtracted.bed'
+
 params.verbose = true
 bedChannelExpected = 7
+
+
 
 /*------------------------------------------------------------------------------------*/
 /* Module inclusions 
 --------------------------------------------------------------------------------------*/
 
-include {bedtools_intersect} from '../main.nf'
+include {bedtools_intersect_regions; bedtools_intersect; bedtools_subtract} from '../main.nf'
 include {assert_channel_count} from '../../../workflows/test_flows/main.nf'
 
 /*------------------------------------------------------------------------------------*/
@@ -45,17 +54,27 @@ Channel
     .map { row -> [ row[0], file(row[1], checkIfExists: true) ] }
     .set {ch_test_crosslinks}
 
+
+
 /*------------------------------------------------------------------------------------*/
 /* Run tests
 --------------------------------------------------------------------------------------*/
 
 workflow {
-    // Run bedtools_intersect
-    bedtools_intersect (params.modules['bedtools_intersect'], ch_test_crosslinks, ch_test_regions_file )
+    // Run bedtools_intersect_regions
+    bedtools_intersect_regions (params.modules['bedtools_intersect_regions'], ch_test_crosslinks, ch_test_regions_file )
+    // Run bedtools_intersect (this is to intersect two specific samples)
+    bedtools_intersect (params.modules['bedtools_intersect'], ch_test_crosslinks.filter{it[0].sample_id == "sample1"}, ch_test_crosslinks.filter{it[0].sample_id == "sample2"}.map{it[1]} )
+    // Run bedtools_subtract (this is to subtract one sample from another)
+    bedtools_subtract (params.modules['bedtools_subtract'], ch_test_crosslinks.filter{it[0].sample_id == "sample1"}, ch_test_crosslinks.filter{it[0].sample_id == "sample2"}.map{it[1]} )
 
     // Collect file names and view output
+    bedtools_intersect_regions.out.bed | view
     bedtools_intersect.out.bed | view
+    bedtools_subtract.out.bed | view
 
     //Check count
-    assert_channel_count( bedtools_intersect.out.bed, "bed", 6)
+    assert_channel_count( bedtools_intersect_regions.out.bed, "bed", 6)
+    assert_channel_count( bedtools_intersect.out.bed, "bed", 1)
+    assert_channel_count( bedtools_subtract.out.bed, "bed", 1)
 }
