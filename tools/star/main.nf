@@ -12,7 +12,7 @@ process star_genome_generate {
                       if (opts.publish_results == "none") null
                       else filename }
 
-    container 'luslab/nf-modules-star:2.7.5b'
+    container 'quay.io/biocontainers/star:2.7.5b--0'
 
     input:
       val opts
@@ -82,7 +82,7 @@ process star_align_reads {
                       if (opts.publish_results == "none") null
                       else filename }
 
-    container 'luslab/nf-modules-star:2.7.5b'
+    container 'quay.io/biocontainers/star:2.7.5b--0'
 
     input:
       val opts
