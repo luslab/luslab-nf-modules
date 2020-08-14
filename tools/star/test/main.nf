@@ -95,7 +95,6 @@ workflow {
 
     // Check count of output files from index_genome_only (star_genome_generate)
     assert_channel_count( index_genome_only.out.genomeIndex, "genomeIndex", 1 )
-    assert_channel_count( index_genome_only.out.report, "report", 1 )
 
     /* ---------------------------------- */
     /* Test single-end read mapping alone */
@@ -146,7 +145,6 @@ workflow {
     
     // Check count of output files from index_genome (star_genome_generate)
     assert_channel_count( index_genome.out.genomeIndex, "genomeIndex", 1 )
-    assert_channel_count( index_genome.out.report, "report", 1 )
 
     // Check count of output files from align_reads (star_align_reads)
     assert_channel_count( align_reads.out.samFiles, "samFiles", 2 )
