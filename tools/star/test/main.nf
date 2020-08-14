@@ -47,35 +47,35 @@ params.modules['align_reads'].sjdbFileChrStartEnd = "$baseDir/../../../test_data
 // Channel for two FASTA files
 Channel
     .value(["$baseDir/../../../test_data/fasta/GRCh38.primary_assembly.genome_chr6a.fa", "$baseDir/../../../test_data/fasta/GRCh38.primary_assembly.genome_chr6b.fa"])
-    .set { ch_testData_2fastas }
+    .set { ch_test_data_2fastas }
 
 // Channel for one FASTA file
 Channel
     .value("$baseDir/../../../test_data/fasta/GRCh38.primary_assembly.genome_chr6_34000000_35000000.fa")
-    .set { ch_testData_fasta }
+    .set { ch_test_data_fasta }
 
 // Single-end test reads
-testMetaDataSingleEnd = [
+test_meta_data_single_end = [
   [[sample_id:'Sample1'], "$baseDir/../../../test_data/fastq/prpf8_eif4a3_rep1.Unmapped.fq"],
   [[sample_id:'Sample2'], "$baseDir/../../../test_data/fastq/prpf8_eif4a3_rep2.Unmapped.fq"]
 ]
 
 // Channel for single-end reads 
 Channel
-    .from( testMetaDataSingleEnd )
+    .from( test_meta_data_single_end )
     .map { row -> [ row[0], file(row[1], checkIfExists: true) ] }
-    .set { ch_testData_single_end }
+    .set { ch_test_data_single_end }
 
 // Paired-end test reads
-testMetaDataPairedEnd = [
+test_meta_data_paired_end = [
   [[sample_id:'Sample1'], "$baseDir/../../../test_data/fastq/ENCFF282NGP_chr6_3400000_3500000_1000reads_1.fq.bz2", "$baseDir/../../../test_data/fastq/ENCFF282NGP_chr6_3400000_3500000_1000reads_2.fq.bz2"]
 ]
 
 // Channel for paired-end reads
 Channel
-    .from( testMetaDataPairedEnd )
+    .from( test_meta_data_paired_end )
     .map { row -> [ row[0], [file(row[1], checkIfExists: true), file(row[2], checkIfExists: true)] ] }
-    .set { ch_testData_paired_end }
+    .set { ch_test_data_paired_end }
 
 // Channel for genome index
 Channel
@@ -91,7 +91,7 @@ workflow {
 
     log.info ("Test star_genome_generate module alone...")
 
-    index_genome_only ( params.modules['index_genome_only'], ch_testData_fasta )
+    index_genome_only ( params.modules['index_genome_only'], ch_test_data_fasta )
 
     // Check count of output files from index_genome_only (star_genome_generate)
     assert_channel_count( index_genome_only.out.genome_index, "genome_index", 1 )
@@ -102,7 +102,7 @@ workflow {
 
     log.info ("Test star_align_reads module alone with single-end reads...")
 
-    map_se ( params.modules['map_se'], ch_testData_single_end, ch_test_index_file )
+    map_se ( params.modules['map_se'], ch_test_data_single_end, ch_test_index_file )
 
     // Check count of output files from map_se (star_align_reads)
     assert_channel_count( map_se.out.sam_files, "sam_files", 2 )
@@ -121,7 +121,7 @@ workflow {
 
     log.info ("Test star_align_reads module alone with paired-end reads...")
 
-    map_pe ( params.modules['map_pe'], ch_testData_paired_end, ch_test_index_file )
+    map_pe ( params.modules['map_pe'], ch_test_data_paired_end, ch_test_index_file )
 
     // Check count of output files from star_align_reads
     assert_channel_count( map_pe.out.sam_files, "sam_files", 1 )
@@ -140,8 +140,8 @@ workflow {
 
     log.info ("Test a workflow: star_genome_generate -> star_align_reads with two FASTA files and single-end reads...")
 
-    index_genome ( params.modules['index_genome'], ch_testData_2fastas )
-    align_reads ( params.modules['align_reads'], ch_testData_single_end, index_genome.out.genome_index.collect() )   
+    index_genome ( params.modules['index_genome'], ch_test_data_2fastas )
+    align_reads ( params.modules['align_reads'], ch_test_data_single_end, index_genome.out.genome_index.collect() )   
     
     // Check count of output files from index_genome (star_genome_generate)
     assert_channel_count( index_genome.out.genome_index, "genome_index", 1 )
