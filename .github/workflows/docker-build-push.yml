@@ -11,7 +11,7 @@ jobs:
         matrix:
             tag: ['latest']
             docker-file: ['Dockerfile']
-            module-name: ['hisat2','flye','cutadapt','fastqc','get_crosslinks','get_crosslinks_coverage','icount','paraclu','peka','samtools','star','umi_tools','seqtk','bowtie2','minionqc','minimap2','tantan']
+            module-name: ['hisat2','flye','get_crosslinks','get_crosslinks_coverage','icount','paraclu','peka','samtools','star','umi_tools','seqtk','bowtie2','minionqc','minimap2','tantan']
             include:
               - tag: 'cpu'
                 docker-file: 'Dockerfile.cpu'
