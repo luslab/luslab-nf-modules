@@ -35,12 +35,12 @@ params.modules['index_genome'].sjdbFileChrStartEnd = "$baseDir/../../../test_dat
 
 // Define optional input files for star_align_reads
 // GTF
-params.modules['map_se'].sjdbGTFfile = "$baseDir/../../../test_data/gtf/gencode.v30.primary_assembly.annotation_chr6a_chr6b.gtf" 
-params.modules['map_pe'].sjdbGTFfile = "$baseDir/../../../test_data/gtf/gencode.v30.primary_assembly.annotation_chr6a_chr6b.gtf"
+params.modules['map_se'].sjdbGTFfile = "$baseDir/../../../test_data/gtf/gencode.v30.primary_assembly.annotation_chr6_34000000_35000000.gtf" 
+params.modules['map_pe'].sjdbGTFfile = "$baseDir/../../../test_data/gtf/gencode.v30.primary_assembly.annotation_chr6_34000000_35000000.gtf"
 params.modules['align_reads'].sjdbGTFfile = "$baseDir/../../../test_data/gtf/gencode.v30.primary_assembly.annotation_chr6a_chr6b.gtf"
 // Splice junctions
-params.modules['map_se'].sjdbFileChrStartEnd = "$baseDir/../../../test_data/star_splice_junctions/Sample1_chr6a_chr6b.SJ.out.tab"
-params.modules['map_pe'].sjdbFileChrStartEnd = "$baseDir/../../../test_data/star_splice_junctions/Sample1_chr6a_chr6b.SJ.out.tab"
+params.modules['map_se'].sjdbFileChrStartEnd = "$baseDir/../../../test_data/star_splice_junctions/Sample1.SJ.out.tab"
+params.modules['map_pe'].sjdbFileChrStartEnd = "$baseDir/../../../test_data/star_splice_junctions/Sample1.SJ.out.tab"
 params.modules['align_reads'].sjdbFileChrStartEnd = "$baseDir/../../../test_data/star_splice_junctions/Sample1_chr6a_chr6b.SJ.out.tab"
 
 // Define test data
@@ -86,7 +86,10 @@ Channel
 // Run tests
 workflow {
 
-    // Test genome generation
+    /* ---------------------------- */
+    /* Test genome generation alone */
+    /* ---------------------------- */
+
     log.info ("Test star_genome_generate module alone...")
 
     index_genome_only ( params.modules['index_genome_only'], ch_testData_fasta )
@@ -95,6 +98,27 @@ workflow {
     assert_channel_count( index_genome_only.out.genomeIndex, "genomeIndex", 1 )
     assert_channel_count( index_genome_only.out.chrNameFile, "chrNameFile", 1 )
     assert_channel_count( index_genome_only.out.report, "report", 1 )
+
+    /* ---------------------------------- */
+    /* Test single-end read mapping alone */
+    /* ---------------------------------- */
+
+    log.info ("Test star_align_reads module alone with single-end reads...")
+
+    map_se ( params.modules['map_se'], ch_testData_single_end, ch_test_index_file )
+
+    // Check count of output files from map_se (star_align_reads)
+    assert_channel_count( map_se.out.samFiles, "samFiles", 2 )
+    assert_channel_count( map_se.out.bamFiles, "bamFiles", 2 )
+    assert_channel_count( map_se.out.sjFiles, "sjFiles", 2 )
+    assert_channel_count( map_se.out.chJunctions, "chJunctions", 0 )
+    assert_channel_count( map_se.out.readsPerGene, "readsPerGene", 0 )
+    assert_channel_count( map_se.out.finalLogFiles, "finalLogFiles", 2 )
+    assert_channel_count( map_se.out.outLogFiles, "outLogFiles", 2 )
+    assert_channel_count( map_se.out.progressLogFiles, "progressLogFiles", 2 )
+    assert_channel_count( map_se.out.report, "report", 2 )
+
+
 }
 
 // Test single-end read alignment
