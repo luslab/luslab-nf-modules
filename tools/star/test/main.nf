@@ -23,7 +23,6 @@ params.modules['index_genome'].args = '--genomeSAindexNbases 9'
 params.modules['map_se'].args = '--outFilterMultimapNmax 20 --quantMode TranscriptomeSAM'
 params.modules['map_pe'].args = '--outFilterMultimapNmax 20 --quantMode TranscriptomeSAM'
 params.modules['align_reads'].args = '--outFilterMultimapNmax 20 --quantMode TranscriptomeSAM'
-params.verbose = true
 
 // Define optional input files for star_genome_generate
 // GTF
