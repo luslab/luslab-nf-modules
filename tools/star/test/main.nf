@@ -94,7 +94,7 @@ workflow {
     index_genome_only ( params.modules['index_genome_only'], ch_testData_fasta )
 
     // Check count of output files from index_genome_only (star_genome_generate)
-    assert_channel_count( index_genome_only.out.genomeIndex, "genomeIndex", 1 )
+    assert_channel_count( index_genome_only.out.genome_index, "genome_index", 1 )
 
     /* ---------------------------------- */
     /* Test single-end read mapping alone */
@@ -105,14 +105,14 @@ workflow {
     map_se ( params.modules['map_se'], ch_testData_single_end, ch_test_index_file )
 
     // Check count of output files from map_se (star_align_reads)
-    assert_channel_count( map_se.out.samFiles, "samFiles", 2 )
-    assert_channel_count( map_se.out.bamFiles, "bamFiles", 2 )
-    assert_channel_count( map_se.out.sjFiles, "sjFiles", 2 )
-    assert_channel_count( map_se.out.chJunctions, "chJunctions", 0 )
-    assert_channel_count( map_se.out.readsPerGene, "readsPerGene", 0 )
-    assert_channel_count( map_se.out.finalLogFiles, "finalLogFiles", 2 )
-    assert_channel_count( map_se.out.outLogFiles, "outLogFiles", 2 )
-    assert_channel_count( map_se.out.progressLogFiles, "progressLogFiles", 2 )
+    assert_channel_count( map_se.out.sam_files, "sam_files", 2 )
+    assert_channel_count( map_se.out.bam_files, "bam_files", 2 )
+    assert_channel_count( map_se.out.sj_files, "sj_files", 2 )
+    assert_channel_count( map_se.out.ch_junctions, "ch_junctions", 0 )
+    assert_channel_count( map_se.out.reads_per_gene, "reads_per_gene", 0 )
+    assert_channel_count( map_se.out.final_log_files, "final_log_files", 2 )
+    assert_channel_count( map_se.out.out_log_files, "out_log_files", 2 )
+    assert_channel_count( map_se.out.progress_log_files, "progress_log_files", 2 )
     assert_channel_count( map_se.out.report, "report", 2 )
 
     /* ---------------------------------- */
@@ -124,14 +124,14 @@ workflow {
     map_pe ( params.modules['map_pe'], ch_testData_paired_end, ch_test_index_file )
 
     // Check count of output files from star_align_reads
-    assert_channel_count( map_pe.out.samFiles, "samFiles", 1 )
-    assert_channel_count( map_pe.out.bamFiles, "bamFiles", 1 )
-    assert_channel_count( map_pe.out.sjFiles, "sjFiles", 1 )
-    assert_channel_count( map_pe.out.chJunctions, "chJunctions", 0 )
-    assert_channel_count( map_pe.out.readsPerGene, "readsPerGene", 0 )
-    assert_channel_count( map_pe.out.finalLogFiles, "finalLogFiles", 1 )
-    assert_channel_count( map_pe.out.outLogFiles, "outLogFiles", 1 )
-    assert_channel_count( map_pe.out.progressLogFiles, "progressLogFiles", 1 )
+    assert_channel_count( map_pe.out.sam_files, "sam_files", 1 )
+    assert_channel_count( map_pe.out.bam_files, "bam_files", 1 )
+    assert_channel_count( map_pe.out.sj_files, "sj_files", 1 )
+    assert_channel_count( map_pe.out.ch_junctions, "ch_junctions", 0 )
+    assert_channel_count( map_pe.out.reads_per_gene, "reads_per_gene", 0 )
+    assert_channel_count( map_pe.out.final_log_files, "final_log_files", 1 )
+    assert_channel_count( map_pe.out.out_log_files, "out_log_files", 1 )
+    assert_channel_count( map_pe.out.progress_log_files, "progress_log_files", 1 )
     assert_channel_count( map_pe.out.report, "report", 1 )
 
     /* ---------------------------------------------------------------------------- */
@@ -141,19 +141,19 @@ workflow {
     log.info ("Test a workflow: star_genome_generate -> star_align_reads with two FASTA files and single-end reads...")
 
     index_genome ( params.modules['index_genome'], ch_testData_2fastas )
-    align_reads ( params.modules['align_reads'], ch_testData_single_end, index_genome.out.genomeIndex.collect() )   
+    align_reads ( params.modules['align_reads'], ch_testData_single_end, index_genome.out.genome_index.collect() )   
     
     // Check count of output files from index_genome (star_genome_generate)
-    assert_channel_count( index_genome.out.genomeIndex, "genomeIndex", 1 )
+    assert_channel_count( index_genome.out.genome_index, "genome_index", 1 )
 
     // Check count of output files from align_reads (star_align_reads)
-    assert_channel_count( align_reads.out.samFiles, "samFiles", 2 )
-    assert_channel_count( align_reads.out.bamFiles, "bamFiles", 2 )
-    assert_channel_count( align_reads.out.sjFiles, "sjFiles", 2 )
-    assert_channel_count( align_reads.out.chJunctions, "chJunctions", 0 )
-    assert_channel_count( align_reads.out.readsPerGene, "readsPerGene", 0 )
-    assert_channel_count( align_reads.out.finalLogFiles, "finalLogFiles", 2 )
-    assert_channel_count( align_reads.out.outLogFiles, "outLogFiles", 2 )
-    assert_channel_count( align_reads.out.progressLogFiles, "progressLogFiles", 2 )
+    assert_channel_count( align_reads.out.sam_files, "sam_files", 2 )
+    assert_channel_count( align_reads.out.bam_files, "bam_files", 2 )
+    assert_channel_count( align_reads.out.sj_files, "sj_files", 2 )
+    assert_channel_count( align_reads.out.ch_junctions, "ch_junctions", 0 )
+    assert_channel_count( align_reads.out.reads_per_gene, "reads_per_gene", 0 )
+    assert_channel_count( align_reads.out.final_log_files, "final_log_files", 2 )
+    assert_channel_count( align_reads.out.out_log_files, "out_log_files", 2 )
+    assert_channel_count( align_reads.out.progress_log_files, "progress_log_files", 2 )
     assert_channel_count( align_reads.out.report, "report", 2 )
 }

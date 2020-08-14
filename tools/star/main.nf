@@ -19,7 +19,7 @@ process star_genome_generate {
       path(fasta)
 
     output:
-      path "genome_index", emit: genomeIndex
+      path "genome_index", emit: genome_index
 
     script:
 
@@ -90,14 +90,14 @@ process star_align_reads {
       path star_index 
 
     output:
-      tuple val(meta), path("*.sam"), optional: true, emit: samFiles
-      tuple val(meta), path("*.bam"), optional: true, emit: bamFiles
-      tuple val(meta), path("*.SJ.out.tab"), optional: true, emit: sjFiles
-      tuple val(meta), path("*.junction"), optional: true, emit: chJunctions
-      tuple val(meta), path("*.ReadsPerGene.out.tab"),  optional: true, emit: readsPerGene
-      tuple val(meta), path("*.Log.final.out"), emit: finalLogFiles
-      tuple val(meta), path("*.Log.out"), emit: outLogFiles
-      tuple val(meta), path("*.Log.progress.out"), emit: progressLogFiles
+      tuple val(meta), path("*.sam"), optional: true, emit: sam_files
+      tuple val(meta), path("*.bam"), optional: true, emit: bam_files
+      tuple val(meta), path("*.SJ.out.tab"), optional: true, emit: sj_files
+      tuple val(meta), path("*.junction"), optional: true, emit: ch_junctions
+      tuple val(meta), path("*.ReadsPerGene.out.tab"),  optional: true, emit: reads_per_gene
+      tuple val(meta), path("*.Log.final.out"), emit: final_log_files
+      tuple val(meta), path("*.Log.out"), emit: out_log_files
+      tuple val(meta), path("*.Log.progress.out"), emit: progress_log_files
       path "*.Log.final.out", emit: report
 
     script:
