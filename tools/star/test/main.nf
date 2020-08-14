@@ -117,6 +117,24 @@ workflow {
     assert_channel_count( map_se.out.progressLogFiles, "progressLogFiles", 2 )
     assert_channel_count( map_se.out.report, "report", 2 )
 
+    /* ---------------------------------- */
+    /* Test paired-end read mapping alone */
+    /* ---------------------------------- */
+
+    log.info ("Test star_align_reads module alone with paired-end reads...")
+
+    map_pe ( params.modules['map_pe'], ch_testData_paired_end, ch_test_index_file )
+
+    // Check count of output files from star_align_reads
+    assert_channel_count( map_pe.out.samFiles, "samFiles", 1 )
+    assert_channel_count( map_pe.out.bamFiles, "bamFiles", 1 )
+    assert_channel_count( map_pe.out.sjFiles, "sjFiles", 1 )
+    assert_channel_count( map_pe.out.chJunctions, "chJunctions", 0 )
+    assert_channel_count( map_pe.out.readsPerGene, "readsPerGene", 0 )
+    assert_channel_count( map_pe.out.finalLogFiles, "finalLogFiles", 1 )
+    assert_channel_count( map_pe.out.outLogFiles, "outLogFiles", 1 )
+    assert_channel_count( map_pe.out.progressLogFiles, "progressLogFiles", 1 )
+    assert_channel_count( map_pe.out.report, "report", 1 )
 
 }
 
