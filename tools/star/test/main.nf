@@ -26,10 +26,10 @@ params.modules['align_reads'].args = '--outFilterMultimapNmax 20 --quantMode Tra
 
 // Define optional input files for star_genome_generate
 // GTF
-params.modules['index_genome_only'].sjdbGTFfile = "$baseDir/../../../test_data/gtf/gencode.v30.primary_assembly.annotation_chr6a_chr6b.gtf"
+params.modules['index_genome_only'].sjdbGTFfile = "$baseDir/../../../test_data/gtf/gencode.v30.primary_assembly.annotation_chr6_34000000_35000000.gtf"
 params.modules['index_genome'].sjdbGTFfile = "$baseDir/../../../test_data/gtf/gencode.v30.primary_assembly.annotation_chr6a_chr6b.gtf"
 // Splice junctions
-params.modules['index_genome_only'].sjdbFileChrStartEnd = "$baseDir/../../../test_data/star_splice_junctions/Sample1_chr6a_chr6b.SJ.out.tab"
+params.modules['index_genome_only'].sjdbFileChrStartEnd = "$baseDir/../../../test_data/star_splice_junctions/Sample1.SJ.out.tab"
 params.modules['index_genome'].sjdbFileChrStartEnd = "$baseDir/../../../test_data/star_splice_junctions/Sample1_chr6a_chr6b.SJ.out.tab"
 
 // Define optional input files for star_align_reads
@@ -51,7 +51,7 @@ Channel
 
 // Channel for one FASTA file
 Channel
-    .value(["$baseDir/../../../test_data/fasta/GRCh38.primary_assembly.genome_chr6a.fa", "$baseDir/../../../test_data/fasta/GRCh38.primary_assembly.genome_chr6b.fa"])
+    .value("$baseDir/../../../test_data/fasta/GRCh38.primary_assembly.genome_chr6_34000000_35000000.fa")
     .set { ch_testData_fasta }
 
 // Single-end test reads
@@ -136,6 +136,30 @@ workflow {
     assert_channel_count( map_pe.out.progressLogFiles, "progressLogFiles", 1 )
     assert_channel_count( map_pe.out.report, "report", 1 )
 
+    /* ---------------------------------------------------------------------------- */
+    /* Test a workflow with indexing of two FASTA files and single-end read mapping */
+    /* ---------------------------------------------------------------------------- */
+
+    log.info ("Test a workflow: star_genome_generate -> star_align_reads with two FASTA files and single-end reads...")
+
+    index_genome ( params.modules['index_genome'], ch_testData_2fastas )
+    align_reads ( params.modules['align_reads'], ch_testData_single_end, index_genome.out.genomeIndex.collect() )   
+    
+    // Check count of output files from index_genome (star_genome_generate)
+    assert_channel_count( index_genome.out.genomeIndex, "genomeIndex", 1 )
+    assert_channel_count( index_genome.out.chrNameFile, "chrNameFile", 1 )
+    assert_channel_count( index_genome.out.report, "report", 1 )
+
+    // Check count of output files from align_reads (star_align_reads)
+    assert_channel_count( align_reads.out.samFiles, "samFiles", 2 )
+    assert_channel_count( align_reads.out.bamFiles, "bamFiles", 2 )
+    assert_channel_count( align_reads.out.sjFiles, "sjFiles", 2 )
+    assert_channel_count( align_reads.out.chJunctions, "chJunctions", 0 )
+    assert_channel_count( align_reads.out.readsPerGene, "readsPerGene", 0 )
+    assert_channel_count( align_reads.out.finalLogFiles, "finalLogFiles", 2 )
+    assert_channel_count( align_reads.out.outLogFiles, "outLogFiles", 2 )
+    assert_channel_count( align_reads.out.progressLogFiles, "progressLogFiles", 2 )
+    assert_channel_count( align_reads.out.report, "report", 2 )
 }
 
 // Test single-end read alignment
