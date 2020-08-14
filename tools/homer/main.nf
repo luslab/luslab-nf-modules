@@ -33,7 +33,7 @@ process homer_annotate_peaks {
         prefix = opts.suffix ? "${meta.sample_id}${opts.suffix}" : "${meta.sample_id}"
 
     // Construct CL line
-    annotate_peaks_command = "annotatePeaks.pl ${args} ${peaks} ${fasta} -gtf ${gtf} > ${prefix}"
+    annotate_peaks_command = "annotatePeaks.pl ${peaks} ${fasta} -gtf ${gtf} ${args} > ${prefix}"
 
     // Log
     if (params.verbose){
