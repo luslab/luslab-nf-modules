@@ -20,7 +20,6 @@ process star_genome_generate {
 
     output:
       path "genome_index", emit: genomeIndex
-      path "genome_index/chrName.txt", emit: chrNameFile
       path "genome_index/Log.out", emit: report
 
     script:
