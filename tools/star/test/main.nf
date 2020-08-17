@@ -100,7 +100,7 @@ workflow {
     /* Test single-end read mapping alone */
     /* ---------------------------------- */
 
-    log.info ("Test star_align_reads module alone with single-end reads...")
+    /*log.info ("Test star_align_reads module alone with single-end reads...")
 
     map_se ( params.modules['map_se'], ch_test_data_single_end, ch_test_index_file )
 
@@ -114,12 +114,12 @@ workflow {
     assert_channel_count( map_se.out.out_log_files, "out_log_files", 2 )
     assert_channel_count( map_se.out.progress_log_files, "progress_log_files", 2 )
     assert_channel_count( map_se.out.report, "report", 2 )
-
+    */
     /* ---------------------------------- */
     /* Test paired-end read mapping alone */
     /* ---------------------------------- */
 
-    /*log.info ("Test star_align_reads module alone with paired-end reads...")
+    log.info ("Test star_align_reads module alone with paired-end reads...")
 
     map_pe ( params.modules['map_pe'], ch_test_data_paired_end, ch_test_index_file )
 
@@ -133,7 +133,7 @@ workflow {
     assert_channel_count( map_pe.out.out_log_files, "out_log_files", 1 )
     assert_channel_count( map_pe.out.progress_log_files, "progress_log_files", 1 )
     assert_channel_count( map_pe.out.report, "report", 1 )
-    */
+    
     /* ---------------------------------------------------------------------------- */
     /* Test a workflow with indexing of two FASTA files and single-end read mapping */
     /* ---------------------------------------------------------------------------- */
