@@ -15,6 +15,7 @@ jobs:
         tag: ['latest']
         docker-name: ['Dockerfile']
         module-name: ['star']
+        # 'htseq','velocyto','flye','homer','umi_tools','fastqc','cutadapt','bedtools','samtools', 'get_crosslinks','get_crosslinks_coverage','icount','minimap2','seqtk','paraclu','luslab_genome_tools', 'luslab_file_tools', 'bowtie2', 'metadata','minionqc', 'tantan', 'hisat2',
         include:
           - nxf_ver: '20.07.1'
             tag: 'cpu'
