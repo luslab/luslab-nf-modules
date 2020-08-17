@@ -100,7 +100,7 @@ workflow {
     /* Test single-end read mapping alone */
     /* ---------------------------------- */
 
-    /*log.info ("Test star_align_reads module alone with single-end reads...")
+    log.info ("Test star_align_reads module alone with single-end reads...")
 
     map_se ( params.modules['map_se'], ch_test_data_single_end, ch_test_index_file )
 
@@ -114,7 +114,7 @@ workflow {
     assert_channel_count( map_se.out.out_log_files, "out_log_files", 2 )
     assert_channel_count( map_se.out.progress_log_files, "progress_log_files", 2 )
     assert_channel_count( map_se.out.report, "report", 2 )
-    */
+    
     /* ---------------------------------- */
     /* Test paired-end read mapping alone */
     /* ---------------------------------- */
@@ -137,7 +137,7 @@ workflow {
     /* ---------------------------------------------------------------------------- */
     /* Test a workflow with indexing of two FASTA files and single-end read mapping */
     /* ---------------------------------------------------------------------------- */
-
+    /*
     log.info ("Test a workflow: star_genome_generate -> star_align_reads with two FASTA files and single-end reads...")
 
     index_genome ( params.modules['index_genome'], ch_test_data_2fastas )
@@ -156,5 +156,5 @@ workflow {
     assert_channel_count( align_reads.out.out_log_files, "out_log_files", 2 )
     assert_channel_count( align_reads.out.progress_log_files, "progress_log_files", 2 )
     assert_channel_count( align_reads.out.report, "report", 2 )
-    
+    */
 }
