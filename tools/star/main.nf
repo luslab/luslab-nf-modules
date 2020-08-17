@@ -103,7 +103,7 @@ process star_align_reads {
     script:
 
     // Add the main arguments
-    args = "--runMode alignReads --genomeDir $star_index --readFilesIn $reads "
+    args = "--runMode alignReads --runDirPerm All_RWX --genomeDir $star_index --readFilesIn $reads "
 
     // Check and add custom arguments
     if ( opts.args ) {
