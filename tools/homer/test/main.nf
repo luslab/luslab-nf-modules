@@ -17,7 +17,7 @@ params.fasta = "$baseDir/../../../test_data/homer/Gallus_gallus.sub.fa"
 /* Module inclusions 
 --------------------------------------------------------------------------------------*/
 
-include {homer_annotatePeaks} from '../main.nf'
+include {homer_annotate_peaks} from '../main.nf'
 
 /*------------------------------------------------------------------------------------*/
 /* Define input channels
@@ -25,7 +25,7 @@ include {homer_annotatePeaks} from '../main.nf'
 
 // Define test data
 homerData = [
-    ['S1', "$baseDir/../../../test_data/homer/testPeaks.bed"]
+    [[sample_id:'S1'], "$baseDir/../../../test_data/homer/testPeaks.bed"]
 ]
 
 // Define test data input channel
@@ -41,8 +41,8 @@ Channel
 // Run workflow
 workflow {
     // annotate peak files
-    homer_annotatePeaks(ch_homerData, params.fasta, params.gtf)
+    homer_annotate_peaks(params.modules['homer_annotate_peaks'], ch_homerData, params.fasta, params.gtf)
 
     // View outputs
-    homer_annotatePeaks.out | view
+    homer_annotate_peaks.out | view
 }
