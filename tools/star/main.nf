@@ -24,7 +24,7 @@ process star_genome_generate {
     script:
 
     // Add the main arguments
-    args = "--runMode genomeGenerate --genomeDir genome_index --genomeFastaFiles $fasta "
+    args = "--runMode genomeGenerate --runDirPerm All_RWX --genomeDir genome_index --genomeFastaFiles $fasta "
 
     // Check and add custom arguments
     if ( opts.args ) {
