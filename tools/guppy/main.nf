@@ -22,7 +22,7 @@ process guppy_basecaller {
         tuple val(meta), path("*.fastq.gz"), emit: fastq
         path "*.log", emit: log
         path "*.txt", emit: sequencing_summary
-				path "*.js", emit: report
+				path "*.js", emit: telemetry
 
     script:
         args = opts.args.trim()
@@ -55,7 +55,7 @@ process guppy_qc {
 
     input:
         val opts
-        tuple path(summary), path(telemetry)
+        path(sequencing_summary)
 
     output:
         path '*.html', emit: report
@@ -63,7 +63,7 @@ process guppy_qc {
     script:
         prefix = opts.suffix ? "${opts.suffix}" : ""
 
-        command = "pycoQC --summary_file $summary --html_outfile ${prefix}qc_report.html"
+        command = "pycoQC --summary_file $sequencing_summary --html_outfile ${prefix}qc_report.html"
         if (params.verbose){
             println ("[MODULE] guppy_qc command: " + command)
         }
