@@ -1,0 +1,84 @@
+name: STAR 
+version: 2.7.5b
+description: Tool for genome indexing and read mapping
+    - Indexing
+    - Mapping
+tools:
+    - STAR:
+        description: |
+            Tool for genome indexing and read mapping  
+        homepage: https://github.com/alexdobin/STAR
+        documentation: https://github.com/alexdobin/STAR/blob/master/doc/STARmanual.pdf
+processes:
+    - genome_generate:
+        operation: |
+            Use params.modules['star_genome_generate'].args to set command params. Use other options from params.modules['star_genome_generate'] to set optional input files.
+            The program will execute with the following pattern:
+                STAR --runMode genomeGenerate --genomeDir genome_index --genomeFastaFiles {fasta1.fa [fasta2.fa ...]} {opts.args} --runThreadN {task.cpus} --sjdbGTFfile {opts.sjdbGTFfile} --sjdbFileChrStartEnd {opts.sjdbFileChrStartEnd}  
+        description: |
+            Indexes a genome sequence
+        input:
+            - opts:
+                type: value
+                description: Parameters for STAR and optional input
+            - fasta:
+                type: FASTA
+                description: Genome sequence
+        output:
+            - genomeIndex:
+                type: Directory
+                description: Genome index
+            - chrNameFile:
+                type: Text file
+                description: Chromosome names
+            - report:
+                type: Text file
+                description: Log of the indexing process
+    - align_reads:
+        operation: |
+            Use params.modules['star_align_reads'].args to set command params. Use other options from params.modules['star_align_reads'] to set optional input files.
+            The program will execute with the following pattern:
+                STAR --runMode alignReads --genomeDir {star_index} --readFilesIn {reads} --runThreadN {task.cpus} --outFileNamePrefix {meta.sample_id[opts.suffix]} --sjdbGTFfile {opts.sjdbGTFfile} --sjdbFileChrStartEnd {opts.sjdbFileChrStartEnd} --varVCFfile {opts.varVCFfile}  
+        description: |
+            Maps reads to a genome index.
+        input:
+            - opts: 
+                type: value
+                description: Parameters for STAR and optional input
+            - meta, reads:
+                type: tuple(value; array of FASTQ paths)
+                description: metadata (sample ids, etc.) and FASTQ files
+            - star_index: 
+                type: Directory
+                description: Genome index
+        output:
+            - samFiles:
+                type: SAM files
+                description: Mapping in SAM format (optional)
+            - bamFiles:
+                type: BAM files
+                description: Mapping in BAM format (optional)
+            - sjFiles:
+                type: Files with splice junctions 
+                description: Files with splice junctions found by STAR (optional)
+            - chJunctions:
+                type: STAR-specific format for chimeric alignments
+                description: File with chimeric read alignments (optional)
+            - readsPerGene:
+                type: STAR-specific format for read counts
+                description: Read counts per gene (optional)
+            - finalLogFiles:
+                type: Text file
+                description: Summary of mapping statistics
+            - outLogFiles:
+                type: Text file
+                description: The main log file
+            - progressLogFiles:
+                type: Text file
+                description: Log file for progress statistics
+            - report:
+                type: Text file
+                description: Summary of mapping statistics (same as finalLogFiles)
+authors:
+    - @sidorov-si
+    - @Rahul1711arora
