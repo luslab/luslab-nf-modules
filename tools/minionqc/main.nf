@@ -16,7 +16,7 @@ process minionqc {
 
     input:
         val opts
-        path(sequencing_summary)
+        tuple val(meta), path(sequencing_summary)
 
     output:
         tuple val(meta), path("*_minionqc"), emit: minionqcOutputs
@@ -29,7 +29,7 @@ process minionqc {
         args += ext_args.trim()
     }
 
-    prefix = opts.suffix ? "${opts.suffix}" : ""
+    prefix = opts.suffix ? "${meta.sample_id}${opts.suffix}" : "${meta.sample_id}"
 
     minionqc_command = "Rscript /MinIONQC.R -p ${task.cpus} ${args} -o ${prefix}_minionqc -i $sequencing_summary"
 
