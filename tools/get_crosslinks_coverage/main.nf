@@ -4,8 +4,12 @@
 nextflow.enable.dsl=2
 
 process get_crosslinks_coverage {
-    publishDir "${params.outdir}/get_crosslinks_coverage",
-        mode: "copy", overwrite: true
+    publishDir "${params.outdir}/${opts.publish_dir}",
+        mode: "copy", 
+        overwrite: true,
+        saveAs: { filename ->
+                      if (opts.publish_results == "none") null
+                      else filename }
     
     container 'luslab/nf-modules-get_crosslinks_coverage'
 
