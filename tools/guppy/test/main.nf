@@ -18,6 +18,7 @@ params.verbose = true
 
 include {guppy_basecaller} from '../main.nf'
 include {guppy_qc} from '../main.nf'
+include {assert_channel_count} from '../../../workflows/test_flows/main.nf'
 
 /*------------------------------------------------------------------------------------*/
 /* Define input channels
@@ -47,4 +48,7 @@ workflow {
     guppy_basecaller.out.sequencing_summary | view
     guppy_basecaller.out.telemetry | view
     guppy_qc.out.report | view
+
+    assert_channel_count( guppy_basecaller.out.fastq, "basecaller", 1)
+    assert_channel_count( guppy_qc.out.report, "qc_report", 1)
 }
