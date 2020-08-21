@@ -38,7 +38,7 @@ Channel
 
 workflow {
     // Run minionqc on the test set
-    minionqc (params.modules['minionqc'], ch_guppyout_data )
+    minionqc(params.modules['minionqc'], ch_guppyout_data)
 
     // Collect file names and view output
     minionqc.out.minionqcOutputs | view

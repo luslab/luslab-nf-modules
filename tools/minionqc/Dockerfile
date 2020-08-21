@@ -1,5 +1,5 @@
-#FROM nfcore/base:1.7
-FROM debian:unstable
+FROM nfcore/base:1.7
+
 LABEL authors="michael.mansfield@oist.jp" \
       description="Docker image containing all requirements for the nf-core minionqc module"
 

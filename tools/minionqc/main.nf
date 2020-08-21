@@ -6,7 +6,7 @@ nextflow.preview.dsl = 2
 // Process definition
 process minionqc {
     publishDir "${params.outdir}/${opts.publish_dir}",
-        mode: "copy", 
+        mode: "copy",
         overwrite: true,
         saveAs: { filename ->
                       if (opts.publish_results == "none") null
@@ -19,7 +19,7 @@ process minionqc {
         tuple val(meta), path(sequencing_summary)
 
     output:
-        tuple val(meta), path("*_minionqc"), emit: minionqcOutputs
+        tuple val(meta), path("minionqc"), emit: minionqcOutputs
 
     script:
 
@@ -29,9 +29,7 @@ process minionqc {
         args += ext_args.trim()
     }
 
-    prefix = opts.suffix ? "${meta.sample_id}${opts.suffix}" : "${meta.sample_id}"
-
-    minionqc_command = "Rscript /MinIONQC.R -p ${task.cpus} ${args} -o ${prefix}_minionqc -i $sequencing_summary"
+    minionqc_command = "Rscript /MinIONQC.R -p ${task.cpus} ${args} -o minionqc -i $sequencing_summary"
 
     if (params.verbose){
         println ("[MODULE] minionqc command: " + minionqc_command)
