@@ -6,5 +6,4 @@ channels:
   - bioconda
   - defaults
 dependencies:
-  ## bioconda packages, see above
-  - hisat2=2.2.1-0
+  - hisat2=2.2.1
