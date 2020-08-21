@@ -22,23 +22,23 @@ include {nanoplot} from "../main.nf"
 /* Define input channels
 --------------------------------------------------------------------------------------*/
 
-testDataNanopore= [
-    ["test-sample", "$baseDir/input/test-nanopore.fastq.gz"],
+testNanoporeReads = [
+    [[sample_id:"test-sample"], "$baseDir/../../../test_data/fastq/test-nanopore.fastq.gz"],
 ]
 
 //Define test data input channels
 Channel
-    .from(testDataNanopore)
+    .from(testNanoporeReads)
     .map { row -> [ row[0], file(row[1], checkIfExists: true) ] }
-    .set {ch_fastq_data}
+    .set {ch_nanoporeread_data}
 
 /*------------------------------------------------------------------------------------*/
 /* Run tests
 --------------------------------------------------------------------------------------*/
 
 workflow {
-    // Run NanoPlot
-    nanoplot ( ch_fastq_data )
+    // Run minionqc on the test set
+    nanoplot(params.modules['nanoplot'], ch_nanoporeread_data)
 
     // Collect file names and view output
     nanoplot.out.nanoplotOutputs | view
