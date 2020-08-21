@@ -11,11 +11,12 @@ process getcrosslinkscoverage {
     container 'luslab/nf-modules-get_crosslinks_coverage'
 
     input:
-        tuple val(sample_id), path(bed)
+        val(opt)
+        tuple val(meta), path(bed)
 
     output:
-        tuple val(sample_id), path("${bed.simpleName}.bedgraph.gz"), emit: bedGraph
-        tuple val(sample_id), path("${bed.simpleName}.norm.bedgraph.gz"), emit: normBedGraph
+        tuple val(meta), path("${bed.simpleName}.bedgraph.gz"), emit: bedGraph
+        tuple val(meta), path("${bed.simpleName}.norm.bedgraph.gz"), emit: normBedGraph
 
     script:
 
