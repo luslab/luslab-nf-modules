@@ -3,8 +3,7 @@
 // Specify DSL2
 nextflow.enable.dsl=2
 
-// Process definition
-process getcrosslinkscoverage {
+process get_crosslinks_coverage {
     publishDir "${params.outdir}/get_crosslinks_coverage",
         mode: "copy", overwrite: true
     
@@ -24,13 +23,12 @@ process getcrosslinkscoverage {
 
         //SHELL
         """
-        gunzip -c $bed | awk '{OFS = "\t"}{if (\$6 == "+") {print \$1, \$2, \$3, \$5} else {print \$1, \$2, \$3, -\$5}}' | pigz > ${bed.simpleName}.bedgraph.gz
+        gunzip -c $bed | awk '{OFS = "\t"}{if (\$6 == "+") {print \$1, \$2, \$3, \$5} else {print \$1, \$2, \$3, -\$5}}' | pigz > ${prefix1}.gz
     
-
         TOTAL=`gunzip -c $bed | awk 'BEGIN {total=0} {total=total+\$5} END {print total}'`
         echo \$TOTAL
         gunzip -c $bed | awk -v total=\$TOTAL '{printf "%s\\t%i\\t%i\\t%s\\t%f\\t%s\\n", \$1, \$2, \$3, \$4, 1000000*\$5/total, \$6}' | \
         awk '{OFS = "\t"}{if (\$6 == "+") {print \$1, \$2, \$3, \$5} else {print \$1, \$2, \$3, -\$5}}' | \
-        sort -k1,1 -k2,2n | pigz > ${bed.simpleName}.norm.bedgraph.gz
+        sort -k1,1 -k2,2n | pigz > ${prefix2}.gz
         """
 }
