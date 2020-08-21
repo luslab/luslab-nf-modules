@@ -10,13 +10,12 @@ log.info ("Starting tests for get_crosslinks...")
 /* Define params
 --------------------------------------------------------------------------------------*/
 
-params.fai = "$baseDir/input/GRCh38.primary_assembly.genome_chr6_34000000_35000000.fa.fai"
-
 /*------------------------------------------------------------------------------------*/
 /* Module inclusions
 --------------------------------------------------------------------------------------*/
 
-include {getcrosslinks} from '../main.nf'
+include {getcrosslinks as getcrosslinks_bam; getcrosslinks as getcrosslinks_bambai} from '../main.nf'
+include {assert_channel_count} from '../../../workflows/test_flows/main.nf'
 
 /*------------------------------------------------------------------------------------*/
 /* Define input channels
@@ -24,46 +23,45 @@ include {getcrosslinks} from '../main.nf'
 
 //Define test data 
 testDataBam = [
-    ['Sample1', "$baseDir/input/sample1.bam"],
-    ['Sample2', "$baseDir/input/sample2.bam"]
+    [[sample_id:"sample1"], "$baseDir/../../../test_data/bam_bai/sample1.bam"],
+    [[sample_id:"sample2"], "$baseDir/../../../test_data/bam_bai/sample2.bam"]
 ]
 
 testDataBamBai = [
-    ['Sample1', "$baseDir/input/sample1.bam", "$baseDir/input/sample1.bam.bai"],
-    ['Sample2', "$baseDir/input/sample2.bam", "$baseDir/input/sample2.bam.bai"]
+    [[sample_id:"sample1"], "$baseDir/../../../test_data/bam_bai/sample1.bam", "$baseDir/../../../test_data/bam_bai/sample1.bam.bai"],
+    [[sample_id:"sample2"], "$baseDir/../../../test_data/bam_bai/sample2.bam", "$baseDir/../../../test_data/bam_bai/sample2.bam.bai"]
 ]
 
 //Define test data input channels
 
 // Fai input channel
 Channel
-    .fromPath(params.fai, checkIfExists: true)
+    .value("$baseDir/../../../test_data/fai/GRCh38.primary_assembly.genome_chr6_34000000_35000000.fa.fai")
     .set {ch_fai}
 
 // Bam input channel
 Channel
     .from(testDataBam)
     .map { row -> [ row[0], file(row[1], checkIfExists: true) ] }
-    .combine( ch_fai )
     .set {ch_bam}
 
 // Bam/bai input channel
 Channel
     .from(testDataBamBai)
     .map { row -> [ row[0], [file(row[1], checkIfExists: true), file(row[2], checkIfExists:true)] ] }
-    .combine( ch_fai )
     .set {ch_bam_bai}
-
 
 /*------------------------------------------------------------------------------------*/
 /* Run tests
 --------------------------------------------------------------------------------------*/
 
 workflow {
-    // Run getcrosslinks
-    getcrosslinks ( ch_bam )
-    //getcrosslinks ( ch_bam_bai )
+    getcrosslinks_bam (params.modules['get_crosslinks'], ch_bam, ch_fai )
+    getcrosslinks_bambai (params.modules['get_crosslinks'], ch_bam_bai, ch_fai )
 
-    // Collect file names and view output
-    getcrosslinks.out.crosslinkBed | view
+    getcrosslinks_bam.out.crosslinkBed | view
+    getcrosslinks_bambai.out.crosslinkBed | view
+
+    assert_channel_count( getcrosslinks_bam.out.crosslinkBed, "crosslinkBed", 2)
+    assert_channel_count( getcrosslinks_bambai.out.crosslinkBed, "crosslinkBed", 2)
 }

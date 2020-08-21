@@ -15,20 +15,23 @@ log.info ("Starting tests for get_crosslinks_coverage...")
 /* Module inclusions
 --------------------------------------------------------------------------------------*/
 
-include {getcrosslinkscoverage} from '../main.nf'
+include {get_crosslinks_coverage} from '../main.nf'
+include {assert_channel_count} from '../../../workflows/test_flows/main.nf'
 
 /*------------------------------------------------------------------------------------*/
 /* Define input channels
 --------------------------------------------------------------------------------------*/
 
+"$baseDir/../../../test_data/bed/sample1.xl.bed.gz"
+
 //Define test data 
 testData = [
-    ['Sample1', "$baseDir/input/sample1.xl.bed.gz"],
-    ['Sample2', "$baseDir/input/sample2.xl.bed.gz"],
-    ['Sample3', "$baseDir/input/sample3.xl.bed.gz"],
-    ['Sample4', "$baseDir/input/sample4.xl.bed.gz"],
-    ['Sample5', "$baseDir/input/sample5.xl.bed.gz"],
-    ['Sample6', "$baseDir/input/sample6.xl.bed.gz"]
+    [[sample_id:"sample1"], "$baseDir/../../../test_data/bed/sample1.xl.bed.gz"],
+    [[sample_id:"sample2"], "$baseDir/../../../test_data/bed/sample2.xl.bed.gz"],
+    [[sample_id:"sample3"], "$baseDir/../../../test_data/bed/sample3.xl.bed.gz"],
+    [[sample_id:"sample4"], "$baseDir/../../../test_data/bed/sample4.xl.bed.gz"],
+    [[sample_id:"sample5"], "$baseDir/../../../test_data/bed/sample5.xl.bed.gz"],
+    [[sample_id:"sample6"], "$baseDir/../../../test_data/bed/sample6.xl.bed.gz"]
 ]
 
 // Create channels of test data 
@@ -42,9 +45,12 @@ Channel
 // Run workflow
 workflow {
     // Run getcrosslinkcoverage
-    getcrosslinkscoverage ( ch_bed )
+    get_crosslinks_coverage ( params.modules['get_crosslinks_coverage'], ch_bed )
 
     // Collect file names and view output
-    getcrosslinkscoverage.out.bedGraph | view
-    getcrosslinkscoverage.out.normBedGraph | view
+    get_crosslinks_coverage.out.bedGraph | view
+    get_crosslinks_coverage.out.normBedGraph | view
+
+    assert_channel_count(get_crosslinks_coverage.out.bedGraph, "bedgraph", 6)
+    assert_channel_count(get_crosslinks_coverage.out.normBedGraph, "norm_bedgraph", 6)
 }
