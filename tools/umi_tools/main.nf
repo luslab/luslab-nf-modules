@@ -28,7 +28,7 @@ process umitools_dedup {
     // Init
     prefix = opts.suffix ? "${meta.sample_id}${opts.suffix}" : "${meta.sample_id}"
 
-    args = "--log=${prefix}.dedup.log"
+    args = "--log=${prefix}.dedup.log "
 
     if(opts.args && opts.args != '') {
         ext_args = opts.args
