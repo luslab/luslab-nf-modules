@@ -43,7 +43,7 @@ Channel
 workflow {
 
     // Run dedup
-    umitools_dedup(ch_bam_bai)
+    umitools_dedup(params.modules['umi_tools'], ch_bam_bai)
 
     // Collect file names and view output
     umitools_dedup.out.dedupBam | view
