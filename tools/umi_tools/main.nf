@@ -5,32 +5,38 @@ nextflow.enable.dsl=2
 
 // Process definition
 process umitools_dedup {
-    publishDir "${params.outdir}/umitools/dedup",
-        mode: "copy", overwrite: true
+    publishDir "${params.outdir}/${opts.publish_dir}",
+        mode: "copy", 
+        overwrite: true,
+        saveAs: { filename ->
+                      if (opts.publish_results == "none") null
+                      else filename }
 
     container 'luslab/nf-modules-umi_tools:latest'
 
     input:
-        tuple val(sample_id), path(bam)
+        val(opts)
+        tuple val(meta), path(bam)
        
     output:
-        tuple val(sample_id), path("${sample_id}.dedup.bam"), emit: dedupBam
-        tuple val(sample_id), path("${sample_id}.dedup.bam.bai"), emit: dedupBai
+        tuple val(meta), path("${prefix}.dedup.bam"), emit: dedupBam
+        tuple val(meta), path("${prefix}.dedup.bam.bai"), emit: dedupBai
         path "*.dedup.log", emit: report
 
     script:
 
     // Init
-    args = "--log=${sample_id}.dedup.log"
+    prefix = opts.suffix ? "${meta.sample_id}${opts.suffix}" : "${meta.sample_id}"
 
-    // Check main args string exists and strip whitespace
-    if(params.umitools_dedup_args && params.umitools_dedup_args != '') {
-        ext_args = params.umitools_dedup_args
-        args += " " + ext_args.trim()
+    args = "--log=${prefix}.dedup.log"
+
+    if(opts.args && opts.args != '') {
+        ext_args = opts.args
+        args += ext_args.trim()
     }
 
     // Construct CL line
-    dedup_command = "umi_tools dedup ${args} -I ${bam[0]} -S ${sample_id}.dedup.bam --output-stats=${sample_id}"
+    dedup_command = "umi_tools dedup ${args} -I ${bam[0]} -S ${prefix}.dedup.bam --output-stats=${prefix}"
 
     // Log
     if (params.verbose){
@@ -40,6 +46,6 @@ process umitools_dedup {
     //SHELL
     """
     ${dedup_command}
-    samtools index ${sample_id}.dedup.bam
+    samtools index ${prefix}.dedup.bam
     """
 }
