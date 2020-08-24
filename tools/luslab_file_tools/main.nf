@@ -10,6 +10,7 @@ process decompress {
 
     output:
         tuple val(meta), path("*.*"), emit: file
+        path "*.*", emit: fileNoMeta
 
     script: 
     """
