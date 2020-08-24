@@ -6,25 +6,10 @@ nextflow.enable.dsl=2
 // Decompresses file to output (assumes running base system on linux)"
 process decompress {
     input:
-      tuple val(sample_id), path(input_file)
+      tuple val(meta), path(input_file)
 
     output:
-        tuple val(sample_id), path("*.*"), emit: file
-
-    script: 
-    """
-    FILE=$input_file
-    cat $input_file | gzip -dv - > "\${FILE%.*}"
-    """
-}
-
-// Decompresses file to output (assumes running base system on linux)"
-process decompress_noid {
-    input:
-      path input_file
-
-    output:
-        path "*.*", emit: file
+        tuple val(meta), path("*.*"), emit: file
 
     script: 
     """

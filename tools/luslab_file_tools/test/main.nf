@@ -10,20 +10,19 @@ log.info ("Starting tests for file_tools...")
 /* Define params
 --------------------------------------------------------------------------------------*/
 
-params.verbose = true
-
 /*------------------------------------------------------------------------------------*/
 /* Module inclusions
 --------------------------------------------------------------------------------------*/
 
 include {decompress} from '../main.nf'
+include {assert_channel_count} from '../../../workflows/test_flows/main.nf'
 
 /*------------------------------------------------------------------------------------*/
 /* Define input channels
 --------------------------------------------------------------------------------------*/
 
 testData = [
-    ['Sample1', "$baseDir/../../../test_data/fasta/homo-hg37-21.fa.gz"]
+    [[:], "$baseDir/../../../test_data/fasta/homo-hg37-21.fa.gz"]
 ]
 
 Channel
@@ -38,4 +37,6 @@ workflow {
     decompress ( ch_input )
 
     decompress.out.file | view
+
+    assert_channel_count( decompress.out.file, "file", 1)
 }
