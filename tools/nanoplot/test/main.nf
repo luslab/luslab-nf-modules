@@ -17,6 +17,7 @@ params.verbose = true
 --------------------------------------------------------------------------------------*/
 
 include {nanoplot} from "../main.nf"
+include {assert_channel_count} from '../../../workflows/test_flows/main.nf'
 
 /*------------------------------------------------------------------------------------*/
 /* Define input channels
@@ -42,4 +43,6 @@ workflow {
 
     // Collect file names and view output
     nanoplot.out.nanoplotOutputs | view
+
+    assert_channel_count( nanoplot.out.nanoplotOutputs, "output", 1)
 }
