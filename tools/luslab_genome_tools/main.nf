@@ -9,7 +9,7 @@ process region2bed {
         val region 
 
     output:
-        path "custom_region.bed", emit: bedFile
+        path "custom_region.bed", emit: bed
 
     script:
 

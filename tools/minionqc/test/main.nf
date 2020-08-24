@@ -17,6 +17,7 @@ params.verbose = true
 --------------------------------------------------------------------------------------*/
 
 include {minionqc} from "../main.nf"
+include {assert_channel_count} from '../../../workflows/test_flows/main.nf'
 
 /*------------------------------------------------------------------------------------*/
 /* Define input channels
@@ -42,4 +43,6 @@ workflow {
 
     // Collect file names and view output
     minionqc.out.minionqcOutputs | view
+
+    assert_channel_count( minionqc.out.minionqcOutputs, "reads", 1)
 }

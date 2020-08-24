@@ -11,17 +11,16 @@ include {samtools_faidx} from '../../tools/samtools/main.nf'
 workflow subset_genome {
     take: fasta
     take: region
-    take: samtools_params
     main:
         // Create bed from region
         region2bed( region )
 
         // Subset fasta file
-        seqtk_subseq( fasta.combine(region2bed.out.bedFile) )
+        seqtk_subseq( params.modules['seqtk_subseq'], fasta, region2bed.out.bed )
 
         // Index the fasta file
-        samtools_faidx( samtools_params, seqtk_subseq.out.subsetFile )
+        samtools_faidx( params.modules['samtools_faidx'], seqtk_subseq.out.subset )
 
     emit:
-        fastaSubset = samtools_faidx.out.indexedFasta
+        fasta = samtools_faidx.out.indexedFasta
 }

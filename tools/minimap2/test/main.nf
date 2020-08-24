@@ -17,6 +17,7 @@ params.verbose = true
 --------------------------------------------------------------------------------------*/
 
 include {minimap2} from '../main.nf'
+include {assert_channel_count} from '../../../workflows/test_flows/main.nf'
 
 /*------------------------------------------------------------------------------------*/
 /* Define input channels
@@ -48,4 +49,6 @@ workflow {
 
     // Collect and view output
     minimap2.out.alignedReads | view
+
+    assert_channel_count( minimap2.out.alignedReads, "reads", 1)
 }

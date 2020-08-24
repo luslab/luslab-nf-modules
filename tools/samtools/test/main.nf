@@ -16,7 +16,7 @@ params.modules['samtools_view'].args = "-b -h"
 /* Module inclusions 
 --------------------------------------------------------------------------------------*/
 include {samtools_index; samtools_view; samtools_faidx; samtools_sort} from '../main.nf'
-include {decompress_noid} from '../../../tools/luslab_file_tools/main.nf'
+include {decompress} from '../../../tools/luslab_file_tools/main.nf'
 include {assert_channel_count} from '../../../workflows/test_flows/main.nf'
 
 /*------------------------------------------------------------------------------------*/
@@ -45,7 +45,7 @@ Channel
 //     .set { ch_testDataView }
 
 Channel
-    .from("$baseDir/../../../test_data/fasta/homo-hg37-21.fa.gz")
+    .value([[:], "$baseDir/../../../test_data/fasta/homo-hg37-21.fa.gz"])
     .set {ch_fasta}
 
 /*------------------------------------------------------------------------------------*/
@@ -69,8 +69,8 @@ workflow {
     assert_channel_count( samtools_sort.out.bam, "bam", 2)
 
     //Test samtools faidx
-    decompress_noid( ch_fasta )
-    samtools_faidx( params.modules['samtools_faidx'], decompress_noid.out.file )
+    decompress( ch_fasta )
+    samtools_faidx( params.modules['samtools_faidx'], decompress.out.fileNoMeta )
     samtools_faidx.out.indexedFasta | view
     assert_channel_count( samtools_faidx.out.indexedFasta, "indexedFasta", 1)
 }

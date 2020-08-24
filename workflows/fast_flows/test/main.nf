@@ -10,34 +10,31 @@ log.info ("Starting tests for fast_flows...")
 --------------------------------------------------------------------------------------*/
 
 params.verbose = true
-params.genome = "$baseDir/../../../test_data/fasta/homo-hg37-21.fa.gz"
-params.region = "21:40000000-40100000"
 
 /*------------------------------------------------------------------------------------*/
 /* Module inclusions
 --------------------------------------------------------------------------------------*/
 
-include {decompress_noid} from '../../../tools/luslab_file_tools/main.nf'
+include {decompress} from '../../../tools/luslab_file_tools/main.nf'
 include {subset_genome} from '../main.nf'
+include {assert_channel_count} from '../../../workflows/test_flows/main.nf'
 
 /*------------------------------------------------------------------------------------*/
 /* Define input channels
 --------------------------------------------------------------------------------------*/
 
 Channel
-    .from(params.genome)
+    .value([[:], "$baseDir/../../../test_data/fasta/homo-hg37-21.fa.gz"])
     .set {ch_fasta}
 
 //------------------------------------------------------------------------------------
 
 // Run workflow
 workflow {
-    // Decompress fasta file
-    decompress_noid( ch_fasta )
+    decompress( ch_fasta )
 
-    // Call subset
-    subset_genome( decompress_noid.out.file, params.region, params.modules['samtools_faidx'] )
+    subset_genome( decompress.out.fileNoMeta, "21:40000000-40100000")
+    subset_genome.out.fasta | view
 
-    // View outputs
-    subset_genome.out.fastaSubset | view
+    assert_channel_count( subset_genome.out.fasta, "fasta", 1)
 }
