@@ -26,8 +26,8 @@ include {assert_channel_count} from '../../../workflows/test_flows/main.nf'
 
 // Define test data
 testData = [
-    [[sample_id:"sample1"], "$baseDir/input/sample1.bam", "$baseDir/input/sample1.bai"],
-    [[sample_id:"sample2"], "$baseDir/input/sample2.bam", "$baseDir/input/sample2.bai"]
+    [[sample_id:"sample1"], "$baseDir/../../../test_data/umi_tools/sample1.bam", "$baseDir/../../../test_data/umi_tools/sample1.bai"],
+    [[sample_id:"sample2"], "$baseDir/../../../test_data/umi_tools/sample2.bam", "$baseDir/../../../test_data/umi_tools/sample2.bai"]
 ]
 
 //Define test data input channel
@@ -47,9 +47,7 @@ workflow {
 
     // Collect file names and view output
     umitools_dedup.out.dedupBam | view
-    umitools_dedup.out.dedupBai | view
 
     assert_channel_count( umitools_dedup.out.dedupBam, "dedupBam", 2)
-    assert_channel_count( umitools_dedup.out.dedupBai, "dedupBai", 2)
 
 }
