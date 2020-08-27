@@ -19,8 +19,8 @@ process umitools_dedup {
         tuple val(meta), path(bam)
        
     output:
-        tuple val(meta), path("${prefix}${opts.suffix}.bam", path("${prefix}${opts.suffix}.bam.bai"), emit: dedupBam
-        path("*${opts.suffix}.log"), emit: report
+        tuple val(meta), path("${prefix}${opts.suffix}.bam"), path("${prefix}${opts.suffix}.bam.bai"), emit: dedupBam
+        path "*.log", emit: report
 
     script:
 
