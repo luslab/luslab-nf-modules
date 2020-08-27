@@ -35,7 +35,7 @@ process umitools_dedup {
     }
 
     // Construct CL line
-    dedup_command = "umi_tools dedup ${args} -I ${bam[0]} -S ${prefix}.dedup.bam --output-stats=${prefix}"
+    dedup_command = "umi_tools dedup ${args} -I ${bam[0]} -S ${prefix}${opts.suffix}.bam --output-stats=${prefix}"
 
     // Log
     if (params.verbose){
