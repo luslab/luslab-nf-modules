@@ -51,7 +51,7 @@ workflow {
 
     //Check count
     assert_channel_count( bowtie2_align.out.sam, "sam", 0)
-    assert_channel_count( bowtie2_align.out.bam, "bam", 3)
+    assert_channel_count( bowtie2_align.out.bam, "bam", 2)
     assert_channel_count( bowtie2_align.out.unmappedFastqPaired, "unmappedFastqPaired", 0)
     assert_channel_count( bowtie2_align.out.unmappedFastqSingle, "unmappedFastqSingle", 0)
 }
