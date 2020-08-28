@@ -20,7 +20,10 @@ process bowtie2_align {
         path index
 
     output:
-        tuple val(meta), path("*.sam"), emit: sam
+        tuple val(meta), path("*.sam"), optional: true, emit: sam
+        tuple val(meta), path("*.bam"), path("*.bai"), optional: true, emit: bam
+        tuple val(meta), path("${prefix}${opts.suffix}.1.fastq.gz"), path("${prefix}${opts.suffix}.2.fastq.gz"), optional: true, emit: unmappedFastqPaired
+        tuple val(meta), path("${prefix}${opts.suffix}.fastq.gz"), optional: true, emit: unmappedFastqSingle
         path "*stats.txt", emit: report
 
     script:
@@ -40,9 +43,30 @@ process bowtie2_align {
             files = '-U ' + reads[0]
         }
 
+        // If clause for creating unmapped filename if requested
+        if(opts.unmapped_suffix && opts.unmapped_suffix != '') {
+            if(readList.size > 1){
+                args += ' --un-conc ' + "${meta.sample_id}${opts.unmapped_suffix}" + '.fastq.gz'
+            }
+            else {
+                args += ' --un ' + "${meta.sample_id}${opts.unmapped_suffix}" + '.fastq.gz'
+            }
+        }
+
         prefix = opts.suffix ? "${meta.sample_id}${opts.suffix}" : "${meta.sample_id}"
 
-        command = "bowtie2 -x ${index[0].simpleName} $args $files 2>bowtie2_stats.txt > ${prefix}.sam"
+        // command = "bowtie2 -x ${index[0].simpleName} $args $files 2>bowtie2_stats.txt > ${prefix}.sam"
+
+        sort_command = "samtools sort -@ ${task.cpus} /dev/stdin > ${prefix}.bam"
+        index_command = "samtools index -@ ${task.cpus} ${prefix}.bam"
+
+        if ( opts.output_sam && opts.output_sam == true ) {
+            command = "bowtie2 -x ${index[0].simpleName} $args $files 2>bowtie2_stats.txt > ${prefix}.sam"
+        }
+        else {
+            command = "bowtie2 -x ${index[0].simpleName} $args $files 2>bowtie2_stats.txt | $sort_command && $index_command"
+        }
+
         if (params.verbose){
             println ("[MODULE] bowtie2 command: " + command)
         }
