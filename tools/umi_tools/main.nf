@@ -19,7 +19,7 @@ process umitools_dedup {
         tuple val(meta), path(bam), path(bai)
        
     output:
-        tuple val(meta), path("${prefix}${opts.suffix}.bam"), path("${prefix}${opts.suffix}.bam.bai"), emit: dedupBam
+        tuple val(meta), path("${prefix}.bam"), path("${prefix}.bam.bai"), emit: dedupBam
         path "*.log", emit: report
 
     script:
@@ -27,7 +27,7 @@ process umitools_dedup {
     // Init
     prefix = opts.suffix ? "${meta.sample_id}${opts.suffix}" : "${meta.sample_id}"
 
-    args = "--log=${prefix}${opts.suffix}.log "
+    args = "--log=${prefix}.log "
 
     if(opts.args && opts.args != '') {
         ext_args = opts.args
@@ -35,7 +35,7 @@ process umitools_dedup {
     }
 
     // Construct CL line
-    dedup_command = "umi_tools dedup ${args} -I ${bam[0]} -S ${prefix}${opts.suffix}.bam --output-stats=${prefix}"
+    dedup_command = "umi_tools dedup ${args} -I ${bam[0]} -S ${prefix}.bam --output-stats=${prefix}"
 
     // Log
     if (params.verbose){
@@ -45,6 +45,6 @@ process umitools_dedup {
     //SHELL
     """
     ${dedup_command}
-    samtools index ${prefix}${opts.suffix}.bam
+    samtools index ${prefix}.bam
     """
 }
