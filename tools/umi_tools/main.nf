@@ -16,7 +16,7 @@ process umitools_dedup {
 
     input:
         val(opts)
-        tuple val(meta), path(bam)
+        tuple val(meta), path(bam), path(bai)
        
     output:
         tuple val(meta), path("${prefix}${opts.suffix}.bam"), path("${prefix}${opts.suffix}.bam.bai"), emit: dedupBam
