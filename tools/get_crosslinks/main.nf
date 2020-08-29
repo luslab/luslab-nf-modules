@@ -16,7 +16,7 @@ process getcrosslinks {
 
     input:
       val(opts)
-      tuple val(meta), path(bam)
+      tuple val(meta), path(bam), path(bai)
       path(fai)
 
     output:
