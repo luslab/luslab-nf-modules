@@ -83,7 +83,8 @@ process star_align_reads {
                       if (opts.publish_results == "none") null
                       else filename }
 
-    container 'quay.io/biocontainers/star:2.7.5b--0'
+    // container 'quay.io/biocontainers/star:2.7.5b--0'
+    container 'luslab/luslab-nf-star:latest'
 
     input:
       val opts
