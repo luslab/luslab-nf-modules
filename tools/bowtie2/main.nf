@@ -48,10 +48,10 @@ process bowtie2_align {
         // If clause for creating unmapped filename if requested
         if(opts.unmapped_suffix && opts.unmapped_suffix != '') {
             if(readList.size > 1){
-                args += ' --un-conc ' + "${prefix}${opts.unmapped_suffix}" + '.fastq.gz'
+                args += ' --un-conc-gz ' + "${prefix}${opts.unmapped_suffix}" + '.fastq.gz'
             }
             else {
-                args += ' --un ' + "${prefix}${opts.unmapped_suffix}" + '.fastq.gz'
+                args += ' --un-gz ' + "${prefix}${opts.unmapped_suffix}" + '.fastq.gz'
             }
         }
 

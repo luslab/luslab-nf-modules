@@ -6,6 +6,6 @@ channels:
   - bioconda
   - defaults
 dependencies:
-  - star=2.7.3a
+  - star=2.7.4a
   - samtools=1.9
   - pigz=2.3.4
