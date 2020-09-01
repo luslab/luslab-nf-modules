@@ -155,7 +155,7 @@ process star_align_reads {
     avail_mem += task.memory ? "--limitBAMsortRAM ${task.memory.toBytes() - 100000000}" : ''
     args += avail_mem
 
-    index_command = "samtools index -@ ${task.cpus} ${prefix}.*.bam"
+    index_command = "samtools index -@ ${task.cpus} ${prefix}.Aligned.sortedByCoord.out.bam"
 
     // Construct command line
     map_command = "STAR $args && $index_command"
