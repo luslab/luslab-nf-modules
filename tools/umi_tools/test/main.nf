@@ -26,14 +26,14 @@ include {assert_channel_count} from '../../../workflows/test_flows/main.nf'
 
 // Define test data
 testData = [
-    [[sample_id:"sample1"], "$baseDir/../../../test_data/umi_tools/sample1.bam", "$baseDir/../../../test_data/umi_tools/sample1.bai"],
-    [[sample_id:"sample2"], "$baseDir/../../../test_data/umi_tools/sample2.bam", "$baseDir/../../../test_data/umi_tools/sample2.bai"]
+    [[sample_id:"sample1"], "$baseDir/../../../test_data/umi_tools/sample1.bam", "$baseDir/../../../test_data/umi_tools/sample1.bam.bai"],
+    [[sample_id:"sample2"], "$baseDir/../../../test_data/umi_tools/sample2.bam", "$baseDir/../../../test_data/umi_tools/sample2.bam.bai"]
 ]
 
 //Define test data input channel
 Channel
     .from(testData)
-    .map{row -> [row[0], [file(row[1], checkIfExists: true), file(row[2], checkIfExists:true)]]}
+    .map{row -> [row[0], file(row[1], checkIfExists: true), file(row[2], checkIfExists:true)]}
     .set{ch_bam_bai}
 
 /*------------------------------------------------------------------------------------*/

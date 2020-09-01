@@ -14,7 +14,7 @@ log.info ("Starting tests for get_crosslinks...")
 /* Module inclusions
 --------------------------------------------------------------------------------------*/
 
-include {getcrosslinks as getcrosslinks_bam; getcrosslinks as getcrosslinks_bambai} from '../main.nf'
+include {getcrosslinks} from '../main.nf'
 include {assert_channel_count} from '../../../workflows/test_flows/main.nf'
 
 /*------------------------------------------------------------------------------------*/
@@ -48,7 +48,7 @@ Channel
 // Bam/bai input channel
 Channel
     .from(testDataBamBai)
-    .map { row -> [ row[0], [file(row[1], checkIfExists: true), file(row[2], checkIfExists:true)] ] }
+    .map { row -> [ row[0], file(row[1], checkIfExists: true), file(row[2], checkIfExists:true) ] }
     .set {ch_bam_bai}
 
 /*------------------------------------------------------------------------------------*/
@@ -57,11 +57,11 @@ Channel
 
 workflow {
     // getcrosslinks_bam (params.modules['get_crosslinks'], ch_bam, ch_fai )
-    getcrosslinks_bambai (params.modules['get_crosslinks'], ch_bam_bai, ch_fai )
+    getcrosslinks (params.modules['get_crosslinks'], ch_bam_bai, ch_fai )
 
     // getcrosslinks_bam.out.crosslinkBed | view
-    getcrosslinks_bambai.out.crosslinkBed | view
+    getcrosslinks.out.crosslinkBed | view
 
     // assert_channel_count( getcrosslinks_bam.out.crosslinkBed, "crosslinkBed", 2)
-    assert_channel_count( getcrosslinks_bambai.out.crosslinkBed, "crosslinkBed", 2)
+    assert_channel_count( getcrosslinks.out.crosslinkBed, "crosslinkBed", 2)
 }
