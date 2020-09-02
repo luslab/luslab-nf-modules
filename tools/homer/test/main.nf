@@ -26,9 +26,8 @@ include {assert_channel_count} from '../../../workflows/test_flows/main.nf'
 
 // Define test data
 homerData = [
-    [[sample_id:'S1'], "$baseDir/../../../test_data/homer/testPeaks_findMotifs.bed"]
+    [[sample_id:'S1'], "$baseDir/../../../test_data/homer/testPeaks.bed"]
 ]
-
 // Define test data input channel
 Channel
     .from(homerData)
@@ -45,7 +44,9 @@ workflow {
 
     homer_annotate_peaks.out | view
 
-    homer_find_motifs(params.modules['homer_find_motifs'], homer_annotate_peaks.out, params.fasta)
+    homer_find_motifs(params.modules['homer_find_motifs'], ch_homerData, params.fasta)
+
+    homer_find_motifs.out | view
 
     assert_channel_count( homer_annotate_peaks.out, "bed", 1)
 }
