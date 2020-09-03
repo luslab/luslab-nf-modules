@@ -89,50 +89,50 @@ workflow {
     /* Test genome generation alone */
     /* ---------------------------- */
 
-    // log.info ("Test star_genome_generate module alone...")
+    log.info ("Test star_genome_generate module alone...")
 
-    // index_genome_only ( params.modules['index_genome_only'], ch_test_data_fasta )
+    index_genome_only ( params.modules['index_genome_only'], ch_test_data_fasta )
 
-    // // Check count of output files from index_genome_only (star_genome_generate)
-    // assert_channel_count( index_genome_only.out.genome_index, "genome_index", 1 )
+    // Check count of output files from index_genome_only (star_genome_generate)
+    assert_channel_count( index_genome_only.out.genome_index, "genome_index", 1 )
     
     /* ---------------------------------- */
     /* Test single-end read mapping alone */
     /* ---------------------------------- */
 
-    // log.info ("Test star_align_reads module alone with single-end reads...")
+    log.info ("Test star_align_reads module alone with single-end reads...")
 
-    // map_se ( params.modules['map_se'], ch_test_data_single_end, ch_test_index_file )
+    map_se ( params.modules['map_se'], ch_test_data_single_end, ch_test_index_file )
 
-    // // Check count of output files from map_se (star_align_reads)
-    // assert_channel_count( map_se.out.sam_files, "sam_files", 0 )
-    // assert_channel_count( map_se.out.bam_files, "bam_files", 2 )
-    // assert_channel_count( map_se.out.sj_files, "sj_files", 2 )
-    // assert_channel_count( map_se.out.ch_junctions, "ch_junctions", 0 )
-    // assert_channel_count( map_se.out.reads_per_gene, "reads_per_gene", 0 )
-    // assert_channel_count( map_se.out.final_log_files, "final_log_files", 2 )
-    // assert_channel_count( map_se.out.out_log_files, "out_log_files", 2 )
-    // assert_channel_count( map_se.out.progress_log_files, "progress_log_files", 2 )
-    // assert_channel_count( map_se.out.report, "report", 2 )
+    // Check count of output files from map_se (star_align_reads)
+    assert_channel_count( map_se.out.sam_files, "sam_files", 0 )
+    assert_channel_count( map_se.out.bam_files, "bam_files", 2 )
+    assert_channel_count( map_se.out.sj_files, "sj_files", 2 )
+    assert_channel_count( map_se.out.ch_junctions, "ch_junctions", 0 )
+    assert_channel_count( map_se.out.reads_per_gene, "reads_per_gene", 0 )
+    assert_channel_count( map_se.out.final_log_files, "final_log_files", 2 )
+    assert_channel_count( map_se.out.out_log_files, "out_log_files", 2 )
+    assert_channel_count( map_se.out.progress_log_files, "progress_log_files", 2 )
+    assert_channel_count( map_se.out.report, "report", 2 )
     
     /* ---------------------------------- */
     /* Test paired-end read mapping alone */
     /* ---------------------------------- */
 
-    // log.info ("Test star_align_reads module alone with paired-end reads...")
+    log.info ("Test star_align_reads module alone with paired-end reads...")
 
-    // map_pe ( params.modules['map_pe'], ch_test_data_paired_end, ch_test_index_file )
+    map_pe ( params.modules['map_pe'], ch_test_data_paired_end, ch_test_index_file )
 
-    // // Check count of output files from star_align_reads
-    // assert_channel_count( map_pe.out.sam_files, "sam_files", 0 )
-    // assert_channel_count( map_pe.out.bam_files, "bam_files", 1 )
-    // assert_channel_count( map_pe.out.sj_files, "sj_files", 1 )
-    // assert_channel_count( map_pe.out.ch_junctions, "ch_junctions", 0 )
-    // assert_channel_count( map_pe.out.reads_per_gene, "reads_per_gene", 0 )
-    // assert_channel_count( map_pe.out.final_log_files, "final_log_files", 1 )
-    // assert_channel_count( map_pe.out.out_log_files, "out_log_files", 1 )
-    // assert_channel_count( map_pe.out.progress_log_files, "progress_log_files", 1 )
-    // assert_channel_count( map_pe.out.report, "report", 1 )
+    // Check count of output files from star_align_reads
+    assert_channel_count( map_pe.out.sam_files, "sam_files", 0 )
+    assert_channel_count( map_pe.out.bam_files, "bam_files", 1 )
+    assert_channel_count( map_pe.out.sj_files, "sj_files", 1 )
+    assert_channel_count( map_pe.out.ch_junctions, "ch_junctions", 0 )
+    assert_channel_count( map_pe.out.reads_per_gene, "reads_per_gene", 0 )
+    assert_channel_count( map_pe.out.final_log_files, "final_log_files", 1 )
+    assert_channel_count( map_pe.out.out_log_files, "out_log_files", 1 )
+    assert_channel_count( map_pe.out.progress_log_files, "progress_log_files", 1 )
+    assert_channel_count( map_pe.out.report, "report", 1 )
     
     /* ---------------------------------------------------------------------------- */
     /* Test a workflow with indexing of two FASTA files and single-end read mapping */
@@ -156,4 +156,5 @@ workflow {
     assert_channel_count( align_reads.out.out_log_files, "out_log_files", 2 )
     assert_channel_count( align_reads.out.progress_log_files, "progress_log_files", 2 )
     assert_channel_count( align_reads.out.report, "report", 2 )
+
 }

@@ -13,7 +13,7 @@ process star_genome_generate {
                       else filename }
 
     // container 'quay.io/biocontainers/star:2.7.5b--0'
-    container 'luslab/luslab-nf-star:latest'
+    container 'luslab/nf-modules-star:latest'
 
     input:
       val opts
