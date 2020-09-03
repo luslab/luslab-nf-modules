@@ -12,7 +12,8 @@ process star_genome_generate {
                       if (opts.publish_results == "none") null
                       else filename }
 
-    container 'quay.io/biocontainers/star:2.7.5b--0'
+    // container 'quay.io/biocontainers/star:2.7.5b--0'
+    container 'luslab/nf-modules-star:latest'
 
     input:
       val opts
@@ -82,7 +83,8 @@ process star_align_reads {
                       if (opts.publish_results == "none") null
                       else filename }
 
-    container 'quay.io/biocontainers/star:2.7.5b--0'
+    // container 'quay.io/biocontainers/star:2.7.5b--0'
+    container 'luslab/luslab-nf-star:latest'
 
     input:
       val opts
@@ -91,7 +93,7 @@ process star_align_reads {
 
     output:
       tuple val(meta), path("*.sam"), optional: true, emit: sam_files
-      tuple val(meta), path("*.bam"), optional: true, emit: bam_files
+      tuple val(meta), path("*.bam"), path("*.bai"), optional: true, emit: bam_files
       tuple val(meta), path("*.SJ.out.tab"), optional: true, emit: sj_files
       tuple val(meta), path("*.junction"), optional: true, emit: ch_junctions
       tuple val(meta), path("*.ReadsPerGene.out.tab"),  optional: true, emit: reads_per_gene
@@ -153,8 +155,10 @@ process star_align_reads {
     avail_mem += task.memory ? "--limitBAMsortRAM ${task.memory.toBytes() - 100000000}" : ''
     args += avail_mem
 
+    index_command = "samtools index -@ ${task.cpus} ${prefix}.Aligned.sortedByCoord.out.bam"
+
     // Construct command line
-    map_command = "STAR $args"
+    map_command = "STAR $args && $index_command"
 
     // Log
     if (params.verbose) {
