@@ -5,6 +5,8 @@ nextflow.enable.dsl=2
 
 // Decompresses file to output (assumes running base system on linux)"
 process decompress {
+    container 'ubuntu:16.04'
+
     input:
       tuple val(meta), path(input_file)
       
@@ -22,6 +24,8 @@ process decompress {
 // Generic awk process
 
 process awk {
+    container 'ubuntu:16.04'
+
     input:
       val opts
       tuple val(meta), path(input_file)
@@ -32,7 +36,7 @@ process awk {
 
     script:
         outfile_name = "awk_${input_file}"
-        if(opts.outfile_name && opts.outfile_name != '') {
+        if(opts.outfile_name) {
           outfile_name = opts.outfile_name
         }
 
