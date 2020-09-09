@@ -23,7 +23,7 @@ include {seqtk_subsample} from '../main.nf'
 include {seqtk_subsample as seqtk_subsample_pe} from '../main.nf'
 include {seqtk_subseq} from '../main.nf'
 include {seqtk_subseq as seqtk_subseq2} from '../main.nf'
-include {decompress} from '../../../tools/luslab_file_tools/main.nf'
+include {decompress} from '../../../tools/luslab_linux_tools/main.nf'
 include {region2bed} from '../../../tools/luslab_genome_tools/main.nf'
 include {assert_channel_count} from '../../../workflows/test_flows/main.nf'
 
