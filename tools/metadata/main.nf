@@ -15,6 +15,19 @@ workflow fastq_metadata {
         metadata
 }
 
+workflow tenx_fastq_metadata {
+    take: filePath
+    main:
+        Channel
+            .fromPath( filePath )
+            .splitCsv(header:true)
+            .map { row -> processRow(row) }
+            .map { row -> listFilesMultiDir(row, '.*.gz') }
+            .set { metadata }
+    emit:
+        metadata
+}
+
 workflow smartseq2_fastq_metadata {
     take: filePath
     main:
@@ -60,6 +73,19 @@ def processRow(LinkedHashMap row) {
     } else {
         array = [ meta, [ file(row.data1, checkIfExists: true), file(row.data2, checkIfExists: true) ] ]
     }
+    return array
+}
+
+def listFilesMultiDir(row, glob){
+    file_array = []
+    for(def dir:row[1]){
+        for(def file:dir.listFiles()){
+            if(file.toString().matches(glob)){
+                file_array.add(file)
+            }
+        }
+    }
+    array = [row[0], file_array]
     return array
 }
 
