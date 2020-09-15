@@ -12,7 +12,8 @@ process samtools_index {
                       if (opts.publish_results == "none") null
                       else filename }
 
-    container 'luslab/nf-modules-samtools:latest'
+    //container 'luslab/nf-modules-samtools:latest'
+    container 'quay.io/biocontainers/samtools:1.10--h2e538c0_3'
 
     input:
         val opts
@@ -56,7 +57,8 @@ process samtools_view {
                       if (opts.publish_results == "none") null
                       else filename }
 
-    container 'luslab/nf-modules-samtools:latest'
+    //container 'luslab/nf-modules-samtools:latest'
+    container 'quay.io/biocontainers/samtools:1.10--h2e538c0_3'
 
     input:
         val opts
@@ -103,7 +105,8 @@ process samtools_faidx {
                       if (opts.publish_results == "none") null
                       else filename }
 
-    container 'luslab/nf-modules-samtools:latest'
+    //container 'luslab/nf-modules-samtools:latest'
+    container 'quay.io/biocontainers/samtools:1.10--h2e538c0_3'
 
     input:
         val opts
@@ -142,8 +145,9 @@ process samtools_sort {
                       if (opts.publish_results == "none") null
                       else filename }
 
-    container 'luslab/nf-modules-samtools:latest'
-
+    //container 'luslab/nf-modules-samtools:latest'
+    container 'quay.io/biocontainers/samtools:1.10--h2e538c0_3'
+    
     input:
         val opts
         tuple val(meta), path(reads)
