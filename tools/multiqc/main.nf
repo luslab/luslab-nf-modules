@@ -9,7 +9,8 @@ process multiqc {
         mode: "copy", overwrite: true
 
     container 'luslab/nf-modules-multiqc:latest'
-    
+    //container 'quay.io/biocontainers/multiqc:1.9--py_1'
+
     input:
       path(reports)
 
