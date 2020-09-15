@@ -13,6 +13,7 @@ process flye {
                       else filename }
 
     container "luslab/nf-modules-flye:latest"
+    //container 'quay.io/biocontainers/flye:2.8.1--py38h1c8e9b9_1'
 
     input:
         val opts

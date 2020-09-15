@@ -10,7 +10,7 @@ process hisat2_build {
                       if (opts.publish_results == "none") null
                       else filename }
 
-    container 'luslab/nf-modules-hisat2:latest'
+    container 'quay.io/biocontainers/hisat2:2.2.1--he1b5a44_2'
 
     input:
         val opts
@@ -36,7 +36,8 @@ process hisat2_splice_sites {
                       if (opts.publish_results == "none") null
                       else filename }
 
-    container 'luslab/nf-modules-hisat2:latest'
+    container 'quay.io/biocontainers/hisat2:2.2.1--he1b5a44_2'
+
     input:
         val opts
         path gtf
@@ -62,7 +63,7 @@ process hisat2_splice_align {
                       if (opts.publish_results == "none") null
                       else filename }
 
-    container 'luslab/nf-modules-hisat2:latest'
+    container 'quay.io/biocontainers/hisat2:2.2.1--he1b5a44_2'
 
     input:
         val opts
@@ -110,7 +111,7 @@ process hisat2_align {
                       if (opts.publish_results == "none") null
                       else filename }
 
-    container 'luslab/nf-modules-hisat2:latest'
+    container 'quay.io/biocontainers/hisat2:2.2.1--he1b5a44_2'
 
     input:
         val opts
