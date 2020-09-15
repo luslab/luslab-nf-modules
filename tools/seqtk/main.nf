@@ -12,7 +12,7 @@ process seqtk_subsample {
                       if (opts.publish_results == "none") null
                       else filename }
 
-    container 'luslab/nf-modules-seqtk:latest'
+    container 'quay.io/biocontainers/seqtk:1.3--hed695b0_2'
     
     input:
       val opts
@@ -74,8 +74,8 @@ process seqtk_subseq {
                       if (opts.publish_results == "none") null
                       else filename }
 
-    container 'luslab/nf-modules-seqtk:latest'
-    
+    container 'quay.io/biocontainers/seqtk:1.3--hed695b0_2'
+
     input:
       val opts
       path input
