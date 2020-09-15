@@ -12,8 +12,8 @@ process minimap2 {
                       if (opts.publish_results == "none") null
                       else filename }
 
-    //container "luslab/nf-modules-minimap2:latest"
     container 'quay.io/biocontainers/minimap2:2.17--hed695b0_3'
+    
     input:
         val opts
         tuple val(meta), path (reads)
