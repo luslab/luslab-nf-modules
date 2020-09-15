@@ -13,6 +13,7 @@ process umitools_dedup {
                       else filename }
 
     container 'luslab/nf-modules-umi_tools:latest'
+    //container 'quay.io/biocontainers/umi_tools:1.0.1--py38h0213d0e_2'
 
     input:
         val(opts)

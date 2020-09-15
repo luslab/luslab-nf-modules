@@ -13,6 +13,7 @@ process tantan {
                       else filename }
 
     container "luslab/nf-modules-tantan:latest"
+    //container 'quay.io/biocontainers/tantan:13--he1b5a44_2'
 
     input:
         val opts
