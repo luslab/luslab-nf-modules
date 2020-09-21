@@ -12,7 +12,7 @@ process fastqc {
                       if (opts.publish_results == "none") null
                       else filename }
     
-    container 'biocontainers/fastqc:v0.11.9_cv6'
+    container 'quay.io/biocontainers/fastqc:0.11.9--0'
 
     input:
         val opts
