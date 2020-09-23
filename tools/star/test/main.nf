@@ -20,9 +20,9 @@ include { assert_channel_count } from '../../../workflows/test_flows/main.nf'
 params.modules['index_genome_only'].args = '--genomeSAindexNbases 8'
 params.modules['index_genome'].args = '--genomeSAindexNbases 8' 
 // Read mapping
-params.modules['map_se'].args = '--outFilterMultimapNmax 20 --quantMode TranscriptomeSAM'
-params.modules['map_pe'].args = '--outFilterMultimapNmax 20 --quantMode TranscriptomeSAM'
-params.modules['align_reads'].args = '--outFilterMultimapNmax 20 --quantMode TranscriptomeSAM'
+params.modules['map_se'].args = '--outSAMtype BAM SortedByCoordinate --outFilterMultimapNmax 20 --quantMode TranscriptomeSAM'
+params.modules['map_pe'].args = '--outSAMtype BAM SortedByCoordinate --outFilterMultimapNmax 20 --quantMode TranscriptomeSAM'
+params.modules['align_reads'].args = '--outSAMtype BAM SortedByCoordinate --outFilterMultimapNmax 20 --quantMode TranscriptomeSAM'
 
 // Define optional input files for star_genome_generate
 // GTF
@@ -105,7 +105,7 @@ workflow {
     map_se ( params.modules['map_se'], ch_test_data_single_end, ch_test_index_file )
 
     // Check count of output files from map_se (star_align_reads)
-    assert_channel_count( map_se.out.sam_files, "sam_files", 2 )
+    assert_channel_count( map_se.out.sam_files, "sam_files", 0 )
     assert_channel_count( map_se.out.bam_files, "bam_files", 2 )
     assert_channel_count( map_se.out.sj_files, "sj_files", 2 )
     assert_channel_count( map_se.out.ch_junctions, "ch_junctions", 0 )
@@ -124,7 +124,7 @@ workflow {
     map_pe ( params.modules['map_pe'], ch_test_data_paired_end, ch_test_index_file )
 
     // Check count of output files from star_align_reads
-    assert_channel_count( map_pe.out.sam_files, "sam_files", 1 )
+    assert_channel_count( map_pe.out.sam_files, "sam_files", 0 )
     assert_channel_count( map_pe.out.bam_files, "bam_files", 1 )
     assert_channel_count( map_pe.out.sj_files, "sj_files", 1 )
     assert_channel_count( map_pe.out.ch_junctions, "ch_junctions", 0 )
@@ -147,7 +147,7 @@ workflow {
     assert_channel_count( index_genome.out.genome_index, "genome_index", 1 )
 
     // Check count of output files from align_reads (star_align_reads)
-    assert_channel_count( align_reads.out.sam_files, "sam_files", 2 )
+    assert_channel_count( align_reads.out.sam_files, "sam_files", 0 )
     assert_channel_count( align_reads.out.bam_files, "bam_files", 2 )
     assert_channel_count( align_reads.out.sj_files, "sj_files", 2 )
     assert_channel_count( align_reads.out.ch_junctions, "ch_junctions", 0 )
@@ -156,4 +156,5 @@ workflow {
     assert_channel_count( align_reads.out.out_log_files, "out_log_files", 2 )
     assert_channel_count( align_reads.out.progress_log_files, "progress_log_files", 2 )
     assert_channel_count( align_reads.out.report, "report", 2 )
+
 }

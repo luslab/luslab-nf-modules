@@ -45,12 +45,15 @@ Channel
 workflow {
     bowtie2_build( params.modules['bowtie2_build'], ch_fasta )
 
-    bowtie2_align ( params.modules['bowtie2_align'], ch_fastq_paired_end, bowtie2_build.out.bowtieIndex.collect() )
+    bowtie2_align( params.modules['bowtie2_align'], ch_fastq_paired_end, bowtie2_build.out.bowtieIndex.collect() )
 
-    bowtie2_align.out.sam | view
+    bowtie2_align.out.bam | view
 
     //Check count
-    assert_channel_count( bowtie2_align.out.sam, "sam", 2)
+    assert_channel_count( bowtie2_align.out.sam, "sam", 0)
+    assert_channel_count( bowtie2_align.out.bam, "bam", 2)
+    assert_channel_count( bowtie2_align.out.unmappedFastqPaired, "unmappedFastqPaired", 0)
+    assert_channel_count( bowtie2_align.out.unmappedFastqSingle, "unmappedFastqSingle", 0)
 }
 
     //ch_fastq_paired_end.merge(bowtie2_build.out.bowtieIndex.map{x -> [x]})
