@@ -15,7 +15,7 @@ params.verbose = true
 /* Module inclusions
 --------------------------------------------------------------------------------------*/
 
-include {decompress} from '../../../tools/luslab_file_tools/main.nf'
+include {decompress} from '../../../tools/luslab_linux_tools/main.nf'
 include {subset_genome} from '../main.nf'
 include {assert_channel_count} from '../../../workflows/test_flows/main.nf'
 
