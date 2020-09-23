@@ -9,12 +9,13 @@ log.info ("Starting tests for file_tools...")
 /*------------------------------------------------------------------------------------*/
 /* Define params
 --------------------------------------------------------------------------------------*/
+params.modules['awk'].args = "'{print NF}'"
 
 /*------------------------------------------------------------------------------------*/
 /* Module inclusions
 --------------------------------------------------------------------------------------*/
 
-include {decompress} from '../main.nf'
+include {decompress; awk} from '../main.nf'
 include {assert_channel_count} from '../../../workflows/test_flows/main.nf'
 
 /*------------------------------------------------------------------------------------*/
@@ -30,13 +31,24 @@ Channel
     .map { row -> [ row[0], [file(row[1], checkIfExists: true)]]}
     .set {ch_input}
 
+awkData = [
+    [[:], "$baseDir/../../../test_data/homer/chr1.gtf"]
+]
+
+Channel
+    .from(awkData)
+    .map { row -> [ row[0], [file(row[1], checkIfExists: true)]]}
+    .set {ch_awk}
+
 //------------------------------------------------------------------------------------
 
 // Run workflow
 workflow {
     decompress ( ch_input )
 
+    awk ( params.modules['awk'], ch_awk )
+
     decompress.out.file | view
 
-    assert_channel_count( decompress.out.file, "file", 1)
+    // assert_channel_count( decompress.out.file, "file", 1)
 }
