@@ -31,7 +31,7 @@ process multiqc {
 
         multiqc_command = "multiqc -f $args ."
         if(opts.custom_config) {
-            multiqc_command = "multiqc -f $args $multiqc_config ."
+            multiqc_command = "multiqc -f$args -c $multiqc_config ."
         }
 
         if (params.verbose){
