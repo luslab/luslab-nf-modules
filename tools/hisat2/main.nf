@@ -3,6 +3,8 @@
 nextflow.enable.dsl=2
 
 process hisat2_build {
+    tag "${genome}"
+
     publishDir "${params.outdir}/${opts.publish_dir}",
         mode: "copy", 
         overwrite: true,
@@ -29,6 +31,8 @@ process hisat2_build {
 }
 
 process hisat2_splice_sites {
+    tag "${gtf}"
+
     publishDir "${params.outdir}/${opts.publish_dir}",
         mode: "copy", 
         overwrite: true,
@@ -56,6 +60,8 @@ process hisat2_splice_sites {
  
 
 process hisat2_splice_align {
+    tag "${meta.sample_id}"
+
     publishDir "${params.outdir}/${opts.publish_dir}",
         mode: "copy", 
         overwrite: true,
@@ -104,6 +110,8 @@ process hisat2_splice_align {
 }
 
 process hisat2_align {
+    tag "${meta.sample_id}"
+    
     publishDir "${params.outdir}/${opts.publish_dir}",
         mode: "copy", 
         overwrite: true,
