@@ -5,6 +5,8 @@ nextflow.enable.dsl=2
 
 // Process definition
 process fastqc {
+    tag "${meta.sample_id}"
+
     publishDir "${params.outdir}/${opts.publish_dir}",
         mode: "copy", 
         overwrite: true,
