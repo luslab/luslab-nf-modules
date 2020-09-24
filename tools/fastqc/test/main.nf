@@ -58,13 +58,8 @@ Channel
 --------------------------------------------------------------------------------------*/
 
 workflow {
-    params.modules['fastqc'].publish_dir = "fastqc_single"
-    params.modules['fastqc'].suffix = "_single"
-    fastqcSingle ( params.modules['fastqc'], ch_fastq_single_end )
-
-    params.modules['fastqc'].publish_dir = "fastqc_paired"
-    params.modules['fastqc'].suffix = "_paired"
-    fastqcPaired ( params.modules['fastqc'], ch_fastq_paired_end )
+    fastqcSingle ( params.modules['fastqc_se'], ch_fastq_single_end )
+    fastqcPaired ( params.modules['fastqc_pe'], ch_fastq_paired_end )
 
     fastqcSingle.out.report | view
     fastqcPaired.out.report | view
