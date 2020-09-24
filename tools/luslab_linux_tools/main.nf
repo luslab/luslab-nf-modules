@@ -5,6 +5,8 @@ nextflow.enable.dsl=2
 
 // Decompresses file to output (assumes running base system on linux)"
 process decompress {
+    tag "${input_file}"
+
     container 'ubuntu:16.04'
 
     input:
@@ -24,6 +26,8 @@ process decompress {
 // Generic awk process
 
 process awk {
+    tag "${input_file}"
+
     container 'ubuntu:16.04'
 
     input:
