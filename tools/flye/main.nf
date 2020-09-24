@@ -5,6 +5,8 @@ nextflow.preview.dsl = 2
 
 // Process definition
 process flye {
+    tag "${meta.sample_id}"
+
     publishDir "${params.outdir}/${opts.publish_dir}",
         mode: "copy",
         overwrite: true,
