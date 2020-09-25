@@ -9,15 +9,33 @@ process decompress {
 
     input:
       tuple val(meta), path(input_file)
-      
+
     output:
         tuple val(meta), path("*.*"), emit: file
         path "*.*", emit: fileNoMeta
 
-    script: 
+    script:
     """
     FILE=$input_file
     cat $input_file | gzip -dv - > "\${FILE%.*}"
+    """
+}
+
+// Compresses file to output (assumes running base system on linux)"
+process compress {
+    container 'ubuntu:16.04'
+
+    input:
+      tuple val(meta), path(input_file)
+
+    output:
+        tuple val(meta), path("*.*"), emit: file
+        path "*.*", emit: fileNoMeta
+
+    script:
+    """
+    FILE=$input_file
+    cat $input_file | gzip -v - > "\${FILE}.gz"
     """
 }
 

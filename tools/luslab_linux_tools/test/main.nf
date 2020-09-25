@@ -15,7 +15,7 @@ params.modules['awk'].args = "'{print NF}'"
 /* Module inclusions
 --------------------------------------------------------------------------------------*/
 
-include {decompress; awk} from '../main.nf'
+include {decompress; compress; awk} from '../main.nf'
 include {assert_channel_count} from '../../../workflows/test_flows/main.nf'
 
 /*------------------------------------------------------------------------------------*/
@@ -45,6 +45,7 @@ Channel
 // Run workflow
 workflow {
     decompress ( ch_input )
+		compress (decompress.out.file)
 
     awk ( params.modules['awk'], ch_awk )
 
