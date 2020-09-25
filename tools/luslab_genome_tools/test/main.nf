@@ -17,6 +17,7 @@ params.verbose = true
 --------------------------------------------------------------------------------------*/
 
 include {region2bed} from '../main.nf'
+include {assert_channel_count} from '../../../workflows/test_flows/main.nf'
 
 /*------------------------------------------------------------------------------------*/
 /* Define input channels
@@ -32,4 +33,6 @@ Channel
 // Run workflow
 workflow {
     region2bed ( ch_region )
+
+    assert_channel_count( region2bed.out.bed, "bed", 1)
 }

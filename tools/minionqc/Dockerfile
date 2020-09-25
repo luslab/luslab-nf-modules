@@ -1,5 +1,5 @@
-#FROM nfcore/base:1.7
-FROM debian:unstable
+FROM nfcore/base:1.7
+
 LABEL authors="michael.mansfield@oist.jp" \
       description="Docker image containing all requirements for the nf-core minionqc module"
 
@@ -21,4 +21,4 @@ RUN R -e "install.packages('viridis', dependencies=TRUE, repos='https://cloud.r-
 RUN R -e "install.packages('yaml', dependencies=TRUE, repos='https://cloud.r-project.org/')"
 
 # Get the actual minionQC code
-RUN curl https://raw.githubusercontent.com/roblanf/minion_qc/master/MinIONQC.R > MinIONQC.R && chmod +x MinIONQC.R
+RUN curl https://raw.githubusercontent.com/roblanf/minion_qc/master/MinIONQC.R > /MinIONQC.R && chmod +x /MinIONQC.R

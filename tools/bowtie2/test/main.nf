@@ -11,21 +11,22 @@ log.info ("Starting tests for bowtie2...")
 --------------------------------------------------------------------------------------*/
 
 params.verbose = true
-params.bowtie2_args = '--very-sensitive'
-params.bowtie2_build_args = ''
+params.modules['bowtie2_align'].args = '--very-sensitive'
 
 /*------------------------------------------------------------------------------------*/
 /* Module inclusions
 --------------------------------------------------------------------------------------*/
 
 include {bowtie2_align; bowtie2_build} from '../main.nf'
+include {assert_channel_count} from '../../../workflows/test_flows/main.nf'
 
 /*------------------------------------------------------------------------------------*/
 /* Define input channels
 --------------------------------------------------------------------------------------*/
 
 testDataPairedEnd= [
-    ['sample1', "$baseDir/../../../test_data/fastq/ENCFF038BYR.sub.fastq.gz", "$baseDir/../../../test_data/fastq/ENCFF721JZG.sub.fastq.gz"]
+    [[sample_id:"sample1"], "$baseDir/../../../test_data/fastq/ENCFF038BYR.sub.fastq.gz", "$baseDir/../../../test_data/fastq/ENCFF721JZG.sub.fastq.gz"],
+    [[sample_id:"sample2"], "$baseDir/../../../test_data/fastq/ENCFF038BYR.sub.fastq.gz", "$baseDir/../../../test_data/fastq/ENCFF721JZG.sub.fastq.gz"]
 ]
 
 Channel
@@ -42,11 +43,17 @@ Channel
 --------------------------------------------------------------------------------------*/
   
 workflow {
-    bowtie2_build( ch_fasta )
+    bowtie2_build( params.modules['bowtie2_build'], ch_fasta )
 
-    bowtie2_align ( ch_fastq_paired_end.combine(bowtie2_build.out.bowtieIndex.map{x -> [x]}) )
+    bowtie2_align( params.modules['bowtie2_align'], ch_fastq_paired_end, bowtie2_build.out.bowtieIndex.collect() )
 
-    bowtie2_align.out.alignedReads | view
+    bowtie2_align.out.bam | view
+
+    //Check count
+    assert_channel_count( bowtie2_align.out.sam, "sam", 0)
+    assert_channel_count( bowtie2_align.out.bam, "bam", 2)
+    assert_channel_count( bowtie2_align.out.unmappedFastqPaired, "unmappedFastqPaired", 0)
+    assert_channel_count( bowtie2_align.out.unmappedFastqSingle, "unmappedFastqSingle", 0)
 }
 
     //ch_fastq_paired_end.merge(bowtie2_build.out.bowtieIndex.map{x -> [x]})

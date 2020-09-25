@@ -17,13 +17,14 @@ params.verbose = true
 --------------------------------------------------------------------------------------*/
 
 include {minionqc} from "../main.nf"
+include {assert_channel_count} from '../../../workflows/test_flows/main.nf'
 
 /*------------------------------------------------------------------------------------*/
 /* Define input channels
 --------------------------------------------------------------------------------------*/
 
 testDataGuppyOut= [
-    ["test-sample", "$baseDir/input/sequencing_summary.txt"],
+    [[sample_id:"test-sample"], "$baseDir/../../../test_data/guppy_sequencing_summary/sequencing_summary.txt"],
 ]
 
 //Define test data input channels
@@ -38,8 +39,10 @@ Channel
 
 workflow {
     // Run minionqc on the test set
-    minionqc ( ch_guppyout_data )
+    minionqc(params.modules['minionqc'], ch_guppyout_data)
 
     // Collect file names and view output
     minionqc.out.minionqcOutputs | view
+
+    assert_channel_count( minionqc.out.minionqcOutputs, "reads", 1)
 }

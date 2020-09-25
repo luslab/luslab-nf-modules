@@ -5,38 +5,45 @@ nextflow.enable.dsl=2
 
 // Random subsample of FASTQ file
 process seqtk_subsample {
-    publishDir "${params.outdir}/seqtk",
-        mode: "copy", overwrite: true
+    publishDir "${params.outdir}/${opts.publish_dir}",
+        mode: "copy", 
+        overwrite: true,
+        saveAs: { filename ->
+                      if (opts.publish_results == "none") null
+                      else filename }
 
     container 'luslab/nf-modules-seqtk:latest'
     
     input:
-      tuple val(sample_id), path(reads)
+      val opts
+      tuple val(meta), path(reads)
 
     output:
-      tuple val(sample_id), path("*.sub.fastq.gz"), emit: sampledReads
+      tuple val(meta), path("*.fastq.gz"), emit: fastq
         
     script:
-        //Custom args
         args = ""
-        if(params.seqtk_subsample_args && params.seqtk_subsample_args != '') {
-            args += params.seqtk_subsample_args + " "
+        if(opts.args && opts.args != '') {
+            ext_args = opts.args
+            args += ext_args.trim()
         }
+
+        prefix = opts.suffix ? "${meta.sample_id}${opts.suffix}" : "${meta.sample_id}"
 
         //Seed parameter
         seed = "-s100"
-        if(params.seqtk_subsample_seed && params.seqtk_subsample_seed != '') {
-            seed = "-s" + params.seqtk_subsample_seed
+        if(opts.seed && opts.seed != '') {
+            seed = "-s" + opts.seed
         }
 
         //Number parameter
         number = 10000
-        if(params.seqtk_subsample_number && params.seqtk_subsample_number != '') {
-            number = params.seqtk_subsample_number
+        if(opts.base_count && opts.base_count != '') {
+            number = opts.base_count
         }
 
         // Construct and log command
-        seqtk_command = "seqtk sample $seed ${reads[0]} $number $args> ${reads[0].simpleName}.sub.fastq"
+        seqtk_command = "seqtk sample $seed ${reads[0]} $number $args> ${prefix}.fastq"
         if (params.verbose){
             println ("[MODULE] seqtk subsample command: " + seqtk_command)
         }
@@ -45,31 +52,37 @@ process seqtk_subsample {
         readList = reads.collect{it.toString()}
         if(readList.size == 1){
             """
-            ${seqtk_command}
-            gzip ${reads[0].simpleName}.sub.fastq
+            seqtk sample $seed ${reads[0]} $number $args> ${prefix}.fastq
+            gzip ${prefix}.fastq
             """
         }
         else {
             """
-            ${seqtk_command}
-            seqtk sample $seed ${reads[1]} $number $args > ${reads[1].simpleName}.sub.fastq
-            gzip ${reads[0].simpleName}.sub.fastq && gzip ${reads[1].simpleName}.sub.fastq
+            seqtk sample $seed ${reads[0]} $number $args> ${prefix}.r1.fastq
+            seqtk sample $seed ${reads[1]} $number $args > ${prefix}.r2.fastq
+            gzip ${prefix}.r1.fastq && gzip ${prefix}.r2.fastq
             """
         }
 }
 
 // Subset FASTA or FASTQ file with bed
 process seqtk_subseq {
-    publishDir "${params.outdir}/seqtk",
-        mode: "copy", overwrite: true
+    publishDir "${params.outdir}/${opts.publish_dir}",
+        mode: "copy", 
+        overwrite: true,
+        saveAs: { filename ->
+                      if (opts.publish_results == "none") null
+                      else filename }
 
     container 'luslab/nf-modules-seqtk:latest'
     
     input:
-      tuple path(input), path(bed)
+      val opts
+      path input
+      path bed
 
     output:
-        path "*.sub.*", emit: subsetFile
+        path "*${prefix}.*", emit: subset
         
     script:
         //Check extension
@@ -78,8 +91,10 @@ process seqtk_subseq {
             ext = "fq"
         }
 
+        prefix = opts.suffix ? "${input.simpleName}${opts.suffix}" : "${input.simpleName}"
+
         // Construct and log command
-        seqtk_command = "seqtk subseq $input $bed > ${input.simpleName}.sub.${ext}"
+        seqtk_command = "seqtk subseq $input $bed > ${prefix}.${ext}"
         if (params.verbose){
             println ("[MODULE] seqtk subseq command: " + seqtk_command)
         }

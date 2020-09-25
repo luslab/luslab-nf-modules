@@ -16,11 +16,11 @@ workflow subset_genome {
         region2bed( region )
 
         // Subset fasta file
-        seqtk_subseq( fasta.combine(region2bed.out.bedFile) )
+        seqtk_subseq( params.modules['seqtk_subseq'], fasta, region2bed.out.bed )
 
         // Index the fasta file
-        samtools_faidx( seqtk_subseq.out.subsetFile )
+        samtools_faidx( params.modules['samtools_faidx'], seqtk_subseq.out.subset )
 
     emit:
-        fastaSubset = samtools_faidx.out.indexedFiles
+        fasta = samtools_faidx.out.indexedFasta
 }

@@ -5,32 +5,32 @@ nextflow.enable.dsl=2
 
 // Process definition
 process fastqc {
-    publishDir "${params.outdir}/fastqc",
-        mode: "copy", overwrite: true
+    publishDir "${params.outdir}/${opts.publish_dir}",
+        mode: "copy", 
+        overwrite: true,
+        saveAs: { filename ->
+                      if (opts.publish_results == "none") null
+                      else filename }
     
-    container 'luslab/nf-modules-fastqc:latest'
+    container 'quay.io/biocontainers/fastqc:0.11.9--0'
 
     input:
-        tuple val(sample_id), path(reads)
+        val opts
+        tuple val(meta), path(reads)
 
     output:
-        tuple val(sample_id), path ("*.{zip,html}"), emit: fastqcOutput
         path "*.zip", emit: report
 
     script:
-
-    // Check main args string exists and strip whitespace
     args = ""
-    if(params.fastqc_args && params.fastqc_args != '') {
-        ext_args = params.fastqc_args
-        args += " " + ext_args.trim()
-    }
+        if(opts.args && opts.args != '') {
+            ext_args = opts.args
+            args += ext_args.trim()
+        }
 
-    // Construct CL line
-    fastqc_command = "fastqc${args} --threads ${task.cpus} $reads"
+    prefix = opts.suffix ? "${meta.sample_id}${opts.suffix}" : "${meta.sample_id}"
 
-
-    // Log
+    fastqc_command = "fastqc ${args} --threads ${task.cpus} $reads"
     if (params.verbose){
         println ("[MODULE] fastqc command: " + fastqc_command)
     }
@@ -38,30 +38,16 @@ process fastqc {
     //SHELL
     readList = reads.collect{it.toString()}
     if(readList.size > 1){
-        if(params.fastqc_reportname && params.fastqc_reportname != ''){
             """
             ${fastqc_command}
-            mv ${reads[0].simpleName}*.html ${reads[0].simpleName}_${params.fastqc_reportname}_fastqc.html
-            mv ${reads[0].simpleName}*.zip ${reads[0].simpleName}_${params.fastqc_reportname}_fastqc.zip
-            mv ${reads[1].simpleName}*.html ${reads[1].simpleName}_${params.fastqc_reportname}_fastqc.html
-            mv ${reads[1].simpleName}*.zip ${reads[1].simpleName}_${params.fastqc_reportname}_fastqc.zip
+            mv ${reads[0].simpleName}_fastqc.zip ${prefix}_r1_fastqc.zip
+            mv ${reads[1].simpleName}_fastqc.zip ${prefix}_r2_fastqc.zip
             """
-        } else {
-            """
-            ${fastqc_command}
-            """
-        }
-    } else {
-        if(params.fastqc_reportname && params.fastqc_reportname != ''){
+    }
+    else {
             """
             ${fastqc_command}
-            mv ${reads[0].simpleName}*.html ${reads[0].simpleName}_${params.fastqc_reportname}_fastqc.html
-            mv ${reads[0].simpleName}*.zip ${reads[0].simpleName}_${params.fastqc_reportname}_fastqc.zip
+            mv ${reads[0].simpleName}_fastqc.zip ${prefix}_fastqc.zip
             """
-        } else {
-            """
-            ${fastqc_command}
-            """
-        }
     }
 }

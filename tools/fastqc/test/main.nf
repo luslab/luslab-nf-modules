@@ -10,46 +10,46 @@ log.info ("Starting tests for fastqc...")
 /* Define params
 --------------------------------------------------------------------------------------*/
 
-params.fastqc_args = ''
 params.verbose = true
 
 /*------------------------------------------------------------------------------------*/
 /* Module inclusions
 --------------------------------------------------------------------------------------*/
 
-include {fastqc} from '../main.nf' addParams(fastqc_reportname: 'test')
+include {fastqc as fastqc_single; fastqc as fastqc_paired;} from '../main.nf'
+include {assert_channel_count} from '../../../workflows/test_flows/main.nf'
 
 /*------------------------------------------------------------------------------------*/
 /* Define input channels
 --------------------------------------------------------------------------------------*/
 
 // Define test data
-testDataSingleEnd = [
-    ['Sample1', "$baseDir/input/readfile1_r1.fq.gz"],
-    ['Sample2', "$baseDir/input/readfile2_r1.fq.gz"],
-    ['Sample3', "$baseDir/input/readfile3_r1.fq.gz"],
-    ['Sample4', "$baseDir/input/readfile4_r1.fq.gz"],
-    ['Sample5', "$baseDir/input/readfile5_r1.fq.gz"],
-    ['Sample6', "$baseDir/input/readfile6_r1.fq.gz"]
+test_data_single_end = [
+    [[sample_id:"sample1"], "$baseDir/../../../test_data/fastq/readfile1_r1.fq.gz"],
+    [[sample_id:"sample2"], "$baseDir/../../../test_data/fastq/readfile2_r1.fq.gz"],
+    [[sample_id:"sample3"], "$baseDir/../../../test_data/fastq/readfile3_r1.fq.gz"],
+    [[sample_id:"sample4"], "$baseDir/../../../test_data/fastq/readfile4_r1.fq.gz"],
+    [[sample_id:"sample5"], "$baseDir/../../../test_data/fastq/readfile5_r1.fq.gz"],
+    [[sample_id:"sample6"], "$baseDir/../../../test_data/fastq/readfile6_r1.fq.gz"]
 ] 
 
-testDataPairedEnd = [
-    ['Sample1', "$baseDir/input/readfile1_r1.fq.gz", "$baseDir/input/readfile1_r2.fq.gz"],
-    ['Sample2', "$baseDir/input/readfile2_r1.fq.gz", "$baseDir/input/readfile2_r2.fq.gz"],
-    ['Sample3', "$baseDir/input/readfile3_r1.fq.gz", "$baseDir/input/readfile3_r2.fq.gz"],
-    ['Sample4', "$baseDir/input/readfile4_r1.fq.gz", "$baseDir/input/readfile4_r2.fq.gz"],
-    ['Sample5', "$baseDir/input/readfile5_r1.fq.gz", "$baseDir/input/readfile5_r2.fq.gz"],
-    ['Sample6', "$baseDir/input/readfile6_r1.fq.gz", "$baseDir/input/readfile6_r2.fq.gz"]
+test_data_paired_end = [
+    [[sample_id:"sample1"], "$baseDir/../../../test_data/fastq/readfile1_r1.fq.gz", "$baseDir/../../../test_data/fastq/readfile1_r2.fq.gz"],
+    [[sample_id:"sample2"], "$baseDir/../../../test_data/fastq/readfile2_r1.fq.gz", "$baseDir/../../../test_data/fastq/readfile2_r2.fq.gz"],
+    [[sample_id:"sample3"], "$baseDir/../../../test_data/fastq/readfile3_r1.fq.gz", "$baseDir/../../../test_data/fastq/readfile3_r2.fq.gz"],
+    [[sample_id:"sample4"], "$baseDir/../../../test_data/fastq/readfile4_r1.fq.gz", "$baseDir/../../../test_data/fastq/readfile4_r2.fq.gz"],
+    [[sample_id:"sample5"], "$baseDir/../../../test_data/fastq/readfile5_r1.fq.gz", "$baseDir/../../../test_data/fastq/readfile5_r2.fq.gz"],
+    [[sample_id:"sample6"], "$baseDir/../../../test_data/fastq/readfile6_r1.fq.gz", "$baseDir/../../../test_data/fastq/readfile6_r2.fq.gz"]
 ] 
 
 //Define test data input channel
 Channel
-    .from(testDataSingleEnd)
+    .from(test_data_single_end)
     .map { row -> [ row[0], [file(row[1], checkIfExists: true)]]}
     .set {ch_fastq_single_end}
 
 Channel
-    .from(testDataPairedEnd)
+    .from(test_data_paired_end)
     .map { row -> [ row[0], [file(row[1], checkIfExists: true), file(row[2], checkIfExists: true)]]}
     .set {ch_fastq_paired_end}
 
@@ -58,11 +58,12 @@ Channel
 --------------------------------------------------------------------------------------*/
 
 workflow {
-    // Run fastqc
-    //fastqc ( ch_fastq_single_end )
-    fastqc ( ch_fastq_paired_end )
+    fastqc_single ( params.modules['fastqc_se'], ch_fastq_single_end )
+    fastqc_paired ( params.modules['fastqc_pe'], ch_fastq_paired_end )
 
+    fastqc_single.out.report | view
+    fastqc_paired.out.report | view
 
-    // Collect file names and view output
-    fastqc.out.report | view
+    assert_channel_count( fastqc_single.out.report, "fastqc_single", 6)
+    assert_channel_count( fastqc_paired.out.report, "fastqc_paired", 6)
 }
