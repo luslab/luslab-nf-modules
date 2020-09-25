@@ -23,9 +23,7 @@ include {busco_genome} from '../main.nf'
 --------------------------------------------------------------------------------------*/
 
 testDataGenome = [
-    // [[sample_id:"sample1"], "$baseDir/../../../test_data/fasta/Saccharomyces_cerevisiae_S288C-R64.fa"],
-		// [[sample_id:"sample1"], "$baseDir/../../../test_data/fasta/Saccharomyces_cerevisiae_S288C-R64_NC_001136.10.fa"],
-		[[sample_id:"sample1"], "$baseDir/../../../test_data/fasta/Saccharomyces_cerevisiae_S288C-R64_chrI.fa"],
+	[[sample_id:"sample1"], "$baseDir/../../../test_data/fasta/Saccharomyces_cerevisiae_S288C-R64_chrI.fa"],
 ]
 
 Channel
