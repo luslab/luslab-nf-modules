@@ -17,21 +17,21 @@ params.verbose = true
 --------------------------------------------------------------------------------------*/
 
 include {minionqc} from "../main.nf"
-include {assert_channel_count} from '../../../workflows/test_flows/main.nf'
+include {assert_channel_count} from "../../../workflows/test_flows/main.nf"
 
 /*------------------------------------------------------------------------------------*/
 /* Define input channels
 --------------------------------------------------------------------------------------*/
 
-testDataGuppyOut= [
-    [[sample_id:"test-sample"], "$baseDir/../../../test_data/guppy_sequencing_summary/sequencing_summary.txt"],
+test_data_sequencing_summary = [
+    [[sample_id:"test-sample"], "$baseDir/../../../test_data/lamda1000a/lambda_top10.sequence_summary.txt"],
 ]
 
 //Define test data input channels
 Channel
-    .from(testDataGuppyOut)
+    .from(test_data_sequencing_summary)
     .map { row -> [ row[0], file(row[1], checkIfExists: true) ] }
-    .set {ch_guppyout_data}
+    .set {ch_sequencing_summary}
 
 /*------------------------------------------------------------------------------------*/
 /* Run tests
@@ -39,10 +39,10 @@ Channel
 
 workflow {
     // Run minionqc on the test set
-    minionqc(params.modules['minionqc'], ch_guppyout_data)
+    minionqc(params.modules['minionqc'], ch_sequencing_summary)
 
     // Collect file names and view output
-    minionqc.out.minionqcOutputs | view
+    minionqc.out.minionqc_output_dir | view
 
-    assert_channel_count( minionqc.out.minionqcOutputs, "reads", 1)
+    assert_channel_count( minionqc.out.minionqc_output_dir, "reads", 1)
 }
