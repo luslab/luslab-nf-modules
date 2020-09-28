@@ -1,7 +1,7 @@
 #!/usr/bin/env nextflow
 
 // Specify DSL2
-nextflow.preview.dsl = 2
+nextflow.enable.dsl = 2
 
 // Process definition
 process busco_genome {
@@ -19,7 +19,8 @@ process busco_genome {
         tuple val(meta), path(genome)
 
     output:
-        tuple val(meta), path("busco"), emit: busco_genome_out
+        tuple val(meta), path("busco"), emit: busco
+        path "busco/logs/busco.log", emit: report
 
     script:
 
@@ -28,7 +29,6 @@ process busco_genome {
         ext_args = opts.args
         args += ext_args.trim()
     }
-
 
     busco_command = "busco $args -m genome -c ${task.cpus} -i $genome -o busco"
 

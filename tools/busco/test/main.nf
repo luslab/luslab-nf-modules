@@ -16,7 +16,8 @@ params.verbose = true
 /* Module inclusions
 --------------------------------------------------------------------------------------*/
 
-include {busco_genome} from '../main.nf'
+include {busco_genome} from "../main.nf"
+include {assert_channel_count} from "../../../workflows/test_flows/main.nf"
 
 /*------------------------------------------------------------------------------------*/
 /* Define input channels
@@ -36,6 +37,13 @@ Channel
 --------------------------------------------------------------------------------------*/
 
 workflow {
-    busco_genome( params.modules['busco_genome'], ch_fasta )
-    busco_genome.out.busco_genome_out | view
+    // Run BUSCO on the test genome FASTA file
+    busco_genome( params.modules["busco_genome"], ch_fasta )
+
+    // Confirm the outputs of the above command
+    busco_genome.out.busco | view
+		busco_genome.out.report | view
+
+    // Double check the channel count
+		assert_channel_count( busco_genome.out.busco, "reads", 1 )
 }
