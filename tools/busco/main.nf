@@ -19,8 +19,7 @@ process busco_genome {
         tuple val(meta), path(genome)
 
     output:
-        tuple val(meta), path("busco"), emit: busco
-        path "busco/logs/busco.log", emit: report
+        tuple val(meta), path("busco"), emit: report
 
     script:
 

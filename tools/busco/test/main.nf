@@ -24,7 +24,7 @@ include {assert_channel_count} from "../../../workflows/test_flows/main.nf"
 --------------------------------------------------------------------------------------*/
 
 testDataGenome = [
-	[[sample_id:"sample1"], "$baseDir/../../../test_data/fasta/Saccharomyces_cerevisiae_S288C-R64_chrI.fa"],
+	[[sample_id:"sample1"], "$baseDir/../../../test_data/fasta/BUSCO_test_set_eukaryotes.fna"],
 ]
 
 Channel
@@ -41,9 +41,8 @@ workflow {
     busco_genome( params.modules["busco_genome"], ch_fasta )
 
     // Confirm the outputs of the above command
-    busco_genome.out.busco | view
-		busco_genome.out.report | view
+    busco_genome.out.report | view
 
     // Double check the channel count
-		assert_channel_count( busco_genome.out.busco, "reads", 1 )
+		assert_channel_count( busco_genome.out.report, "reads", 1 )
 }
