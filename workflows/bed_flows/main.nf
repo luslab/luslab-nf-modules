@@ -34,7 +34,7 @@ workflow paired_bam_to_bedgraph {
         sort( params.modules['sort'], cut.out.file )
 
         // Get genome coverage in bedgraph format
-        bedtools_genomecov( params.modules['bedtools_genomecov'], sort.out.file)
+        bedtools_genomecov_bam( params.modules['bedtools_genomecov'], sort.out.file)
 
 
     emit:
