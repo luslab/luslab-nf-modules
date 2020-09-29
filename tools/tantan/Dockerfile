@@ -2,7 +2,7 @@ FROM nfcore/base:1.10
 LABEL authors="charles.plessy@oist.jp" \
       description="Docker image containing all requirements for the nf-lra tantan module"
 
-ADD VERSION .
+COPY VERSION .
 
 # Install apt packages
 RUN apt-get update \

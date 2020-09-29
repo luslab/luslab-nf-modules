@@ -2,7 +2,7 @@ FROM nfcore/base:1.7
 LABEL authors="michael.mansfield@oist.jp" \
 	description="Docker image containing all requirements for the nanoplot module"
 
-ADD VERSION .
+COPY VERSION .
 
 # Install conda packages
 COPY environment.yml /

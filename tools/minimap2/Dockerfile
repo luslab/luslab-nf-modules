@@ -2,7 +2,7 @@ FROM nfcore/base:1.7
 LABEL authors="chris.cheshire@crick.ac.uk" \
       description="Docker image containing all requirements for the nf-core minimap2 module"
 
-ADD VERSION .
+COPY VERSION .
 
 # Change dir
 WORKDIR /home

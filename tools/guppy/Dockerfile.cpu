@@ -3,7 +3,7 @@ FROM ubuntu:16.04
 
 LABEL author="Chris Cheshire <chris.cheshire@crick.ac.uk>"
 
-ADD VERSION .
+COPY VERSION .
 
 ARG PACKAGE_VERSION=3.6.0
 ARG DEBIAN_FRONTEND=noninteractive
