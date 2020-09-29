@@ -53,8 +53,8 @@ process cut {
       tuple val(meta), path(input_file)
 
       output:
-      tuple val(meta), path("${opts.outfile_name}"), emit: file
-      path "${opts.outfile_name}", emit: fileNoMeta
+      tuple val(meta), path("${outfile_name}"), emit: file
+      path "${outfile_name}", emit: fileNoMeta
 
       script:
         outfile_name = "cut_${input_file}"
@@ -75,8 +75,8 @@ process sort {
       tuple val(meta), path(input_file)
 
     output:
-        tuple val(meta), path("${opts.outfile_name}"), emit: file
-        path "${opts.outfile_name}", emit: fileNoMeta
+        tuple val(meta), path("${outfile_name}"), emit: file
+        path "${outfile_name}", emit: fileNoMeta
 
     script:
         outfile_name = "sort_${input_file}"
