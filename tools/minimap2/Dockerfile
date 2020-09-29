@@ -8,6 +8,7 @@ COPY VERSION .
 WORKDIR /home
 
 # Install minimap2
+# hadolint ignore=DL4006
 RUN curl -L https://github.com/lh3/minimap2/releases/download/v2.17/minimap2-2.17_x64-linux.tar.bz2 | tar -jxvf -
 RUN mv /home/minimap2-2.17_x64-linux /home/minimap2
 
