@@ -3,8 +3,8 @@ name: docker-build-push
 
 on:
   push:
-    #branches: [ master ]
-    branches: [feat-chris]
+    branches: [ master ]
+    #branches: [feat-chris]
 
 jobs:
   build-push-docker:
