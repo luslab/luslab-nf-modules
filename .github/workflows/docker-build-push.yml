@@ -37,4 +37,4 @@ jobs:
           repository: luslab/nf-modules-${{matrix.module-name}}
           path: tools/${{matrix.module-name}}
           dockerfile: tools/${{matrix.module-name}}/${{matrix.docker-file}}
-          tags: luslab/nf-modules-${{matrix.module-name}}:${{matrix.tag}},luslab/nf-modules-${{matrix.module-name}}:0.0.1
+          tags: ${{matrix.tag}},0.0.1
