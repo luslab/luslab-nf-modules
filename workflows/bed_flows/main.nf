@@ -10,9 +10,7 @@ include { cut } from '../../tools/luslab_linux_tools/main.nf'
 include { sort } from '../../tools/luslab_linux_tools/main.nf'
  
 workflow paired_bam_to_bedgraph {
-    take: bam
-    take: genome
-    take: meta
+    take: tuple_meta_bam
     main:
 
         // Define workflow parameters
@@ -24,19 +22,19 @@ workflow paired_bam_to_bedgraph {
 
 
         // Convert BAM to BED
-        bedtools_bamtobed( params.modules['bedtools_bamtobed'], meta, bam )
+        bedtools_bamtobed( params.modules['bedtools_bamtobed'], tuple_meta_bam )
 
         // awk
-        awk( params.modules['awk'], bedtools_bamtobed.out )
+        awk( params.modules['awk'], bedtools_bamtobed.out.bed )
 
         // cut
-        cut( params.modules['cut'], awk.out )
+        cut( params.modules['cut'], awk.out.file )
 
         // sort
-        sort( params.modules['sort'], cut.out )
+        sort( params.modules['sort'], cut.out.file )
 
         // Get genome coverage in bedgraph format
-        bedtools_genomecov( params.modules['bedtools_genomecov'], sort.out)
+        bedtools_genomecov( params.modules['bedtools_genomecov'], sort.out.file)
 
 
     emit:

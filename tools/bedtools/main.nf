@@ -131,8 +131,7 @@ process bedtools_bamtobed {
 
     input:
         val opts
-        tuple val(meta), path(reads)
-        path bam_file
+        tuple val(meta), path(bam_file)
 
     output:
         tuple val(meta), path("${prefix}"), emit: bed
@@ -171,8 +170,7 @@ process bedtools_genomecov {
 
     input:
         val opts
-        tuple val(meta), path(reads)
-        path aligned_file
+        tuple val(meta), path(aligned_file)
         path genome 
 
     output:
@@ -211,8 +209,7 @@ process bedtools_genomecov_bam {
 
     input:
         val opts
-        tuple val(meta), path(reads)
-        path bam_file
+        tuple val(meta), path(bam_file)
 
     output:
         tuple val(meta), path("${prefix}"), emit: bed
