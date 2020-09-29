@@ -31,8 +31,8 @@ process awk {
       tuple val(meta), path(input_file)
 
     output:
-        tuple val(meta), path("${opts.outfile_name}"), emit: file
-        path "${opts.outfile_name}", emit: fileNoMeta
+        tuple val(meta), path("${outfile_name}"), emit: file
+        path "${outfile_name}", emit: fileNoMeta
 
     script:
         outfile_name = "awk_${input_file}"
