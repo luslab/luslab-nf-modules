@@ -1,4 +1,4 @@
-# This file creates a conda environment for the flye module
+# This file creates a conda environment for the racon module
 #   conda env create -f environment.yml
 name: nfcore-module-racon
 channels:

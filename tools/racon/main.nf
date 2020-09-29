@@ -16,21 +16,17 @@ process racon {
 
     input:
         val opts
-				//you'll need to change these
-        //tuple val(meta), path(reads)
+        tuple val(meta), path(reads), path(overlapPaf), path(assemblyFasta)
 
     output:
-				// you'll also need to change these
-        //tuple val(meta), path("${meta.sample_id}/assembly.fasta"), emit: assemblyFasta
-				//tuple path("${meta.sample_id}/assembly_info.txt"), path("${meta.sample_id}/flye.log"), emit: log
+        tuple val(meta), path("racon.fasta"), emit: fasta
 
     script:
 	//Build the command line options
-	//change these
-  //  racon_command = "flye --genome-size ${opts.genome_size} \
-	//		--threads ${task.cpus} \
-	//		--out-dir ${meta.sample_id} \
-	//		--nano-raw $reads"
+	racon_command = "racon --threads ${task.cpus} \
+			$reads \
+			$overlapPaf \
+			$assemblyFasta > racon.fasta " 
 
 	//SHELL
     """

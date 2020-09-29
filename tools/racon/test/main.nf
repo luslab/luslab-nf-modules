@@ -4,7 +4,7 @@
 nextflow.preview.dsl = 2
 
 // Log out
-log.info ("Starting tests for minionQC...")
+log.info ("Starting tests for racon...")
 
 /*------------------------------------------------------------------------------------*/
 /* Define params
@@ -16,33 +16,33 @@ params.verbose = true
 /* Module inclusions
 --------------------------------------------------------------------------------------*/
 
-include {minionqc} from "../main.nf"
-include {assert_channel_count} from '../../../workflows/test_flows/main.nf'
+include {racon} from "../main.nf"
 
 /*------------------------------------------------------------------------------------*/
 /* Define input channels
 --------------------------------------------------------------------------------------*/
 
-testDataGuppyOut= [
-    [[sample_id:"test-sample"], "$baseDir/../../../test_data/guppy_sequencing_summary/sequencing_summary.txt"],
+testDataRacon= [
+    [[sample_id:"test-sample"], "$baseDir/../../../test_data/lambda1000a/lambda_top10.fastq.gz",
+        "$baseDir/../../../test_data/lambda1000a/lambda_top10_overlaps.paf",
+        "$baseDir/../../../test_data/lambda1000a/lambda_top10.fasta"],
 ]
 
 //Define test data input channels
 Channel
-    .from(testDataGuppyOut)
-    .map { row -> [ row[0], file(row[1], checkIfExists: true) ] }
-    .set {ch_guppyout_data}
+    .from(testDataRacon)
+    .map { row -> [ row[0], file(row[1], checkIfExists: true), file(row[2], checkIfExists: true), file(row[3], checkIfExists: true) ] }
+    .set {ch_racon_data}
 
 /*------------------------------------------------------------------------------------*/
 /* Run tests
 --------------------------------------------------------------------------------------*/
 
 workflow {
-    // Run minionqc on the test set
-    minionqc(params.modules['minionqc'], ch_guppyout_data)
+    // Run racon on the test set
+    racon(params.modules['racon'], ch_racon_data)
 
     // Collect file names and view output
-    minionqc.out.minionqcOutputs | view
+    racon.out.fasta | view
 
-    assert_channel_count( minionqc.out.minionqcOutputs, "reads", 1)
 }
