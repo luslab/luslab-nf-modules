@@ -39,4 +39,4 @@ jobs:
           dockerfile: tools/${{matrix.module-name}}/${{matrix.docker-file}}
           tags: |
             luslab/nf-modules-${{matrix.module-name}}:${{matrix.tag}}
-            luslab/nf-modules-${{matrix.module-name}}:${ENV_VER}
+            luslab/nf-modules-${{matrix.module-name}}:0.0.1
