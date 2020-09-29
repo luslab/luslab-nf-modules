@@ -12,7 +12,7 @@ jobs:
     strategy:
       matrix:
         nxf_ver: ['20.07.1','']
-        tag: ['latest']
+        tag: ['base']
         docker-name: ['Dockerfile']
         module-name: ['htseq', 'velocyto', 'flye', 'homer', 'umi_tools', 'fastqc', 'cutadapt', 'bedtools', 'samtools', 'get_crosslinks','get_crosslinks_coverage', 'icount', 'minimap2', 'seqtk', 'paraclu', 'luslab_genome_tools', 'luslab_linux_tools', 'bowtie2', 'metadata', 'minionqc', 'tantan', 'hisat2', 'star', 'multiqc', 'macs2']
         include:
@@ -42,7 +42,7 @@ jobs:
       - name: Docker build
         run: |
            test -f tools/${{matrix.module-name}}/${{matrix.docker-name}} && export DOCKER_EXISTS=true || echo "Dockerfile does not exist, skipping step"
-           if [ -v DOCKER_EXISTS ]; then docker build -f tools/${{matrix.module-name}}/${{matrix.docker-name}} -t luslab/nf-modules-${{matrix.module-name}}:${{matrix.tag}} -t luslab/nf-modules-${{matrix.module-name}}:${{steps.ver.outputs.version}} tools/${{matrix.module-name}}; fi
+           if [ -v DOCKER_EXISTS ]; then docker build -f tools/${{matrix.module-name}}/${{matrix.docker-name}} -t luslab/nf-modules-${{matrix.module-name}}:latest -t luslab/nf-modules-${{matrix.module-name}}:${{matrix.tag}}-${{steps.ver.outputs.version}} tools/${{matrix.module-name}}; fi
       - name: Module testing
         run: |
           nextflow run ${GITHUB_WORKSPACE}/tools/${{matrix.module-name}}/test/main.nf
