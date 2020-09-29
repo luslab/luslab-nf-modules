@@ -11,6 +11,7 @@ include { sort } from '../../tools/luslab_linux_tools/main.nf'
  
 workflow paired_bam_to_bedgraph {
     take: tuple_meta_bam
+    take: genome
     main:
 
         // Define workflow parameters
@@ -34,7 +35,7 @@ workflow paired_bam_to_bedgraph {
         sort( params.modules['sort'], cut.out.file )
 
         // Get genome coverage in bedgraph format
-        bedtools_genomecov( params.modules['bedtools_genomecov'], sort.out.file)
+        bedtools_genomecov( params.modules['bedtools_genomecov'], sort.out.file, genome)
 
 
     emit:
