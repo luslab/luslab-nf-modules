@@ -27,7 +27,6 @@ test_data_sequencing_summary = [
     [[sample_id:"test-sample"], "$baseDir/../../../test_data/lamda1000a/lambda_top10.sequence_summary.txt"],
 ]
 
-//Define test data input channels
 Channel
     .from(test_data_sequencing_summary)
     .map { row -> [ row[0], file(row[1], checkIfExists: true) ] }
