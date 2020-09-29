@@ -12,7 +12,7 @@ process fastqc {
                       if (opts.publish_results == "none") null
                       else filename }
     
-    container 'biocontainers/fastqc:v0.11.9_cv6'
+    container 'quay.io/biocontainers/fastqc:0.11.9--0'
 
     input:
         val opts
@@ -40,14 +40,14 @@ process fastqc {
     if(readList.size > 1){
             """
             ${fastqc_command}
-            mv ${reads[0].simpleName}*.zip ${prefix}_fastqc.zip
-            mv ${reads[1].simpleName}*.zip ${prefix}_fastqc.zip
+            mv ${reads[0].simpleName}_fastqc.zip ${prefix}_r1_fastqc.zip
+            mv ${reads[1].simpleName}_fastqc.zip ${prefix}_r2_fastqc.zip
             """
     }
     else {
             """
             ${fastqc_command}
-            mv ${reads[0].simpleName}*.zip ${prefix}_fastqc.zip
+            mv ${reads[0].simpleName}_fastqc.zip ${prefix}_fastqc.zip
             """
     }
 }
