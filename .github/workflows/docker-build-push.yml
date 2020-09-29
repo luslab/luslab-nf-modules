@@ -28,6 +28,7 @@ jobs:
         run: |
           version=`cat tools/${{matrix.module-name}}/VERSION`
           echo "version: $version"
+          export ENV_VER=$version
       - name: Build and push image
         uses: docker/build-push-action@v1.1.0
         with:
@@ -38,4 +39,4 @@ jobs:
           dockerfile: tools/${{matrix.module-name}}/${{matrix.docker-file}}
           tags: |
             luslab/nf-modules-${{matrix.module-name}}:${{matrix.tag}}
-            luslab/nf-modules-${{matrix.module-name}}:$VERSION
+            luslab/nf-modules-${{matrix.module-name}}:${ENV_VER}
