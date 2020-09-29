@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
         matrix:
-            tag: ['latest']
+            tag: ['base']
             docker-file: ['Dockerfile']
             module-name: ['hisat2','flye','get_crosslinks','get_crosslinks_coverage','icount','paraclu','peka','samtools','star','umi_tools','seqtk','bowtie2','minionqc','minimap2','tantan','nanoplot']
             include:
@@ -38,4 +38,4 @@ jobs:
           repository: luslab/nf-modules-${{matrix.module-name}}
           path: tools/${{matrix.module-name}}
           dockerfile: tools/${{matrix.module-name}}/${{matrix.docker-file}}
-          tags: ${{matrix.tag}},${{steps.ver.outputs.version}}
+          tags: latest,${{matrix.tag}}-${{steps.ver.outputs.version}}
