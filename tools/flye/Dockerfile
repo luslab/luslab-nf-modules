@@ -2,6 +2,8 @@ FROM nfcore/base:1.7
 LABEL authors="michael.mansfield@oist.jp" \
       description="Docker image containing all requirements for the nf-lra flye module"
 
+ADD VERSION .
+
 # Install apt packages
 RUN apt-get update \
 	&& apt-get install -y --no-install-recommends \

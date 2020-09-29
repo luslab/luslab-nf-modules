@@ -1,7 +1,9 @@
 # Set the base image to Ubuntu 16.04
 FROM ubuntu:16.04
 
-LABEL author="Chris Cheshire <chris.cheshire@crick.ac.uk>" 
+LABEL author="Chris Cheshire <chris.cheshire@crick.ac.uk>"
+
+ADD VERSION .
 
 ARG PACKAGE_VERSION=3.6.0
 ARG DEBIAN_FRONTEND=noninteractive
