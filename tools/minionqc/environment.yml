@@ -1,0 +1,8 @@
+# This file creates a conda environment for the minionQC module
+#   conda env create -f environment.yml
+name: nfcore-module-minionqc
+channels:
+  - conda-forge
+  - bioconda
+dependencies:
+  - r-minionqc=1.4.2
