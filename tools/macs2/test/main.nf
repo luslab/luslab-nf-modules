@@ -63,4 +63,7 @@ workflow {
     macs2_callpeaks( params.modules['macs2'], ch_bam )
     macs2_callpeaks.out.peaks | view
     macs2_callpeaks.out.xls | view
+
+    assert_channel_count( macs2_callpeaks.out.peaks, "peaks", 2)
+    assert_channel_count( macs2_callpeaks.out.xls, "xls", 2)
 }
