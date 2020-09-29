@@ -18,7 +18,7 @@ workflow paired_bam_to_bedgraph {
         params.modules['awk'].args = '\'$1==$4 && $6-$2 < 1000 {print $0}\''
         params.modules['cut'].args = '-f 1,2,6'
         params.modules['sort'].args = '-k1,1 -k2,2n -k3,3n'
-        params.modules['bedtools_genomecov'] = '-bg'
+        params.modules['bedtools_genomecov_bam'] = '-bg'
 
 
         // Convert BAM to BED
@@ -34,7 +34,7 @@ workflow paired_bam_to_bedgraph {
         sort( params.modules['sort'], cut.out.file )
 
         // Get genome coverage in bedgraph format
-        bedtools_genomecov_bam( params.modules['bedtools_genomecov'], sort.out.file)
+        bedtools_genomecov_bam( params.modules['bedtools_genomecov_bam'], sort.out.file)
 
 
     emit:
