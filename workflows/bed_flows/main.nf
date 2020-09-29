@@ -38,6 +38,6 @@ workflow paired_bam_to_bedgraph {
 
 
     emit:
-        bedgraph = bedtools_genomecov.out.bed
+        bedgraph = bedtools_genomecov_bam.out.bed
 
 }
