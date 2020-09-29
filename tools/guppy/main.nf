@@ -51,7 +51,7 @@ process guppy_qc {
                       if (opts.publish_results == "none") null
                       else filename }
 
-    container "luslab/nf-modules-guppy:cpu"
+    container "luslab/nf-modules-guppy:cpu-1.0.0"
 
     input:
         val opts
