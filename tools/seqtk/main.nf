@@ -12,7 +12,7 @@ process seqtk_subsample {
                       if (opts.publish_results == "none") null
                       else filename }
 
-    container 'luslab/nf-modules-seqtk:latest'
+    container 'luslab/nf-modules-seqtk:base-1.0.0'
     
     input:
       val opts
@@ -74,7 +74,7 @@ process seqtk_subseq {
                       if (opts.publish_results == "none") null
                       else filename }
 
-    container 'luslab/nf-modules-seqtk:latest'
+    container 'luslab/nf-modules-seqtk:base-1.0.0'
     
     input:
       val opts
