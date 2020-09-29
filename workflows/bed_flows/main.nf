@@ -4,7 +4,7 @@
 nextflow.enable.dsl=2
 
 include { bedtools_bamtobed } from '../../tools/bedtools/main.nf'
-include { bedtools_genomecov } from '../../tools/bedtools/main.nf'
+include { bedtools_genomecov_bam } from '../../tools/bedtools/main.nf'
 include { awk } from '../../tools/luslab_linux_tools/main.nf'
 include { cut } from '../../tools/luslab_linux_tools/main.nf'
 include { sort } from '../../tools/luslab_linux_tools/main.nf'
