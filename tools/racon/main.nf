@@ -1,7 +1,7 @@
 #!/usr/bin/env nextflow
 
 // Specify DSL2
-nextflow.preview.dsl = 2
+nextflow.enable.dsl = 2
 
 // Process definition
 process racon {
@@ -16,7 +16,7 @@ process racon {
 
     input:
         val opts
-        tuple val(meta), path(reads), path(overlapPaf), path(assemblyFasta)
+        tuple val(meta), path(reads), path(overlap_paf), path(assembly_fasta)
 
     output:
         tuple val(meta), path("racon.fasta"), emit: fasta
@@ -25,8 +25,8 @@ process racon {
 	//Build the command line options
 	racon_command = "racon --threads ${task.cpus} \
 			$reads \
-			$overlapPaf \
-			$assemblyFasta > racon.fasta " 
+			$overlap_paf \
+			$assembly_fasta > racon.fasta " 
 
 	//SHELL
     """

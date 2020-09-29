@@ -1,10 +1,9 @@
 FROM nfcore/base:1.7
-LABEL authors="michael.mansfield@oist.jp" \
+LABEL authors="munissa.sadykova@oist.jp" \
       description="Docker image containing all requirements for the nf-modules-racon module"
 
 # Install apt packages
 RUN apt-get update \
-	&& apt-get install -y --no-install-recommends \
 	&& apt-get clean \
 	&& rm -rf /var/lib/apt/lists/*
 
