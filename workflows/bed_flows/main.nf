@@ -18,7 +18,7 @@ workflow paired_bam_to_bedgraph {
         params.modules['awk'].args = '\'$1==$4 && $6-$2 < 1000 {print $0}\''
         params.modules['cut'].args = '-f 1,2,6'
         params.modules['sort'].args = '-k1,1 -k2,2n -k3,3n'
-        params.modules['bedtools_genomecov_bam'] = '-bg'
+        params.modules['bedtools_genomecov_bam'].args = '-bg'
 
 
         // Convert BAM to BED
