@@ -24,11 +24,12 @@ jobs:
             #    module-name: 'guppy'
     steps:
       - uses: actions/checkout@v2
-      - name: Set version
+      - name: Set version and tags
+        id: ver
         run: |
-          version=`cat tools/${{matrix.module-name}}/VERSION`
-          echo "version: $version"
-          export ENV_VER=$version
+          VERSION=`cat tools/${{matrix.module-name}}/VERSION`
+          echo "version: $VERSION"
+          echo ::set-output name=version::${VERSION}
       - name: Build and push image
         uses: docker/build-push-action@v1.1.0
         with:
@@ -37,4 +38,4 @@ jobs:
           repository: luslab/nf-modules-${{matrix.module-name}}
           path: tools/${{matrix.module-name}}
           dockerfile: tools/${{matrix.module-name}}/${{matrix.docker-file}}
-          tags: ${{matrix.tag}},$ENV_VER
+          tags: ${{matrix.tag}},${{steps.ver.version}}
