@@ -1,4 +1,5 @@
 name: docker-build-push
+#https://github.com/marketplace/actions/build-and-push-docker-images
 
 on:
   push:
@@ -35,4 +36,6 @@ jobs:
           repository: luslab/nf-modules-${{matrix.module-name}}
           path: tools/${{matrix.module-name}}
           dockerfile: tools/${{matrix.module-name}}/${{matrix.docker-file}}
-          tags:  ${{matrix.tag}}
+          tags: |
+            ${{matrix.tag}}
+            $VERSION
