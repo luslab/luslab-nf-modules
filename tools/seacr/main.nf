@@ -22,7 +22,8 @@ process seacr {
     path(control)
 
     output:
-    tuple val(meta), path("*.bed")
+    tuple val(meta), path("*.bed"), emit: bed
+    path "*.log", emit: log
 
     script:
     outfile_name = seacr_${bedgraph}
@@ -32,4 +33,7 @@ process seacr {
 
     seacr_command = "SEACR_1.3.sh ${bedgraph} ${control} ${opts.args} ${outfile_name}.bed"
 
+    """
+    ${seacr_command}
+    """
 }
