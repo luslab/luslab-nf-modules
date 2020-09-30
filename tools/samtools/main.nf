@@ -12,7 +12,7 @@ process samtools_index {
                       if (opts.publish_results == "none") null
                       else filename }
 
-    container 'luslab/nf-modules-samtools:latest'
+    container 'luslab/nf-modules-samtools:base-1.0.0'
 
     input:
         val opts
@@ -56,7 +56,7 @@ process samtools_view {
                       if (opts.publish_results == "none") null
                       else filename }
 
-    container 'luslab/nf-modules-samtools:latest'
+    container 'luslab/nf-modules-samtools:base-1.0.0'
 
     input:
         val opts
@@ -103,7 +103,7 @@ process samtools_faidx {
                       if (opts.publish_results == "none") null
                       else filename }
 
-    container 'luslab/nf-modules-samtools:latest'
+    container 'luslab/nf-modules-samtools:base-1.0.0'
 
     input:
         val opts
