@@ -1,5 +1,5 @@
 
-      FROM nfcore/base:1.7
+FROM nfcore/base:1.7
 
 LABEL authors="charlotte.west@crick.ac.uk" \
       description="Docker image containing requirements to run SEACR module"

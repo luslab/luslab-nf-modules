@@ -12,7 +12,7 @@ process decompress {
       
     output:
         tuple val(meta), path("*.*"), emit: file
-        path "*.*", emit: fileNoMeta
+        path "*.*", emit: file_no_meta
 
     script: 
     """
@@ -32,7 +32,7 @@ process awk {
 
     output:
         tuple val(meta), path("${outfile_name}"), emit: file
-        path "${outfile_name}", emit: fileNoMeta
+        path "${outfile_name}", emit: file_no_meta
 
     script:
         outfile_name = "awk_${input_file}"
@@ -54,7 +54,7 @@ process cut {
 
       output:
       tuple val(meta), path("${outfile_name}"), emit: file
-      path "${outfile_name}", emit: fileNoMeta
+      path "${outfile_name}", emit: file_no_meta
 
       script:
         outfile_name = "cut_${input_file}"
@@ -76,7 +76,7 @@ process sort {
 
     output:
         tuple val(meta), path("${outfile_name}"), emit: file
-        path "${outfile_name}", emit: fileNoMeta
+        path "${outfile_name}", emit: file_no_meta
 
     script:
         outfile_name = "sort_${input_file}"
