@@ -1,0 +1,8 @@
+# This file creates a conda environment for the SEACR module
+#   conda env create -f environment.yml
+name: nfcore-module-icount
+channels:
+  - conda-forge
+  - bioconda
+  - defaults
+dependencies:
