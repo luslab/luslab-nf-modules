@@ -25,7 +25,11 @@ process seacr {
     tuple val(meta), path("*.bed")
 
     script:
+    outfile_name = seacr_${bedgraph}
+    if(opts.outfile_name) {
+        outfile_name = opts.outfile_name
+    }
 
-    seacr_command = "SEACR_1.3.sh ${bedgraph} ${control} ${opts.args} ${opts.out_file}.bed"
+    seacr_command = "SEACR_1.3.sh ${bedgraph} ${control} ${opts.args} ${outfile_name}.bed"
 
 }
