@@ -14,11 +14,18 @@ process seacr {
 
     
     // container
+    container 'luslab/nf-modules-seacr:latest'
 
     input:
+    val opts
+    tuple val(meta), path(bedgraph)
+    path(control)
 
     output:
+    tuple val(meta), path("*.bed")
 
     script:
+
+    seacr_command = "SEACR_1.3.sh ${bedgraph} ${control} ${opts.args} ${opts.out_file}.bed"
 
 }
