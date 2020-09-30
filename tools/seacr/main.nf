@@ -31,7 +31,9 @@ process seacr {
         outfile_name = opts.outfile_name
     }
 
-    seacr_command = "SEACR_1.3.sh ${bedgraph} ${control} ${opts.args} ${outfile_name}.bed"
+    prefix = opts.suffix ? "${meta.sample_id}${opts.suffix}" : "${meta.sample_id}"
+
+    seacr_command = "SEACR_1.3.sh ${bedgraph} ${control} ${opts.args} ${prefix}"
 
     """
     ${seacr_command}
