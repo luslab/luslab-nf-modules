@@ -6,3 +6,4 @@ channels:
   - bioconda
   - defaults
 dependencies:
+  - seacr=1.3

@@ -1,7 +1,7 @@
 
-FROM nfcore/base:1.7
+      FROM nfcore/base:1.7
 
-LABEL authors="charlotte.west@crick.ac.uk"
+LABEL authors="charlotte.west@crick.ac.uk" \
       description="Docker image containing requirements to run SEACR module"
 
 # Install apt packages
@@ -14,8 +14,3 @@ RUN conda update -n base -c defaults conda
 COPY environment.yml /
 RUN conda env create -f /environment.yml && conda clean -a
 ENV PATH /opt/conda/envs/nfcore-module-seacr/bin:$PATH
-
-
-# Install SEACR
-WORKDIR /home
-RUN git clone https://github.com/FredHutch/SEACR.git
