@@ -19,7 +19,7 @@ process seacr {
     input:
     val opts
     tuple val(meta), path(bedgraph)
-    path(control)
+    path control
 
     output:
     tuple val(meta), path("*.bed"), emit: bed
