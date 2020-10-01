@@ -5,6 +5,8 @@ nextflow.enable.dsl=2
 
 // Process definition
 process paraclu {
+    tag "${sample_id}"
+
     publishDir "${params.outdir}/paraclu",
         mode: "copy", overwrite: true
       
