@@ -8,7 +8,7 @@ process paraclu {
     publishDir "${params.outdir}/paraclu",
         mode: "copy", overwrite: true
       
-    container 'luslab/nf-modules-paraclu:latest'
+    container 'luslab/nf-modules-paraclu:base-1.0.0'
     //container 'quay.io/biocontainers/paraclu:9--he513fc3_0'
 
     input:

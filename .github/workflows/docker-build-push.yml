@@ -1,17 +1,19 @@
 name: docker-build-push
+#https://github.com/marketplace/actions/build-and-push-docker-images
 
 on:
   push:
     branches: [ master ]
+    #branches: [feat-chris]
 
 jobs:
   build-push-docker:
     runs-on: ubuntu-latest
     strategy:
         matrix:
-            tag: ['latest']
+            tag: ['base']
             docker-file: ['Dockerfile']
-            module-name: ['hisat2','flye','get_crosslinks','get_crosslinks_coverage','icount','paraclu','peka','samtools','star','umi_tools','seqtk','bowtie2','minionqc','minimap2','tantan', 'star']
+            module-name: ['hisat2','flye','get_crosslinks','get_crosslinks_coverage','icount','paraclu','peka','samtools','star','umi_tools','seqtk','bowtie2','minionqc','minimap2','tantan','nanoplot']
             include:
               - tag: 'cpu'
                 docker-file: 'Dockerfile.cpu'
@@ -21,6 +23,13 @@ jobs:
                 module-name: 'guppy'
     steps:
       - uses: actions/checkout@v2
+      - name: Set version and tags
+        id: ver
+        run: |
+          VERSION=`cat tools/${{matrix.module-name}}/VERSION`
+          echo "version: $VERSION"
+          echo "::set-output name=version::$(echo $VERSION)"
+        shell: bash
       - name: Build and push image
         uses: docker/build-push-action@v1.1.0
         with:
@@ -29,4 +38,4 @@ jobs:
           repository: luslab/nf-modules-${{matrix.module-name}}
           path: tools/${{matrix.module-name}}
           dockerfile: tools/${{matrix.module-name}}/${{matrix.docker-file}}
-          tags:  ${{matrix.tag}}
+          tags: latest,${{matrix.tag}}-${{steps.ver.outputs.version}}

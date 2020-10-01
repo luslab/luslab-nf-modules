@@ -4,24 +4,48 @@
 nextflow.enable.dsl=2
 
 // Log
-log.info ("Starting test pipeline for multiqc")
+log.info ("Starting tests for multiqc...")
+
+/*------------------------------------------------------------------------------------*/
+/* Define params
+--------------------------------------------------------------------------------------*/
 
 params.verbose = true
 
-/* Module inclusions 
+/*------------------------------------------------------------------------------------*/
+/* Module inclusions
 --------------------------------------------------------------------------------------*/
 
 include {multiqc} from '../main.nf'
+include {assert_channel_count} from '../../../workflows/test_flows/main.nf'
 
 /*------------------------------------------------------------------------------------*/
+/* Define input channels
+--------------------------------------------------------------------------------------*/
 
-ch_testData = Channel.fromPath( "$baseDir/input/*.zip" )
+Channel
+    .fromPath("$baseDir/../../../test_data/multiqc/fastqc/*.zip")
+    .set {ch_fastqc}
+    //.subscribe {log.info("$it")}
 
-// Run workflow
+Channel
+    .fromPath("$baseDir/../../../test_data/multiqc/cutadapt/*.log")
+    .set {ch_cutadapt}
+    //.subscribe {log.info("$it")}
+
+Channel
+    .fromPath("$baseDir/../../../test_data/multiqc/custom_config.yaml")
+    .set {ch_config}
+    //.subscribe {log.info("$it")}
+
+/*------------------------------------------------------------------------------------*/
+/* Run tests
+--------------------------------------------------------------------------------------*/
+
 workflow {
-    // Run multiqc
-    multiqc ( ch_testData.collect() )
+    multiqc( params.modules['multiqc'], ch_config, ch_fastqc.mix(ch_cutadapt).collect())
 
-    // Collect file names and view output
     multiqc.out.report | view
+
+    assert_channel_count( multiqc.out.report, "output", 1)
 }

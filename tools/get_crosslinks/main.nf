@@ -14,7 +14,7 @@ process getcrosslinks {
                       if (opts.publish_results == "none") null
                       else filename }
 
-    container 'luslab/nf-modules-get_crosslinks:latest'
+    container 'luslab/nf-modules-get_crosslinks:base-1.0.0'
 
     input:
       val(opts)

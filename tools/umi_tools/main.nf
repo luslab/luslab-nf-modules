@@ -12,7 +12,7 @@ process umitools_dedup {
                       if (opts.publish_results == "none") null
                       else filename }
 
-    container 'luslab/nf-modules-umi_tools:latest'
+    container 'luslab/nf-modules-umi_tools:base-1.0.0'
     //container 'quay.io/biocontainers/umi_tools:1.0.1--py38h0213d0e_2'
 
     input:

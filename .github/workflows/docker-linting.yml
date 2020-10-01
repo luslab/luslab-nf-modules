@@ -1,4 +1,5 @@
 name: docker-linting
+#https://github.com/hadolint/hadolint
 
 on:
   pull_request:
@@ -10,7 +11,7 @@ jobs:
     strategy:
         matrix:
           docker-name: ['Dockerfile']
-          module-name: ['hisat2','flye','get_crosslinks','get_crosslinks_coverage','icount','paraclu','peka','samtools','tantan','umi_tools','seqtk', 'star']
+          module-name: ['hisat2','flye','get_crosslinks','get_crosslinks_coverage','icount','paraclu','peka','samtools','star','umi_tools','seqtk','bowtie2','minionqc','minimap2','tantan','nanoplot']
           include:
             - docker-name: 'Dockerfile.cpu'
               module-name: 'guppy'

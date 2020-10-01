@@ -12,7 +12,7 @@ process tantan {
                       if (opts.publish_results == "none") null
                       else filename }
 
-    container "luslab/nf-modules-tantan:latest"
+    container "luslab/nf-modules-tantan:base-1.0.0"
     //container 'quay.io/biocontainers/tantan:13--he1b5a44_2'
 
     input:
@@ -38,6 +38,8 @@ process tantan_to_GFF3 {
         saveAs: { filename ->
                       if (opts.publish_results == "none") null
                       else filename }
+
+    container 'ubuntu:16.04'
 
     input:
         val opts

@@ -1,7 +1,7 @@
 #!/usr/bin/env nextflow
 
 // Specify DSL2
-nextflow.preview.dsl = 2
+nextflow.enable.dsl=2
 
 // Process definition
 process minimap2 {
@@ -12,8 +12,9 @@ process minimap2 {
                       if (opts.publish_results == "none") null
                       else filename }
 
-    container 'quay.io/biocontainers/minimap2:2.17--hed695b0_3'
-    
+    //container 'quay.io/biocontainers/minimap2:2.17--hed695b0_3'
+    container "luslab/nf-modules-minimap2:base-1.0.0"
+
     input:
         val opts
         tuple val(meta), path (reads)

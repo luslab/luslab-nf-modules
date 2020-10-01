@@ -42,14 +42,14 @@ process fastqc {
     if(readList.size > 1){
             """
             ${fastqc_command}
-            mv ${reads[0].simpleName}*.zip ${prefix}_fastqc.zip
-            mv ${reads[1].simpleName}*.zip ${prefix}_fastqc.zip
+            mv ${reads[0].simpleName}_fastqc.zip ${prefix}_r1_fastqc.zip
+            mv ${reads[1].simpleName}_fastqc.zip ${prefix}_r2_fastqc.zip
             """
     }
     else {
             """
             ${fastqc_command}
-            mv ${reads[0].simpleName}*.zip ${prefix}_fastqc.zip
+            mv ${reads[0].simpleName}_fastqc.zip ${prefix}_fastqc.zip
             """
     }
 }

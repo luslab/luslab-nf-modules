@@ -14,7 +14,7 @@ process icount {
                       if (opts.publish_results == "none") null
                       else filename }
 
-    container 'luslab/nf-modules-icount:latest'
+    container 'luslab/nf-modules-icount:base-1.0.0'
 
     input:
         val opts

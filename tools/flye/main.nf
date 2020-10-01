@@ -1,7 +1,7 @@
 #!/usr/bin/env nextflow
 
 // Specify DSL2
-nextflow.preview.dsl = 2
+nextflow.enable.dsl=2
 
 // Process definition
 process flye {
@@ -14,8 +14,8 @@ process flye {
                       if (opts.publish_results == "none") null
                       else filename }
 
-    container "luslab/nf-modules-flye:latest"
     //container 'quay.io/biocontainers/flye:2.8.1--py38h1c8e9b9_1'
+    container "luslab/nf-modules-flye:base-1.0.0"
 
     input:
         val opts
