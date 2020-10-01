@@ -5,6 +5,8 @@ nextflow.enable.dsl = 2
 
 // Process definition
 process tantan {
+    tag "${meta.sample_id}"
+
     publishDir "${params.outdir}/${opts.publish_dir}",
         mode: "copy", 
         overwrite: true,
@@ -32,6 +34,8 @@ process tantan {
 }
 
 process tantan_to_GFF3 {
+    tag "${meta.sample_id}"
+    
     publishDir "${params.outdir}/${opts.publish_dir}",
         mode: "copy",
         overwrite: true,
