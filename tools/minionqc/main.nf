@@ -12,14 +12,14 @@ process minionqc {
                       if (opts.publish_results == "none") null
                       else filename }
 
-    container "luslab/nf-modules-minionqc:latest"
+    container "luslab/nf-modules-minionqc:base-1.0.0"
 
     input:
         val opts
         tuple val(meta), path(sequencing_summary)
 
     output:
-        tuple val(meta), path("minionqc"), emit: minionqcOutputs
+        tuple val(meta), path("minionqc"), emit: minionqc_output_dir
 
     script:
 
@@ -29,7 +29,7 @@ process minionqc {
         args += ext_args.trim()
     }
 
-    minionqc_command = "Rscript /MinIONQC.R -p ${task.cpus} ${args} -o minionqc -i $sequencing_summary"
+    minionqc_command = "MinIONQC.R -p ${task.cpus} ${args} -o minionqc -i $sequencing_summary"
 
     if (params.verbose){
         println ("[MODULE] minionqc command: " + minionqc_command)

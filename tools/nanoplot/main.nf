@@ -12,7 +12,7 @@ process nanoplot {
                       if (opts.publish_results == "none") null
                       else filename }
 
-    container "luslab/nf-modules-nanoplot:latest"
+    container "luslab/nf-modules-nanoplot:base-1.0.0"
 
     input:
         val opts
