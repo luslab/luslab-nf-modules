@@ -13,7 +13,6 @@ process samtools_index {
                       else filename }
 
     container 'quay.io/biocontainers/samtools:1.10--h2e538c0_3'
-    //container 'luslab/nf-modules-samtools:base-1.0.0'
 
     input:
         val opts
@@ -57,11 +56,7 @@ process samtools_view {
                       if (opts.publish_results == "none") null
                       else filename }
 
-<<<<<<< HEAD
     container 'quay.io/biocontainers/samtools:1.10--h2e538c0_3'
-=======
-    container 'luslab/nf-modules-samtools:base-1.0.0'
->>>>>>> master
 
     input:
         val opts
@@ -108,11 +103,7 @@ process samtools_faidx {
                       if (opts.publish_results == "none") null
                       else filename }
 
-<<<<<<< HEAD
     container 'quay.io/biocontainers/samtools:1.10--h2e538c0_3'
-=======
-    container 'luslab/nf-modules-samtools:base-1.0.0'
->>>>>>> master
 
     input:
         val opts
