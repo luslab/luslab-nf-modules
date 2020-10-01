@@ -131,7 +131,7 @@ process bedtools_bamtobed {
 
     input:
         val opts
-        tuple val(meta), path(bam_file), path (bai_file)
+        tuple val(meta), path(bam_file), path(bai_file)
 
     output:
         tuple val(meta), path("${prefix}"), emit: bed
