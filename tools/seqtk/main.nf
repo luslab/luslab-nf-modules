@@ -5,6 +5,8 @@ nextflow.enable.dsl=2
 
 // Random subsample of FASTQ file
 process seqtk_subsample {
+    tag "${meta.sample_id}"
+
     publishDir "${params.outdir}/${opts.publish_dir}",
         mode: "copy", 
         overwrite: true,
@@ -67,6 +69,8 @@ process seqtk_subsample {
 
 // Subset FASTA or FASTQ file with bed
 process seqtk_subseq {
+    tag "${input}"
+
     publishDir "${params.outdir}/${opts.publish_dir}",
         mode: "copy", 
         overwrite: true,
