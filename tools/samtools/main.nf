@@ -5,6 +5,8 @@ nextflow.enable.dsl=2
 
 // Samtools index
 process samtools_index {
+    tag "${meta.sample_id}"
+
     publishDir "${params.outdir}/${opts.publish_dir}",
         mode: "copy", 
         overwrite: true,
@@ -49,6 +51,8 @@ process samtools_index {
 
 // Samtools view - only works for bam files - requires bam and bai
 process samtools_view {
+    tag "${meta.sample_id}"
+
     publishDir "${params.outdir}/${opts.publish_dir}",
         mode: "copy", 
         overwrite: true,
@@ -96,6 +100,8 @@ process samtools_view {
 
 // Samtools faidx indexes fasta files
 process samtools_faidx {
+    tag "${fasta}"
+
     publishDir "${params.outdir}/${opts.publish_dir}",
         mode: "copy", 
         overwrite: true,
@@ -135,6 +141,8 @@ process samtools_faidx {
 
 
 process samtools_sort {
+    tag "${meta.sample_id}"
+    
     publishDir "${params.outdir}/${opts.publish_dir}",
         mode: "copy", 
         overwrite: true,
