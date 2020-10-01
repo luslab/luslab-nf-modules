@@ -2,6 +2,8 @@ FROM continuumio/miniconda3:4.8.2
 LABEL authors="chris.cheshire@crick.ac.uk" \
       description="Docker image containing all requirements for the nf-core paraclu module"
 
+COPY VERSION .
+
 # Install apt packages
 RUN apt-get update \
  && apt-get install -y --no-install-recommends \
