@@ -13,7 +13,6 @@ process nanoplot {
                       else filename }
 
     container 'quay.io/biocontainers/nanoplot:1.32.1--py_0'
-    //container "luslab/nf-modules-nanoplot:base-1.0.0"
 
     input:
         val opts
