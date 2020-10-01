@@ -11,7 +11,6 @@ process multiqc {
                       if (opts.publish_results == "none") null
                       else filename }
 
-    //container 'quay.io/biocontainers/multiqc:1.9--pyh9f0ad1d_0'
     container 'quay.io/biocontainers/multiqc:1.9--py_1'
 
     input:
