@@ -57,15 +57,19 @@ Channel
 // Run workflow
 workflow {
     decompress ( ch_input )
-
     awk ( params.modules['awk'], ch_awk )
+    cut ( params.modules['cut'], ch_cut )
+    sort ( params.modules['sort'], cut.out.file )
 
     decompress.out.file | view
+    awk.out.file | view
+    cut.out.file | view
+    sort.out.file | view
 
-    // assert_channel_count( decompress.out.file, "file", 1)
+    assert_channel_count( decompress.out.file, "file", 1)
+    assert_channel_count( awk.out.file, "awk_file", 1)
+    assert_channel_count( cut.out.file, "cut_file", 1)
+    assert_channel_count( sort.out.file, "sort_file", 1)
 
-    cut ( params.modules['cut'], ch_cut )
-
-    sort ( params.modules['sort'], cut.out.file )
 
 }
