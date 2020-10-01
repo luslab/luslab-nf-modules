@@ -33,6 +33,7 @@ process bedtools_intersect_regions {
 
         intersect_command = "bedtools intersect ${args} -a ${regions_file} -b $reads > ${prefix}"
         if (params.verbose){
+            //println ("[MODULE] bedtools/intersect_regions container: " + "${workflow.container}")
             println ("[MODULE] bedtools/intersect_regions command: " + intersect_command)
         }
 
