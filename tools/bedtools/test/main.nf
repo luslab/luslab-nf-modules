@@ -107,7 +107,7 @@ workflow {
     // Run bedtools_genomecov
     bedtools_genomecov (params.modules['bedtools_genomecov'], ch_test_bed, genomecov_genome)
     // Run bedtools_genomecov_bam
-    bedtools_genomecov_bam (params.modules['bedtools_genomecov_bam'], ch_test_bam)
+    bedtools_genomecov_bam (params.modules['bedtools_genomecov_bam'], ch_test_bam_bai)
 
     // Run bedtools_genomecov_bam
 
