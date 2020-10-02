@@ -12,7 +12,7 @@ process minimap2 {
                       if (opts.publish_results == "none") null
                       else filename }
 
-    container "luslab/nf-modules-minimap2:latest"
+    container "luslab/nf-modules-minimap2:base-1.0.0"
 
     input:
         val opts

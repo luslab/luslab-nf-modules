@@ -8,7 +8,7 @@ process peka {
     publishDir "${params.outdir}/peka",
         mode: "copy", overwrite: true
 
-    container 'luslab/nf-modules-peka:latest'
+    container 'luslab/nf-modules-peka:base-1.0.0'
 
     input:
       tuple val(sample_id), path(peaks), path(xls), path(genome), path(genome_index), path(regions)

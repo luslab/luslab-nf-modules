@@ -12,7 +12,7 @@ process minionqc {
                       if (opts.publish_results == "none") null
                       else filename }
 
-    container "luslab/nf-modules-minionqc:conda-minionqc"
+    container "luslab/nf-modules-minionqc:base-1.0.0"
 
     input:
         val opts
