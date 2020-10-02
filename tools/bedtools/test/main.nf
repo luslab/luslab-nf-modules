@@ -44,9 +44,14 @@ testData = [
     [[sample_id:"sample6"], "$baseDir/../../../test_data/bed/sample6.xl.bed.gz"]
 ]
 
-bam_test_data = [
+bam_bai_test_data = [
     [[sample_id:"sample1"], "$baseDir/../../../test_data/bam_bai/sample1.bam", "$baseDir/../../../test_data/bam_bai/sample1.bam.bai"],
     [[sample_id:"sample2"], "$baseDir/../../../test_data/bam_bai/sample2.bam", "$baseDir/../../../test_data/bam_bai/sample2.bam.bai"]
+]
+
+bam_test_data = [
+    [[sample_id:"sample1"], "$baseDir/../../../test_data/bam_bai/sample1.bam"],
+    [[sample_id:"sample2"], "$baseDir/../../../test_data/bam_bai/sample2.bam"]
 ]
 
 genomecov_bed_data = [
@@ -66,11 +71,18 @@ Channel
     .map { row -> [ row[0], file(row[1], checkIfExists: true) ] }
     .set {ch_test_crosslinks}
 
+// Define bam&bai test data input channel
+Channel
+    .from(bam_bai_test_data)
+    .map { row -> [ row[0], file(row[1], checkIfExists: true), file(row[2], checkIfExists: true)  ] }
+    .set {ch_test_bam_bai}
+
 // Define bam test data input channel
 Channel
     .from(bam_test_data)
     .map { row -> [ row[0], file(row[1], checkIfExists: true) ] }
     .set {ch_test_bam}
+
 
 // Define bed test data input channel
 Channel
@@ -90,7 +102,7 @@ workflow {
     // Run bedtools_subtract (this is to subtract one sample from another)
     bedtools_subtract (params.modules['bedtools_subtract'], ch_test_crosslinks.filter{it[0].sample_id == "sample1"}, ch_test_crosslinks.filter{it[0].sample_id == "sample2"}.map{it[1]} )
     // // Run bedtools_bamtobed
-    // bedtools_bamtobed (params.modules['bedtools_bamtobed'], ch_test_bam)
+    bedtools_bamtobed (params.modules['bedtools_bamtobed'], ch_test_bam_bai)
     // Run bedtools_genomecov
     bedtools_genomecov (params.modules['bedtools_genomecov'], ch_test_bed, genomecov_genome)
     // Run bedtools_genomecov_bam
@@ -102,7 +114,7 @@ workflow {
     bedtools_intersect_regions.out.bed | view
     bedtools_intersect.out.bed | view
     bedtools_subtract.out.bed | view
-    //bedtools_bamtobed.out.bed | view
+    bedtools_bamtobed.out.bed | view
     bedtools_genomecov.out.bed | view
     bedtools_genomecov_bam.out.bed | view
 
