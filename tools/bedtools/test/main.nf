@@ -60,22 +60,7 @@ genomecov_bed_data = [
 ]
 
 
-// bam_bai_test_data = [
-//     [[sample_id:"sample1"], "$baseDir/../../../test_data/bam_bai/sample1.bam", "$baseDir/../../../test_data/bam_bai/sample1.bam.bai"],
-//     [[sample_id:"sample2"], "$baseDir/../../../test_data/bam_bai/sample2.bam", "$baseDir/../../../test_data/bam_bai/sample2.bam.bai"]
-// ]
-
-// bam_test_data = [
-//     [[sample_id:"sample1"], "$baseDir/../../../test_data/bam_bai/sample1.bam"],
-//     [[sample_id:"sample2"], "$baseDir/../../../test_data/bam_bai/sample2.bam"]
-// ]
-
-// genomecov_bed_data = [
-//     [[sample_id:"sample1"], "$baseDir/../../../test_data/bed/sample1.xl.bed.gz"],
-//     [[sample_id:"sample2"], "$baseDir/../../../test_data/bed/sample2.xl.bed.gz"]
-// ]
-
-genomecov_genome = "$baseDir/../../../test_data/atac-seq/genome_2col.fa.fai"
+genomecov_genome = "$baseDir/../../../test_data/atac-seq/genome.fa.fai"
 
 // Define regions file input channel
 Channel.value(file("$baseDir/../../../test_data/gtf/regions_GENCODE_v30.gtf.gz"))
@@ -138,7 +123,7 @@ workflow {
     assert_channel_count( bedtools_intersect_regions.out.bed, "bed", 6)
     assert_channel_count( bedtools_intersect.out.bed, "bed", 1)
     assert_channel_count( bedtools_subtract.out.bed, "bed", 1)
-    //assert_channel_count( bedtools_bamtobed.out.bed, "bed", 1)
+    assert_channel_count( bedtools_bamtobed.out.bed, "bed", 2)
     assert_channel_count( bedtools_genomecov.out.bed, "bed", 2)
     assert_channel_count( bedtools_genomecov_bam.out.bed, "bed", 2)
 }
