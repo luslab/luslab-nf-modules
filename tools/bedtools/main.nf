@@ -209,7 +209,7 @@ process bedtools_genomecov_bam {
 
     input:
         val opts
-        tuple val(meta), path(bam_file)
+        tuple val(meta), path(bam_file), path(bai_file)
 
     output:
         tuple val(meta), path("${prefix}"), emit: bed
