@@ -78,13 +78,6 @@ Channel
     .map { row -> [ row[0], file(row[1], checkIfExists: true), file(row[2], checkIfExists: true)  ] }
     .set {ch_test_bam_bai}
 
-// Define bam test data input channel
-Channel
-    .from(bam_test_data)
-    .map { row -> [ row[0], file(row[1], checkIfExists: true) ] }
-    .set {ch_test_bam}
-
-
 // Define bed test data input channel
 Channel
     .from(genomecov_bed_data)
