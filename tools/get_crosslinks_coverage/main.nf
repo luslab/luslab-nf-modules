@@ -11,7 +11,7 @@ process get_crosslinks_coverage {
                       if (opts.publish_results == "none") null
                       else filename }
     
-    container 'luslab/nf-modules-get_crosslinks_coverage'
+    container 'luslab/nf-modules-get_crosslinks_coverage:base-1.0.0'
 
     input:
         val opts

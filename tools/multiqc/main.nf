@@ -3,43 +3,42 @@
 // Specify DSL2
 nextflow.enable.dsl=2
 
-// Main process
 process multiqc {
-    publishDir "${params.outdir}/multiqc",
-        mode: "copy", overwrite: true
+    publishDir "${params.outdir}/${opts.publish_dir}",
+        mode: "copy", 
+        overwrite: true,
+        saveAs: { filename ->
+                      if (opts.publish_results == "none") null
+                      else filename }
 
-    container 'luslab/nf-modules-multiqc:latest'
+    container 'quay.io/biocontainers/multiqc:1.9--pyh9f0ad1d_0'
     
     input:
-      path(reports)
+        val(opts)
+        path(multiqc_config)
+        path(reports)
 
     output:
-      path "multiqc_report.html", emit: report
-      path "multiqc_data/multiqc.log", emit: log
+        path "*multiqc_report.html", emit: report
+        path "*_data"              , emit: data
         
     script:
+        args = ""
+        if(opts.args && opts.args != '') {
+            ext_args = opts.args
+            args += ' ' + ext_args.trim()
+        }
 
-    // Check for custom args
-    args = ""
-    if(params.multiqc_args && params.multiqc_args != '') {
-        ext_args = params.multiqc_args
-        args += " " + ext_args.trim()
-    }
+        multiqc_command = "multiqc -f $args ."
+        if(opts.custom_config) {
+            multiqc_command = "multiqc -f$args -c $multiqc_config ."
+        }
 
-    // Check for custom config
-    custom_config_file = ''
-    if(params.multiqc_config && params.multiqc_config != '') {
-        $custom_config_file = "--config ${params.multiqc_config}"
-    }
+        if (params.verbose){
+            println ("[MODULE] multiqc command: " + multiqc_command)
+        }
 
-    multiqc_command = "multiqc . $args $custom_config_file"
-
-    // Log
-    if (params.verbose){
-        println ("[MODULE] multiqc command: " + multiqc_command)
-    }
-
-    """
-    ${multiqc_command}
-    """
+        """
+        ${multiqc_command}
+        """
 }

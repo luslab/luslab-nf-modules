@@ -12,7 +12,7 @@ process umitools_dedup {
                       if (opts.publish_results == "none") null
                       else filename }
 
-    container 'luslab/nf-modules-umi_tools:latest'
+    container 'luslab/nf-modules-umi_tools:base-1.0.0'
 
     input:
         val(opts)

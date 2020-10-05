@@ -1,7 +1,7 @@
 #!/usr/bin/env nextflow
 
 // Specify DSL2
-nextflow.preview.dsl = 2
+nextflow.enable.dsl=2
 
 // Process definition
 process flye {
@@ -12,7 +12,7 @@ process flye {
                       if (opts.publish_results == "none") null
                       else filename }
 
-    container "luslab/nf-modules-flye:latest"
+    container "luslab/nf-modules-flye:base-1.0.0"
 
     input:
         val opts

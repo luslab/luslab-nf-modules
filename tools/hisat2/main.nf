@@ -10,7 +10,7 @@ process hisat2_build {
                       if (opts.publish_results == "none") null
                       else filename }
 
-    container 'luslab/nf-modules-hisat2:latest'
+    container 'luslab/nf-modules-hisat2:base-1.0.0'
 
     input:
         val opts
