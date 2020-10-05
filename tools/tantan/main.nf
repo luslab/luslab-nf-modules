@@ -5,6 +5,8 @@ nextflow.enable.dsl = 2
 
 // Process definition
 process tantan {
+    tag "${meta.sample_id}"
+
     publishDir "${params.outdir}/${opts.publish_dir}",
         mode: "copy", 
         overwrite: true,
@@ -13,6 +15,7 @@ process tantan {
                       else filename }
 
     container "luslab/nf-modules-tantan:base-1.0.0"
+    //container 'quay.io/biocontainers/tantan:13--he1b5a44_2'
 
     input:
         val opts
@@ -31,6 +34,8 @@ process tantan {
 }
 
 process tantan_to_GFF3 {
+    tag "${meta.sample_id}"
+    
     publishDir "${params.outdir}/${opts.publish_dir}",
         mode: "copy",
         overwrite: true,

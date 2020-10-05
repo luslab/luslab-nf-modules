@@ -5,6 +5,8 @@ nextflow.enable.dsl=2
 
 // Trimming reusable component
 process cutadapt {
+    tag "${meta.sample_id}"
+
     publishDir "${params.outdir}/${opts.publish_dir}",
     mode: "copy", 
     overwrite: true,

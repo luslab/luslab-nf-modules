@@ -5,6 +5,8 @@ nextflow.enable.dsl=2
 
 // Decompresses file to output (assumes running base system on linux)"
 process decompress {
+    tag "${input_file}"
+
     container 'ubuntu:16.04'
 
     input:
@@ -41,13 +43,15 @@ process compress {
 
 // Generic awk process
 process awk {
+    tag "${input_file}"
+
     publishDir "${params.outdir}/${opts.publish_dir}",
       mode: "copy", 
       overwrite: true,
       saveAs: { filename ->
                     if (opts.publish_results == "none") null
                     else filename }
-
+                 
     container 'ubuntu:16.04'
 
     input:

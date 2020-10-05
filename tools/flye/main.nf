@@ -5,6 +5,8 @@ nextflow.enable.dsl=2
 
 // Process definition
 process flye {
+    tag "${meta.sample_id}"
+
     publishDir "${params.outdir}/${opts.publish_dir}",
         mode: "copy",
         overwrite: true,
@@ -12,6 +14,7 @@ process flye {
                       if (opts.publish_results == "none") null
                       else filename }
 
+    //container 'quay.io/biocontainers/flye:2.8.1--py38h1c8e9b9_1'
     container "luslab/nf-modules-flye:base-1.0.0"
 
     input:
