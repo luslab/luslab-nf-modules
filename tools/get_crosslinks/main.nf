@@ -28,8 +28,6 @@ process getcrosslinks {
 
       prefix = opts.suffix ? "${meta.sample_id}${opts.suffix}" : "${meta.sample_id}"
 
-      //println ("[MODULE] getcrosslinks container: " + "${workflow.container}")
-
       //SHELL
       """
       bedtools bamtobed -i ${bam[0]} > dedupe.bed
