@@ -14,7 +14,8 @@ process bowtie2_align {
                       if (opts.publish_results == "none") null
                       else filename }
     
-    container 'luslab/nf-modules-bowtie2:base-1.0.0'
+    //container 'luslab/nf-modules-bowtie2:base-1.0.0'
+    container 'luslab/nf-modules-bowtie2:base-1.0.1'
 
     input:
         val opts
@@ -89,7 +90,8 @@ process bowtie2_build {
                       if (opts.publish_results == "none") null
                       else filename }
     
-    container 'luslab/nf-modules-bowtie2:base-1.0.0'
+    //container 'luslab/nf-modules-bowtie2:base-1.0.0'
+    container 'luslab/nf-modules-bowtie2:base-1.0.1'
 
     input:
         val opts 
