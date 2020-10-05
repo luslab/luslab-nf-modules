@@ -5,6 +5,8 @@ nextflow.enable.dsl=2
 
 // Generate genome index
 process star_genome_generate {
+    tag "${fasta}"
+
     publishDir "${params.outdir}/${opts.publish_dir}",
         mode: "copy", 
         overwrite: true,
@@ -13,7 +15,7 @@ process star_genome_generate {
                       else filename }
 
     // container 'quay.io/biocontainers/star:2.7.5b--0'
-    container 'luslab/nf-modules-star:latest'
+    container 'luslab/nf-modules-star:base-1.0.0'
 
     input:
       val opts
@@ -84,7 +86,7 @@ process star_align_reads {
                       else filename }
 
     // container 'quay.io/biocontainers/star:2.7.5b--0'
-    container 'luslab/luslab-nf-star:latest'
+    container 'luslab/nf-modules-star:base-1.0.0'
 
     input:
       val opts

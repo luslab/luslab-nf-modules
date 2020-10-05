@@ -5,6 +5,8 @@ nextflow.enable.dsl=2
 
 // Process def
 process bowtie2_align {
+    tag "${meta.sample_id}"
+
     publishDir "${params.outdir}/${opts.publish_dir}",
         mode: "copy", 
         overwrite: true,
@@ -12,7 +14,7 @@ process bowtie2_align {
                       if (opts.publish_results == "none") null
                       else filename }
     
-    container 'luslab/nf-modules-bowtie2:latest'
+    container 'luslab/nf-modules-bowtie2:base-1.0.0'
 
     input:
         val opts
@@ -22,8 +24,8 @@ process bowtie2_align {
     output:
         tuple val(meta), path("*.sam"), optional: true, emit: sam
         tuple val(meta), path("*.bam"), path("*.bai"), optional: true, emit: bam
-        tuple val(meta), path("${prefix}${opts.unmapped_suffix}.1.fastq.gz"), path("${prefix}${opts.unmapped_suffix}.2.fastq.gz"), optional: true, emit: unmappedFastqPaired
-        tuple val(meta), path("${prefix}${opts.unmapped_suffix}.fastq.gz"), optional: true, emit: unmappedFastqSingle
+        tuple val(meta), path("${prefix}${opts.unmapped_suffix}.1.fastq.gz"), path("${prefix}${opts.unmapped_suffix}.2.fastq.gz"), optional: true, emit: unmapped_fq_pe
+        tuple val(meta), path("${prefix}${opts.unmapped_suffix}.fastq.gz"), optional: true, emit: unmapped_fq_s
         path "*stats.txt", emit: report
 
     script:
@@ -78,6 +80,8 @@ process bowtie2_align {
 }
 
 process bowtie2_build {
+    tag "${fasta}"
+
     publishDir "${params.outdir}/${opts.publish_dir}",
         mode: "copy", 
         overwrite: true,
@@ -85,7 +89,7 @@ process bowtie2_build {
                       if (opts.publish_results == "none") null
                       else filename }
     
-    container 'luslab/nf-modules-bowtie2:latest'
+    container 'luslab/nf-modules-bowtie2:base-1.0.0'
 
     input:
         val opts 

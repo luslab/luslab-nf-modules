@@ -1,10 +1,12 @@
 #!/usr/bin/env nextflow
 
 // Specify DSL2
-nextflow.preview.dsl = 2
+nextflow.enable.dsl=2
 
 // Process definition
 process nanoplot {
+    tag "${meta.sample_id}"
+    
     publishDir "${params.outdir}/${opts.publish_dir}",
         mode: "copy",
         overwrite: true,
@@ -12,7 +14,7 @@ process nanoplot {
                       if (opts.publish_results == "none") null
                       else filename }
 
-    container "luslab/nf-modules-nanoplot:latest"
+    container 'quay.io/biocontainers/nanoplot:1.32.1--py_0'
 
     input:
         val opts

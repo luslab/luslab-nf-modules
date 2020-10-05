@@ -5,6 +5,8 @@ nextflow.enable.dsl=2
 
 // Process definition
 process icount {
+    tag "${meta.sample_id}"
+    
     publishDir "${params.outdir}/${opts.publish_dir}",
         mode: "copy", 
         overwrite: true,
@@ -12,7 +14,7 @@ process icount {
                       if (opts.publish_results == "none") null
                       else filename }
 
-    container 'luslab/nf-modules-icount:latest'
+    container 'luslab/nf-modules-icount:base-1.0.0'
 
     input:
         val opts

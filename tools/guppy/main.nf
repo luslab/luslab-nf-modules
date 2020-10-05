@@ -1,10 +1,12 @@
 #!/usr/bin/env nextflow
 
 // Specify DSL2
-nextflow.preview.dsl = 2
+nextflow.enable.dsl=2
 
 // Process definition
 process guppy_basecaller {
+    tag "${meta.sample_id}"
+
     publishDir "${params.outdir}/${opts.publish_dir}",
         mode: "copy",
         overwrite: true,
@@ -12,7 +14,7 @@ process guppy_basecaller {
                       if (opts.publish_results == "none") null
                       else filename }
 
-    container params.num_gpus == 0 ? "luslab/nf-modules-guppy:cpu" : "luslab/nf-modules-guppy:gpu"
+    container params.num_gpus == 0 ? "luslab/nf-modules-guppy:cpu-1.0.0" : "luslab/nf-modules-guppy:gpu-1.0.0"
 
     input:
         val opts
@@ -44,6 +46,8 @@ process guppy_basecaller {
 }
 
 process guppy_qc {
+    tag "${sequencing_summary}"
+
     publishDir "${params.outdir}/${opts.publish_dir}",
         mode: "copy",
         overwrite: true,
@@ -51,7 +55,7 @@ process guppy_qc {
                       if (opts.publish_results == "none") null
                       else filename }
 
-    container "luslab/nf-modules-guppy:cpu"
+    container "luslab/nf-modules-guppy:cpu-1.0.0"
 
     input:
         val opts

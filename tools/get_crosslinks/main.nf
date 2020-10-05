@@ -5,6 +5,8 @@ nextflow.enable.dsl=2
 
 // Process definition
 process getcrosslinks {
+    tag "${meta.sample_id}"
+
     publishDir "${params.outdir}/${opts.publish_dir}",
         mode: "copy", 
         overwrite: true,
@@ -12,7 +14,7 @@ process getcrosslinks {
                       if (opts.publish_results == "none") null
                       else filename }
 
-    container 'luslab/nf-modules-get_crosslinks:latest'
+    container 'luslab/nf-modules-get_crosslinks:base-1.0.0'
 
     input:
       val(opts)
