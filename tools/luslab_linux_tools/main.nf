@@ -12,7 +12,7 @@ process decompress {
 
     output:
         tuple val(meta), path("*.*"), emit: file
-        path "*.*", emit: fileNoMeta
+        path "*.*", emit: file_no_meta
 
     script:
     """
@@ -30,7 +30,7 @@ process compress {
 
     output:
         tuple val(meta), path("*.*"), emit: file
-        path "*.*", emit: fileNoMeta
+        path "*.*", emit: file_no_meta
 
     script:
     """
