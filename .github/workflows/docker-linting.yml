@@ -11,7 +11,7 @@ jobs:
     strategy:
         matrix:
           docker-name: ['Dockerfile']
-          module-name: ['flye','get_crosslinks','get_crosslinks_coverage','icount','paraclu','peka','star','umi_tools','seqtk','bowtie2','minionqc','tantan']
+          module-name: ['flye','get_crosslinks','get_crosslinks_coverage','icount','paraclu','peka','star','umi_tools','bowtie2','minionqc','tantan']
           include:
             - docker-name: 'Dockerfile.cpu'
               module-name: 'guppy'
