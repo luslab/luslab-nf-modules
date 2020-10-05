@@ -109,7 +109,7 @@ def enumerateFastqDir(metadata){
     } else {
         fastqs = metadata[1].flatten().sort()
 
-        for (int i = 0; i <fastqs.size(); i++ ){
+        for (int i = 0; i < fastqs.size(); i++){
             String s1 = fastqs.get(i).getName().replaceAll(metadata[0].strip1, "")
             temp_meta = metadata[0].getClass().newInstance(metadata[0])
             temp_meta.remove("sample_id")
