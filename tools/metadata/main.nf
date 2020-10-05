@@ -1,5 +1,8 @@
 #!/usr/bin/env nextflow
 
+// Import groovy libs
+import groovy.transform.Synchronized
+
 // Specify DSL2
 nextflow.enable.dsl=2
 
@@ -42,6 +45,7 @@ workflow smartseq2_fastq_metadata {
         metadata
 }
 
+@Synchronized
 def listFiles(row, glob){
     file_array = []
     files = row[1].get(0).listFiles()
@@ -76,6 +80,7 @@ def processRow(LinkedHashMap row) {
     return array
 }
 
+@Synchronized
 def listFilesMultiDir(row, glob){
     file_array = []
     for(def dir:row[1]){
@@ -89,6 +94,7 @@ def listFilesMultiDir(row, glob){
     return array
 }
 
+@Synchronized
 def enumerateFastqDir(metadata){
     def fastqList = []
     def array = []
@@ -113,6 +119,3 @@ def enumerateFastqDir(metadata){
     }
     return array
 }
-
-
-
