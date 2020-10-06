@@ -20,6 +20,7 @@ workflow paired_bam_to_bedgraph {
         params.modules['cut'].args = '-f 1,2,6'
         params.modules['sort'].args = '-k1,1 -k2,2n -k3,3n'
         params.modules['bedtools_genomecov'].args = '-bg'
+        params.modules['bedtools_genomecov'].suffix = '.bedgraph'
 
 
         // Convert BAM to BED

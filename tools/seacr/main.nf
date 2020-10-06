@@ -11,7 +11,6 @@ process seacr {
         saveAs: { filename ->
                      if (opts.publish_results == "none") null
                      else filename }
-
     
     container 'luslab/nf-modules-seacr:latest'
 
