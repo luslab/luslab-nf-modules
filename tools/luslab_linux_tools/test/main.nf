@@ -18,7 +18,7 @@ params.modules['sort'].args = "-k 2"
 --------------------------------------------------------------------------------------*/
 
 include {decompress; compress; awk; cut; sort} from '../main.nf'
-include {assert_channel_count as assert_channel_count_compress; assert_channel_count as assert_channel_count_awk} from '../../../workflows/test_flows/main.nf'
+include {assert_channel_count} from '../../../workflows/test_flows/main.nf'
 
 /*------------------------------------------------------------------------------------*/
 /* Define input channels
@@ -71,6 +71,6 @@ workflow {
     assert_channel_count( awk.out.file, "awk_file", 1)
     assert_channel_count( cut.out.file, "cut_file", 1)
     assert_channel_count( sort.out.file, "sort_file", 1)
-    assert_channel_count_awk( awk.out.file, "file", 1 )
-    assert_channel_count_compress( compress.out.file, "file", 1 )
+    assert_channel_count( awk.out.file, "file", 1 )
+    assert_channel_count( compress.out.file, "file", 1 )
 }
