@@ -5,6 +5,8 @@ nextflow.enable.dsl=2
 
 // Process definition
 process umitools_dedup {
+    tag "${meta.sample_id}"
+    
     publishDir "${params.outdir}/${opts.publish_dir}",
         mode: "copy", 
         overwrite: true,
@@ -13,6 +15,7 @@ process umitools_dedup {
                       else filename }
 
     container 'luslab/nf-modules-umi_tools:base-1.0.0'
+    //container 'quay.io/biocontainers/umi_tools:1.0.1--py38h0213d0e_2'
 
     input:
         val(opts)
