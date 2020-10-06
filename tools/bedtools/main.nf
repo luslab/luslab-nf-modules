@@ -3,6 +3,8 @@
 nextflow.enable.dsl=2
 
 process bedtools_intersect_regions {
+    tag "${meta.sample_id}" 
+
     publishDir "${params.outdir}/${opts.publish_dir}",
         mode: "copy", 
         overwrite: true,
@@ -42,6 +44,8 @@ process bedtools_intersect_regions {
 
 
 process bedtools_intersect {
+    tag "${meta.sample_id}"
+
     publishDir "${params.outdir}/${opts.publish_dir}",
         mode: "copy", 
         overwrite: true,
@@ -81,6 +85,8 @@ process bedtools_intersect {
 
 //Process definition
 process bedtools_subtract {
+    tag "${meta.sample_id}"
+
     publishDir "${params.outdir}/${opts.publish_dir}",
         mode: "copy", 
         overwrite: true,

@@ -9,7 +9,7 @@ log.info ("Starting tests for file_tools...")
 /*------------------------------------------------------------------------------------*/
 /* Define params
 --------------------------------------------------------------------------------------*/
-params.modules['awk'].args = "'{print NF}'"
+params.modules['awk'].args = /-F "\t" 'BEGIN{OFS="\t";} ($10 <-2000) || ($10 >1500) && ($8!~\/^exon.\/) {print $0}'/
 params.modules['cut'].args = "-f 2,4,5,7"
 params.modules['sort'].args = "-k 2"
 
@@ -17,8 +17,8 @@ params.modules['sort'].args = "-k 2"
 /* Module inclusions
 --------------------------------------------------------------------------------------*/
 
-include {decompress; awk; cut; sort} from '../main.nf'
-include {assert_channel_count} from '../../../workflows/test_flows/main.nf'
+include {decompress; compress; awk; cut; sort} from '../main.nf'
+include {assert_channel_count as assert_channel_count_compress; assert_channel_count as assert_channel_count_awk} from '../../../workflows/test_flows/main.nf'
 
 /*------------------------------------------------------------------------------------*/
 /* Define input channels
@@ -34,7 +34,7 @@ Channel
     .set {ch_input}
 
 awkData = [
-    [[:], "$baseDir/../../../test_data/homer/chr1.gtf"]
+    [[:], "$baseDir/../../../test_data/luslab_linux_tools/test.txt"]
 ]
 
 Channel
@@ -57,6 +57,7 @@ Channel
 // Run workflow
 workflow {
     decompress ( ch_input )
+	compress (decompress.out.file)
     awk ( params.modules['awk'], ch_awk )
     cut ( params.modules['cut'], ch_cut )
     sort ( params.modules['sort'], cut.out.file )
@@ -70,6 +71,6 @@ workflow {
     assert_channel_count( awk.out.file, "awk_file", 1)
     assert_channel_count( cut.out.file, "cut_file", 1)
     assert_channel_count( sort.out.file, "sort_file", 1)
-
-
+    assert_channel_count_awk( awk.out.file, "file", 1 )
+    assert_channel_count_compress( compress.out.file, "file", 1 )
 }

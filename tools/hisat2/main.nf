@@ -3,6 +3,8 @@
 nextflow.enable.dsl=2
 
 process hisat2_build {
+    tag "${genome}"
+
     publishDir "${params.outdir}/${opts.publish_dir}",
         mode: "copy", 
         overwrite: true,
@@ -10,7 +12,7 @@ process hisat2_build {
                       if (opts.publish_results == "none") null
                       else filename }
 
-    container 'luslab/nf-modules-hisat2:base-1.0.0'
+    container 'quay.io/biocontainers/hisat2:2.2.1--he1b5a44_2'
 
     input:
         val opts
@@ -29,6 +31,8 @@ process hisat2_build {
 }
 
 process hisat2_splice_sites {
+    tag "${gtf}"
+
     publishDir "${params.outdir}/${opts.publish_dir}",
         mode: "copy", 
         overwrite: true,
@@ -36,7 +40,8 @@ process hisat2_splice_sites {
                       if (opts.publish_results == "none") null
                       else filename }
 
-    container 'luslab/nf-modules-hisat2:latest'
+    container 'quay.io/biocontainers/hisat2:2.2.1--he1b5a44_2'
+
     input:
         val opts
         path gtf
@@ -55,6 +60,8 @@ process hisat2_splice_sites {
  
 
 process hisat2_splice_align {
+    tag "${meta.sample_id}"
+
     publishDir "${params.outdir}/${opts.publish_dir}",
         mode: "copy", 
         overwrite: true,
@@ -62,7 +69,7 @@ process hisat2_splice_align {
                       if (opts.publish_results == "none") null
                       else filename }
 
-    container 'luslab/nf-modules-hisat2:latest'
+    container 'quay.io/biocontainers/hisat2:2.2.1--he1b5a44_2'
 
     input:
         val opts
@@ -103,6 +110,8 @@ process hisat2_splice_align {
 }
 
 process hisat2_align {
+    tag "${meta.sample_id}"
+    
     publishDir "${params.outdir}/${opts.publish_dir}",
         mode: "copy", 
         overwrite: true,
@@ -110,7 +119,7 @@ process hisat2_align {
                       if (opts.publish_results == "none") null
                       else filename }
 
-    container 'luslab/nf-modules-hisat2:latest'
+    container 'quay.io/biocontainers/hisat2:2.2.1--he1b5a44_2'
 
     input:
         val opts

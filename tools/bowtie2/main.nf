@@ -5,6 +5,8 @@ nextflow.enable.dsl=2
 
 // Process def
 process bowtie2_align {
+    tag "${meta.sample_id}"
+
     publishDir "${params.outdir}/${opts.publish_dir}",
         mode: "copy", 
         overwrite: true,
@@ -78,6 +80,8 @@ process bowtie2_align {
 }
 
 process bowtie2_build {
+    tag "${fasta}"
+
     publishDir "${params.outdir}/${opts.publish_dir}",
         mode: "copy", 
         overwrite: true,
