@@ -13,20 +13,18 @@ process seacr {
                      else filename }
 
     
-    // container
     container 'luslab/nf-modules-seacr:latest'
 
     input:
     val opts
     tuple val(meta), path(bedgraph)
-    path control
+    tuple val(control_meta), path(control)
 
     output:
     tuple val(meta), path("*.bed"), emit: bed
-    path "*.log", emit: log
 
     script:
-    outfile_name = seacr_${bedgraph}
+    outfile_name = "seacr_${bedgraph}"
     if(opts.outfile_name) {
         outfile_name = opts.outfile_name
     }
@@ -34,6 +32,10 @@ process seacr {
     prefix = opts.suffix ? "${meta.sample_id}${opts.suffix}" : "${meta.sample_id}"
 
     seacr_command = "SEACR_1.3.sh ${bedgraph} ${control} ${opts.args} ${prefix}"
+
+    if (params.verbose){
+        println ("[MODULE] seacr command: " + seacr_command)
+    }
 
     """
     ${seacr_command}

@@ -13,7 +13,8 @@ params.verbose = true
 /* Module inclusions
 --------------------------------------------------------------------------------------*/
 
-include { paired_bam_to_bedgraph } from '../../../workflows/bed_flows/main.nf'
+include { paired_bam_to_bedgraph as hist_flow } from '../../../workflows/bed_flows/main.nf'
+include { paired_bam_to_bedgraph as control_flow } from '../../../workflows/bed_flows/main.nf'
 
 /*------------------------------------------------------------------------------------*/
 /* Define input channels
@@ -22,13 +23,13 @@ include { paired_bam_to_bedgraph } from '../../../workflows/bed_flows/main.nf'
 // Define test data paths
 
 hist_data = [
-    [[sample_id:"sample1"], "$baseDir/../../../test_data/bed_flows/K27me3_1_to_chr20.bam",  "$baseDir/../../../test_data/bed_flows/K27me3_1_to_chr20.bam.bai"],
-    [[sample_id:"sample2"], "$baseDir/../../../test_data/bed_flows/K27me3_2_to_chr20.bam",  "$baseDir/../../../test_data/bed_flows/K27me3_2_to_chr20.bam.bai"]
+    [[sample_id:"sample1_hist"], "$baseDir/../../../test_data/bed_flows/K27me3_1_to_chr20.bam",  "$baseDir/../../../test_data/bed_flows/K27me3_1_to_chr20.bam.bai"],
+    [[sample_id:"sample2_hist"], "$baseDir/../../../test_data/bed_flows/K27me3_2_to_chr20.bam",  "$baseDir/../../../test_data/bed_flows/K27me3_2_to_chr20.bam.bai"]
 ]
 
 control_data = [
-    [[sample_id:"sample1"], "$baseDir/../../../test_data/bed_flows/IgG_1_to_chr20.bam",  "$baseDir/../../../test_data/bed_flows/IgG_1_to_chr20.bam.bai"],
-    [[sample_id:"sample2"], "$baseDir/../../../test_data/bed_flows/IgG_2_to_chr20.bam",  "$baseDir/../../../test_data/bed_flows/IgG_2_to_chr20.bam.bai"]
+    [[sample_id:"sample1_control"], "$baseDir/../../../test_data/bed_flows/IgG_1_to_chr20.bam",  "$baseDir/../../../test_data/bed_flows/IgG_1_to_chr20.bam.bai"],
+    [[sample_id:"sample2_control"], "$baseDir/../../../test_data/bed_flows/IgG_2_to_chr20.bam",  "$baseDir/../../../test_data/bed_flows/IgG_2_to_chr20.bam.bai"]
 ]
 
 genome_file = "$baseDir/../../../test_data/bed_flows/chr20.fa.fai"
@@ -42,7 +43,7 @@ Channel
 Channel
     .from( control_data )
     .map { row -> [ row[0], file(row[1], checkIfExists: true), file(row[2], checkIfExists: true) ] }
-    set { ch_contorl_data }
+    .set { ch_control_data }
 
 Channel
     .value(file(genome_file))
@@ -52,10 +53,14 @@ Channel
 /* Run tests
 --------------------------------------------------------------------------------------*/
 
-// Run workflow for histone mod K27me3 data 
+workflow {
 
-paired_bam_to_bedgraph (ch_hist_data, ch_genome)
+    // Run workflow for histone mod K27me3 data 
 
-// Run workflow for IgG control data 
+    hist_flow (ch_hist_data, ch_genome)
 
-paired_bam_to_bedgraph (ch_control_data, ch_genome)
+    // Run workflow for IgG control data 
+
+    control_flow (ch_control_data, ch_genome)
+
+}
