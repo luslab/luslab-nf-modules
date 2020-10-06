@@ -33,7 +33,7 @@ Channel
 workflow {
     decompress( ch_fasta )
 
-    subset_genome( decompress.out.fileNoMeta, "21:40000000-40100000")
+    subset_genome( decompress.out.file_no_meta, "21:40000000-40100000")
     subset_genome.out.fasta | view
 
     assert_channel_count( subset_genome.out.fasta, "fasta", 1)

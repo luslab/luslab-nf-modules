@@ -5,6 +5,8 @@ nextflow.enable.dsl=2
 
 // Converts region in the format - "chrX:15560138-15602945 to a bed file for downstream use"
 process region2bed {
+    tag "${region}"
+
     input:
         val region 
 

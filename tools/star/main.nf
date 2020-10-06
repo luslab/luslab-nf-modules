@@ -5,6 +5,8 @@ nextflow.enable.dsl=2
 
 // Generate genome index
 process star_genome_generate {
+    tag "${fasta}"
+
     publishDir "${params.outdir}/${opts.publish_dir}",
         mode: "copy", 
         overwrite: true,

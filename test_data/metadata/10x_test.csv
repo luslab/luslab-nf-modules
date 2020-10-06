@@ -1,0 +1,3 @@
+sample_id,data1,data2
+sample1,$baseDir/../test_data/fastq/10x/seq1/sample1,$baseDir/../test_data/fastq/10x/seq2/sample1
+sample2,$baseDir/../test_data/fastq/10x/seq1/sample2,$baseDir/../test_data/fastq/10x/seq2/sample2

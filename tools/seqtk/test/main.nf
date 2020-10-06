@@ -88,7 +88,7 @@ workflow {
     // Run fasta sub sample
     region2bed ( ch_region )
     decompress( ch_fasta )
-    seqtk_subseq( params.modules['seqtk_subseq'], decompress.out.fileNoMeta, region2bed.out.bed )
+    seqtk_subseq( params.modules['seqtk_subseq'], decompress.out.file_no_meta, region2bed.out.bed )
     seqtk_subseq.out.subset | view
 
     // Run fastq subsample

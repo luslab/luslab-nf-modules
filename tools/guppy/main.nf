@@ -5,6 +5,8 @@ nextflow.enable.dsl=2
 
 // Process definition
 process guppy_basecaller {
+    tag "${meta.sample_id}"
+
     publishDir "${params.outdir}/${opts.publish_dir}",
         mode: "copy",
         overwrite: true,
@@ -44,6 +46,8 @@ process guppy_basecaller {
 }
 
 process guppy_qc {
+    tag "${sequencing_summary}"
+
     publishDir "${params.outdir}/${opts.publish_dir}",
         mode: "copy",
         overwrite: true,
