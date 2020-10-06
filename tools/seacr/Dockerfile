@@ -4,9 +4,6 @@ FROM nfcore/base:1.7
 LABEL authors="charlotte.west@crick.ac.uk" \
       description="Docker image containing requirements to run SEACR module"
 
-# Install apt packages
-
-
 # Update conda
 RUN conda update -n base -c defaults conda
 
