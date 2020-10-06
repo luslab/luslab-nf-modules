@@ -14,7 +14,7 @@ process bowtie2_align {
                       if (opts.publish_results == "none") null
                       else filename }
     
-    // Biocontainer with bowtie2, samtools, pigz
+    // bowtie2=2.4.1,samtools=1.9,pigz=2.3.4
     container 'quay.io/biocontainers/mulled-v2-ac74a7f02cebcfcc07d8e8d1d750af9c83b4d45a:f480262c6feea34eb5a49c4fdfbb4986490fefbb-0'
 
     input:
@@ -90,7 +90,7 @@ process bowtie2_build {
                       if (opts.publish_results == "none") null
                       else filename }
     
-    // Biocontainer with bowtie2, samtools, pigz
+    // bowtie2=2.4.1,samtools=1.9,pigz=2.3.4
     container 'quay.io/biocontainers/mulled-v2-ac74a7f02cebcfcc07d8e8d1d750af9c83b4d45a:f480262c6feea34eb5a49c4fdfbb4986490fefbb-0'
 
     input:

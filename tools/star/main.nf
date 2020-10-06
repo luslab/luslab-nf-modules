@@ -14,7 +14,7 @@ process star_genome_generate {
                       if (opts.publish_results == "none") null
                       else filename }
 
-    // Biocontainer with star, samtools, pigz
+    // star=2.7.5b,samtools=1.9,pigz=2.3.4
     container 'quay.io/biocontainers/mulled-v2-ddbe0c33c0283cdfbbef9c83d56d6b4ee20cf1bb:22519aaa3034a2293413ee24e6c4fbf0bed96169-0'
 
     input:
@@ -85,7 +85,7 @@ process star_align_reads {
                       if (opts.publish_results == "none") null
                       else filename }
 
-    // Biocontainer with star, samtools, pigz
+    // star=2.7.5b,samtools=1.9,pigz=2.3.4
     container 'quay.io/biocontainers/mulled-v2-ddbe0c33c0283cdfbbef9c83d56d6b4ee20cf1bb:22519aaa3034a2293413ee24e6c4fbf0bed96169-0'
 
     input:
