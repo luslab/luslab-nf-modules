@@ -17,8 +17,8 @@ process racon {
     input:
         val opts
         tuple val(meta), path(reads)
-				path(overlap_paf)
-				path(assembly_fasta)
+        path(overlap_paf)
+        path(assembly_fasta)
 
     output:
         tuple val(meta), path("racon.fasta"), emit: fasta
