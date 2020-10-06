@@ -1,8 +1,8 @@
 name: module-testing
 
 on:
- # push:
- #   branches: [ feat-chris ]
+  push:
+    branches: [ feat-chris ]
   pull_request:
     branches: [ master ]
 
@@ -29,6 +29,7 @@ jobs:
       - name: Set version and tags
         id: ver
         run: |
+          set -e
           VERSION="0.0.0"
           test -f tools/${{matrix.module-name}}/${{matrix.docker-name}} && export DOCKER_EXISTS=true || echo "Dockerfile does not exist, skipping step"
           if [ -v DOCKER_EXISTS ]; then VERSION=`cat tools/${{matrix.module-name}}/VERSION` && echo "::set-output name=version::$(echo $VERSION)"; fi
