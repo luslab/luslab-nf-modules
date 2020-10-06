@@ -72,3 +72,47 @@ process awk {
     awk ${opts.args} $input_file > ${outfile_name}
     """
 }
+
+process cut {
+      container 'ubuntu:16.04'
+
+      input:
+      val opts
+      tuple val(meta), path(input_file)
+
+      output:
+      tuple val(meta), path("${outfile_name}"), emit: file
+      path "${outfile_name}", emit: file_no_meta
+
+      script:
+        outfile_name = "cut_${input_file}"
+        if(opts.outfile_name) {
+          outfile_name = opts.outfile_name
+        }
+
+      """
+      cut ${opts.args} $input_file > ${outfile_name}
+      """
+}
+
+process sort {
+    container 'ubuntu:16.04'
+
+    input:
+      val opts
+      tuple val(meta), path(input_file)
+
+    output:
+        tuple val(meta), path("${outfile_name}"), emit: file
+        path "${outfile_name}", emit: file_no_meta
+
+    script:
+        outfile_name = "sort_${input_file}"
+        if(opts.outfile_name) {
+          outfile_name = opts.outfile_name
+        }
+
+    """
+    sort ${opts.args} $input_file > ${outfile_name}
+    """
+}

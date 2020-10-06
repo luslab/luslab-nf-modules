@@ -24,7 +24,7 @@ include {assert_channel_count} from "../../../workflows/test_flows/main.nf"
 --------------------------------------------------------------------------------------*/
 
 test_data_sequencing_summary = [
-    [[sample_id:"test-sample"], "$baseDir/../../../test_data/lamda1000a/lambda_top10.sequence_summary.txt"],
+    [[sample_id:"test-sample"], "$baseDir/../../../test_data/lambda1000a/lambda_top10.sequence_summary.txt"],
 ]
 
 Channel
