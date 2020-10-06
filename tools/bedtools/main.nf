@@ -123,3 +123,120 @@ process bedtools_subtract {
         ${subtract_command}
         """
 }
+
+//Process definition
+process bedtools_bamtobed {
+    publishDir "${params.outdir}/${opts.publish_dir}",
+        mode: "copy", 
+        overwrite: true,
+        saveAs: { filename ->
+                      if (opts.publish_results == "none") null
+                      else filename }
+
+    container 'quay.io/biocontainers/bedtools:2.29.2--hc088bd4_0'
+
+    input:
+        val opts
+        tuple val(meta), path(bam_file), path(bai_file)
+
+    output:
+        tuple val(meta), path("${prefix}"), emit: bed
+
+    script:
+        args = ""
+        if(opts.args && opts.args != '') {
+            ext_args = opts.args
+            args += ext_args.trim()
+        }
+
+        prefix = opts.suffix ? "${meta.sample_id}${opts.suffix}" : "${meta.sample_id}"
+
+        bamtobed_command = "bedtools bamtobed -i ${bam_file} ${args} > ${prefix}"
+        if (params.verbose){
+            println ("[MODULE] bedtools/bamtobed command: " + bamtobed_command)
+        }
+
+    //SHELL
+    """
+    ${bamtobed_command}
+    """
+
+}
+
+//Process definition
+process bedtools_genomecov {
+    publishDir "${params.outdir}/${opts.publish_dir}",
+        mode: "copy", 
+        overwrite: true,
+        saveAs: { filename ->
+                      if (opts.publish_results == "none") null
+                      else filename }
+
+    container 'quay.io/biocontainers/bedtools:2.29.2--hc088bd4_0'
+
+    input:
+        val opts
+        tuple val(meta), path(aligned_file)
+        path genome 
+
+    output:
+        tuple val(meta), path("${prefix}"), emit: bed
+
+    script:
+        args = ""
+        if(opts.args && opts.args != '') {
+            ext_args = opts.args
+            args += ext_args.trim()
+        }
+
+        prefix = opts.suffix ? "${meta.sample_id}${opts.suffix}" : "${meta.sample_id}"
+
+        genomecov_command = "bedtools genomecov ${args} -i ${aligned_file} -g ${genome} > ${prefix}"
+        if (params.verbose){
+            println ("[MODULE] bedtools/genomecov command: " + genomecov_command)
+        }
+
+    //SHELL
+    """
+    ${genomecov_command}
+    """
+
+}
+
+process bedtools_genomecov_bam {
+    publishDir "${params.outdir}/${opts.publish_dir}",
+        mode: "copy", 
+        overwrite: true,
+        saveAs: { filename ->
+                      if (opts.publish_results == "none") null
+                      else filename }
+
+    container 'quay.io/biocontainers/bedtools:2.29.2--hc088bd4_0'
+
+    input:
+        val opts
+        tuple val(meta), path(bam_file), path(bai_file)
+
+    output:
+        tuple val(meta), path("${prefix}"), emit: bed
+
+    script:
+        args = ""
+        if(opts.args && opts.args != '') {
+            ext_args = opts.args
+            args += ext_args.trim()
+        }
+
+        prefix = opts.suffix ? "${meta.sample_id}${opts.suffix}" : "${meta.sample_id}"
+
+        genomecov_command = "bedtools genomecov ${args} -ibam ${bam_file} > ${prefix}"
+        if (params.verbose){
+            println ("[MODULE] bedtools/genomecov command: " + genomecov_command)
+        }
+
+    //SHELL
+    """
+    ${genomecov_command}
+    """
+
+}
