@@ -14,8 +14,8 @@ process bowtie2_align {
                       if (opts.publish_results == "none") null
                       else filename }
     
-    //container 'luslab/nf-modules-bowtie2:base-1.0.0'
-    container 'luslab/nf-modules-bowtie2:base-1.0.1'
+    // Biocontainer with bowtie2, samtools, pigz
+    container 'quay.io/biocontainers/mulled-v2-ac74a7f02cebcfcc07d8e8d1d750af9c83b4d45a:f480262c6feea34eb5a49c4fdfbb4986490fefbb-0'
 
     input:
         val opts
@@ -90,8 +90,8 @@ process bowtie2_build {
                       if (opts.publish_results == "none") null
                       else filename }
     
-    //container 'luslab/nf-modules-bowtie2:base-1.0.0'
-    container 'luslab/nf-modules-bowtie2:base-1.0.1'
+    // Biocontainer with bowtie2, samtools, pigz
+    container 'quay.io/biocontainers/mulled-v2-ac74a7f02cebcfcc07d8e8d1d750af9c83b4d45a:f480262c6feea34eb5a49c4fdfbb4986490fefbb-0'
 
     input:
         val opts 
