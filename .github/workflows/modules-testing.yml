@@ -1,8 +1,8 @@
 name: module-testing
 
 on:
-  push:
-    branches: [ feat-chris ]
+  #push:
+  #  branches: [ feat-chris ]
   pull_request:
     branches: [ master ]
 
