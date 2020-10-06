@@ -32,7 +32,7 @@ jobs:
           VERSION="0.0.0"
           test -f tools/${{matrix.module-name}}/${{matrix.docker-name}} && export DOCKER_EXISTS=true || echo "Dockerfile does not exist, skipping step"
           if [ -v DOCKER_EXISTS ]; then VERSION=`cat tools/${{matrix.module-name}}/VERSION` && echo "::set-output name=version::$(echo $VERSION)"; fi
-          if [ $? -ne 0 ]; then exit -1; fi
+          if [ $? -ne 0 ]; then exit 1; fi
           echo "version: $VERSION"
         shell: bash
       - name: Install Nextflow
