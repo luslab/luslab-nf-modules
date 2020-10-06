@@ -13,6 +13,7 @@ process get_crosslinks_coverage {
                       if (opts.publish_results == "none") null
                       else filename }
     
+    // Biocontainer with perl-io-uncompress-gunzip, pigz
     container 'quay.io/biocontainers/mulled-v2-07ea3ece1b9227aed818a5572a207d995c02e3d0:1372bc166c2f60386a3c119f21969997eb1ec1e6-0'
 
     input:
