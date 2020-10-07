@@ -44,5 +44,5 @@ workflow {
     busco_genome.out.report | view
 
     // Double check the channel count
-		assert_channel_count( busco_genome.out.report, "busco", 1 )
+    assert_channel_count( busco_genome.out.report, "busco", 1 )
 }
