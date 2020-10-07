@@ -39,7 +39,7 @@ jobs:
         run: |
           export NXF_VER=${{matrix.nxf_ver}}
           wget -qO- get.nextflow.io | bash
-          sudo mv nextflow /usr/local/bin/ 
+          sudo mv nextflow /usr/local/bin/
       - name: Docker build
         run: |
            test -f tools/${{matrix.module-name}}/${{matrix.docker-name}} && export DOCKER_EXISTS=true || echo "Dockerfile does not exist, skipping step"
