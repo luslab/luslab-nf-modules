@@ -49,6 +49,6 @@ workflow {
     // Collect file names and view output
     flye.out.fasta | view
 
-		// Verify channel counts
-		assert_channel_count(flye.out.fasta, "assembly", 1)
+    // Verify channel counts
+    assert_channel_count(flye.out.fasta, "assembly", 1)
 }
