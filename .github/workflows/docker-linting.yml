@@ -11,7 +11,7 @@ jobs:
     strategy:
         matrix:
           docker-name: ['Dockerfile']
-          module-name: ['flye','paraclu','peka','minionqc','tantan']
+          module-name: ['paraclu','peka','minionqc','tantan']
           include:
             - docker-name: 'Dockerfile.cpu'
               module-name: 'guppy'

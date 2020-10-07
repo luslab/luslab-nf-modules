@@ -13,7 +13,7 @@ jobs:
         matrix:
             tag: ['base']
             docker-file: ['Dockerfile']
-            module-name: ['flye','paraclu','peka','minionqc','tantan']
+            module-name: ['paraclu','peka','minionqc','tantan']
             include:
               - tag: 'cpu'
                 docker-file: 'Dockerfile.cpu'
