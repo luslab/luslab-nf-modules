@@ -23,12 +23,12 @@ include {assert_channel_count} from "../../../workflows/test_flows/main.nf"
 /* Define input channels
 --------------------------------------------------------------------------------------*/
 
-testDataGenome = [
+test_data_genome = [
 	[[sample_id:"sample1"], "$baseDir/../../../test_data/fasta/BUSCO_test_set_eukaryotes.fna"],
 ]
 
 Channel
-    .from(testDataGenome)
+    .from(test_data_genome)
     .map { row -> [ row[0], file(row[1], checkIfExists: true) ] }
     .set {ch_fasta}
 
@@ -44,5 +44,5 @@ workflow {
     busco_genome.out.report | view
 
     // Double check the channel count
-		assert_channel_count( busco_genome.out.report, "reads", 1 )
+		assert_channel_count( busco_genome.out.report, "busco", 1 )
 }

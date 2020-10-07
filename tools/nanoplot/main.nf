@@ -5,6 +5,8 @@ nextflow.enable.dsl=2
 
 // Process definition
 process nanoplot {
+    tag "${meta.sample_id}"
+
     publishDir "${params.outdir}/${opts.publish_dir}",
         mode: "copy",
         overwrite: true,
@@ -12,31 +14,31 @@ process nanoplot {
                       if (opts.publish_results == "none") null
                       else filename }
 
-    container "luslab/nf-modules-nanoplot:base-1.0.0"
+    container "quay.io/biocontainers/nanoplot:1.32.1--py_0"
 
     input:
         val opts
         tuple val(meta), path(nanopore_reads)
 
     output:
-        tuple val(meta), path("*{pdf,html,log}"), emit: nanoplotOutputs
+        tuple val(meta), path("*{pdf,html,log}"), emit: report
 
     script:
+        args = ""
 
-    args = ""
-    if(opts.args) {
-        ext_args = opts.args
-        args += ext_args.trim()
-    }
+        if(opts.args) {
+            ext_args = opts.args
+            args += ext_args.trim()
+        }
 
-    nanoplot_command = "NanoPlot -t ${task.cpus} ${args} -p nanoplot. --fastq $nanopore_reads"
+        nanoplot_command = "NanoPlot -t ${task.cpus} ${args} -p nanoplot. --fastq $nanopore_reads"
 
-    if (params.verbose){
-        println ("[MODULE] nanoplot command: " + nanoplot_command)
-    }
+        if (params.verbose){
+            println ("[MODULE] nanoplot command: " + nanoplot_command)
+        }
 
-	//SHELL
-    """
-    ${nanoplot_command}
-    """
+        //SHELL
+        """
+        ${nanoplot_command}
+        """
 }

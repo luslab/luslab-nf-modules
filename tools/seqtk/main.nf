@@ -5,6 +5,8 @@ nextflow.enable.dsl=2
 
 // Random subsample of FASTQ file
 process seqtk_subsample {
+    tag "${meta.sample_id}"
+
     publishDir "${params.outdir}/${opts.publish_dir}",
         mode: "copy", 
         overwrite: true,
@@ -12,7 +14,7 @@ process seqtk_subsample {
                       if (opts.publish_results == "none") null
                       else filename }
 
-    container 'luslab/nf-modules-seqtk:base-1.0.0'
+    container 'quay.io/biocontainers/seqtk:1.3--hed695b0_2'
     
     input:
       val opts
@@ -67,6 +69,8 @@ process seqtk_subsample {
 
 // Subset FASTA or FASTQ file with bed
 process seqtk_subseq {
+    tag "${input}"
+
     publishDir "${params.outdir}/${opts.publish_dir}",
         mode: "copy", 
         overwrite: true,
@@ -74,7 +78,7 @@ process seqtk_subseq {
                       if (opts.publish_results == "none") null
                       else filename }
 
-    container 'luslab/nf-modules-seqtk:base-1.0.0'
+    container 'quay.io/biocontainers/seqtk:1.3--hed695b0_2'
     
     input:
       val opts

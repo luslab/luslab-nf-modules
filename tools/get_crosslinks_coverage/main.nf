@@ -4,6 +4,8 @@
 nextflow.enable.dsl=2
 
 process get_crosslinks_coverage {
+    tag "${meta.sample_id}"
+
     publishDir "${params.outdir}/${opts.publish_dir}",
         mode: "copy", 
         overwrite: true,

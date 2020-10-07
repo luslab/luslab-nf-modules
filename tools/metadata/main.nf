@@ -1,5 +1,8 @@
 #!/usr/bin/env nextflow
 
+// Import groovy libs
+import groovy.transform.Synchronized
+
 // Specify DSL2
 nextflow.enable.dsl=2
 
@@ -10,6 +13,19 @@ workflow fastq_metadata {
             .fromPath( filePath )
             .splitCsv(header:true)
             .map { row -> processRow(row) }
+            .set { metadata }
+    emit:
+        metadata
+}
+
+workflow tenx_fastq_metadata {
+    take: filePath
+    main:
+        Channel
+            .fromPath( filePath )
+            .splitCsv(header:true)
+            .map { row -> processRow(row) }
+            .map { row -> listFilesMultiDir(row, '.*.gz') }
             .set { metadata }
     emit:
         metadata
@@ -29,6 +45,7 @@ workflow smartseq2_fastq_metadata {
         metadata
 }
 
+@Synchronized
 def listFiles(row, glob){
     file_array = []
     files = row[1].get(0).listFiles()
@@ -63,6 +80,21 @@ def processRow(LinkedHashMap row) {
     return array
 }
 
+@Synchronized
+def listFilesMultiDir(row, glob){
+    file_array = []
+    for(def dir:row[1]){
+        for(def file:dir.listFiles()){
+            if(file.toString().matches(glob)){
+                file_array.add(file)
+            }
+        }
+    }
+    array = [row[0], file_array]
+    return array
+}
+
+@Synchronized
 def enumerateFastqDir(metadata){
     def fastqList = []
     def array = []
@@ -77,7 +109,7 @@ def enumerateFastqDir(metadata){
     } else {
         fastqs = metadata[1].flatten().sort()
 
-        for (int i = 0; i <fastqs.size(); i++ ){
+        for (int i = 0; i < fastqs.size(); i++){
             String s1 = fastqs.get(i).getName().replaceAll(metadata[0].strip1, "")
             temp_meta = metadata[0].getClass().newInstance(metadata[0])
             temp_meta.remove("sample_id")
@@ -87,6 +119,3 @@ def enumerateFastqDir(metadata){
     }
     return array
 }
-
-
-
