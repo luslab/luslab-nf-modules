@@ -24,7 +24,7 @@ include {assert_channel_count} from "../../../workflows/test_flows/main.nf"
 --------------------------------------------------------------------------------------*/
 
 test_data_genome = [
-	[[sample_id:"sample1"], "$baseDir/../../../test_data/fasta/BUSCO_test_set_eukaryotes.fna"],
+	[[sample_id:"sample1"], "$baseDir/../../../test_data/fasta/justfirst2.fa"],
 ]
 
 Channel

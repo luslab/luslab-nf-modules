@@ -22,7 +22,7 @@ process flye {
 
     output:
         tuple val(meta), path("${meta.sample_id}/assembly.fasta"), emit: fasta
-				tuple path("${meta.sample_id}/assembly_info.txt"), path("${meta.sample_id}/flye.log"), emit: log
+        tuple path("${meta.sample_id}/assembly_info.txt"), path("${meta.sample_id}/flye.log"), emit: log
 
     script:
 
