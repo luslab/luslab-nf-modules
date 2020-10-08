@@ -15,7 +15,7 @@ process minionqc {
                       else filename }
 
     //container "luslab/nf-modules-minionqc:base-1.0.0"
-		container "quay.io/biocontainers/r-minionqc:1.4.2--r40_0"
+    container "quay.io/biocontainers/r-minionqc:1.4.2--r40_0"
 
     input:
         val opts
