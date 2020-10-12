@@ -9,6 +9,8 @@ log.info ("Starting tests for file_tools...")
 /*------------------------------------------------------------------------------------*/
 /* Define params
 --------------------------------------------------------------------------------------*/
+
+params.verbose = true
 params.modules['awk'].args = /-F "\t" 'BEGIN{OFS="\t";} ($10 <-2000) || ($10 >1500) && ($8!~\/^exon.\/) {print $0}'/
 params.modules['cut'].args = "-f 2,4,5,7"
 params.modules['sort'].args = "-k 2"
