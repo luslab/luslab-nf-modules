@@ -68,7 +68,7 @@ process awk {
           outfile_name = opts.outfile_name
         }
 
-        awk_command = "awk ${opts.args}"
+        awk_command = "awk ${opts.args} ${input_file}"
 
         if(opts.write_to_output) {
           awk_command += " > ${outfile_name}"
