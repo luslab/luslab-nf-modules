@@ -5,7 +5,7 @@ LABEL author="Chris Cheshire <chris.cheshire@crick.ac.uk>"
 
 COPY VERSION .
 
-ARG PACKAGE_VERSION=3.6.0
+ARG PACKAGE_VERSION=4.2.2
 ARG DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get update --fix-missing && \
@@ -38,7 +38,7 @@ RUN apt-get update --fix-missing && \
 RUN wget -q https://mirror.oxfordnanoportal.com/software/analysis/ont_guppy_cpu_${PACKAGE_VERSION}-1~xenial_amd64.deb && \
     dpkg -i ./*.deb && \
     rm ./*.deb
- 
+
 # Install conda
 ENV LANG=C.UTF-8 LC_ALL=C.UTF-8
 ENV PATH /opt/conda/bin:$PATH
@@ -58,7 +58,7 @@ RUN chmod +x /usr/bin/tini
 ENTRYPOINT [ "/usr/bin/tini", "--" ]
 CMD [ "/bin/bash" ]
 
-# Update conda 
+# Update conda
 RUN conda update -n base -c defaults conda
 
 # Install conda packages

@@ -8,13 +8,13 @@ process minimap2 {
     tag "${meta.sample_id}"
 
     publishDir "${params.outdir}/${opts.publish_dir}",
-        mode: "copy", 
+        mode: "copy",
         overwrite: true,
         saveAs: { filename ->
                       if (opts.publish_results == "none") null
                       else filename }
 
-    container 'quay.io/biocontainers/minimap2:2.17--hed695b0_3'
+    container "quay.io/biocontainers/minimap2:2.17--hed695b0_3"
 
     input:
         val opts
@@ -22,7 +22,7 @@ process minimap2 {
         path fasta_file
 
     output:
-        tuple val(meta), path ("*.paf"), emit: alignedReads
+        tuple val(meta), path ("*.paf"), emit: paf
 
     script:
 
@@ -35,7 +35,7 @@ process minimap2 {
     prefix = opts.suffix ? "${meta.sample_id}${opts.suffix}" : "${meta.sample_id}"
 
     minimap2_command = "minimap2 $args ${fasta_file} $reads > ${prefix}.paf "
-    
+
     if (params.verbose){
         println ("[MODULE] minimap2 command: " + minimap2_command)
     }
