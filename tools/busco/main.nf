@@ -6,6 +6,7 @@ nextflow.enable.dsl = 2
 // Process definition
 process busco_genome {
     tag "${meta.sample_id}"
+
     publishDir "${params.outdir}/${opts.publish_dir}",
         mode: "copy",
         overwrite: true,
@@ -13,7 +14,7 @@ process busco_genome {
                       if (opts.publish_results == "none") null
                       else filename }
 
-    container "ezlabgva/busco:v4.1.3_cv1"
+    container "ezlabgva/busco:v4.1.2_cv1"
 
     input:
         val opts
