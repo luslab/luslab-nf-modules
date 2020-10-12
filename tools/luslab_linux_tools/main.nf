@@ -68,8 +68,17 @@ process awk {
           outfile_name = opts.outfile_name
         }
 
+        awk_command = "awk ${opts.args}"
+
+        if(opts.write_to_output) {
+          awk_command += " > ${outfile_name}"
+        }
+
+        if (params.verbose){
+          println ("[MODULE] linux/awk command: " + awk_command)
+        }
     """
-    awk ${opts.args} $input_file > ${outfile_name}
+    ${awk_command}
     """
 }
 
