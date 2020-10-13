@@ -58,16 +58,16 @@ process bowtie2_align {
             }
         }
 
-        // command = "bowtie2 -x ${index[0].simpleName} $args $files 2>bowtie2_stats.txt > ${prefix}.sam"
+        // command = "bowtie2 -x ${index[0].simpleName} $args $files 2>${opts.summary_name}.txt > ${prefix}.sam"
 
         sort_command = "samtools sort -@ ${task.cpus} /dev/stdin > ${prefix}.bam"
         index_command = "samtools index -@ ${task.cpus} ${prefix}.bam"
 
         if ( opts.output_sam && opts.output_sam == true ) {
-            command = "bowtie2 -x ${index[0].simpleName} $args $files 2>bowtie2_stats.txt > ${prefix}.sam"
+            command = "bowtie2 -x ${index[0].simpleName} $args $files 2>${opts.summary_name}.txt > ${prefix}.sam"
         }
         else {
-            command = "bowtie2 -x ${index[0].simpleName} $args $files 2>bowtie2_stats.txt | $sort_command && $index_command"
+            command = "bowtie2 -x ${index[0].simpleName} $args $files 2>${opts.summary_name}.txt | $sort_command && $index_command"
         }
 
         if (params.verbose){
@@ -76,7 +76,7 @@ process bowtie2_align {
 
         """
         $command
-        cat bowtie2_stats.txt
+        cat ${opts.summary_name}.txt
         """
 }
 
