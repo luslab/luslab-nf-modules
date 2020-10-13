@@ -24,8 +24,6 @@ process samtools_index {
         tuple val(meta), path("${meta.sample_id}.bam", includeInputs: true), path("${prefix}"), emit: bam
  
     script:
-
-        // Check main args string exists and strip whitespace
         args = ""
         if(opts.args && opts.args != '') {
             ext_args = opts.args
@@ -34,10 +32,8 @@ process samtools_index {
 
         prefix = opts.suffix ? "${meta.sample_id}${opts.suffix}" : "${meta.sample_id}"
 
-        // Construct CL line
         index_command = "samtools index ${args} -@ ${task.cpus} ${reads} > ${prefix}"
 
-        // Log
         if (params.verbose){
             println ("[MODULE] samtools/index command: " + index_command)
         }
