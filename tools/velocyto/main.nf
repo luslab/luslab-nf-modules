@@ -5,6 +5,8 @@ nextflow.enable.dsl=2
 
 // Process def
 process velocyto_run_smartseq2 {
+    tag "${meta.sample_id}"
+
     publishDir "${params.outdir}/${opts.publish_dir}",
         mode: "copy", 
         overwrite: true,

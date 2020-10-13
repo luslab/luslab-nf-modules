@@ -5,13 +5,15 @@ nextflow.enable.dsl=2
 
 // Process definition 
 process peka {
+    tag "${sample_id}"
+
     publishDir "${params.outdir}/peka",
         mode: "copy", overwrite: true
 
-    container 'luslab/nf-modules-peka:latest'
+    container 'luslab/nf-modules-peka:base-1.0.0'
 
     input:
-      tuple val(sample_id), path(peaks), path(xls), path(genome), path(genome_index), path(regions)
+        tuple val(sample_id), path(peaks), path(xls), path(genome), path(genome_index), path(regions)
 
     output:
         tuple val(sample_id), path("results/*.{pdf,tsv}"), emit: results

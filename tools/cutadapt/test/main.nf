@@ -25,21 +25,21 @@ include {assert_channel_count} from '../../../workflows/test_flows/main.nf'
 --------------------------------------------------------------------------------------*/
 
 testDataSingleEnd= [
-    [[sample_id:'Sample1'], "$baseDir/../../../test_data/cutadapt/sample1_r1.fq.gz"],
-    [[sample_id:'Sample2'], "$baseDir/../../../test_data/cutadapt/sample2_r1.fq.gz"],
-    [[sample_id:'Sample3'], "$baseDir/../../../test_data/cutadapt/sample3_r1.fq.gz"],
-    [[sample_id:'Sample4'], "$baseDir/../../../test_data/cutadapt/sample4_r1.fq.gz"],
-    [[sample_id:'Sample5'], "$baseDir/../../../test_data/cutadapt/sample5_r1.fq.gz"],
-    [[sample_id:'Sample6'], "$baseDir/../../../test_data/cutadapt/sample6_r1.fq.gz"]
+    [[sample_id:'sample1'], "$baseDir/../../../test_data/cutadapt/sample1_r1.fq.gz"],
+    [[sample_id:'sample2'], "$baseDir/../../../test_data/cutadapt/sample2_r1.fq.gz"],
+    [[sample_id:'sample3'], "$baseDir/../../../test_data/cutadapt/sample3_r1.fq.gz"],
+    [[sample_id:'sample4'], "$baseDir/../../../test_data/cutadapt/sample4_r1.fq.gz"],
+    [[sample_id:'sample5'], "$baseDir/../../../test_data/cutadapt/sample5_r1.fq.gz"],
+    [[sample_id:'sample6'], "$baseDir/../../../test_data/cutadapt/sample6_r1.fq.gz"]
 ]
 
 testDataPairedEnd= [
-    [[sample_id:'Sample1'], "$baseDir/../../../test_data/cutadapt/sample1_r1.fq.gz", "$baseDir/../../../test_data/cutadapt/sample1_r2.fq.gz" ],
-    [[sample_id:'Sample2'], "$baseDir/../../../test_data/cutadapt/sample2_r1.fq.gz", "$baseDir/../../../test_data/cutadapt/sample2_r2.fq.gz"],
-    [[sample_id:'Sample3'], "$baseDir/../../../test_data/cutadapt/sample3_r1.fq.gz", "$baseDir/../../../test_data/cutadapt/sample3_r2.fq.gz"],
-    [[sample_id:'Sample4'], "$baseDir/../../../test_data/cutadapt/sample4_r1.fq.gz", "$baseDir/../../../test_data/cutadapt/sample4_r2.fq.gz"],
-    [[sample_id:'Sample5'], "$baseDir/../../../test_data/cutadapt/sample5_r1.fq.gz", "$baseDir/../../../test_data/cutadapt/sample5_r2.fq.gz"],
-    [[sample_id:'Sample6'], "$baseDir/../../../test_data/cutadapt/sample6_r1.fq.gz", "$baseDir/../../../test_data/cutadapt/sample6_r2.fq.gz"]
+    [[sample_id:'sample1'], "$baseDir/../../../test_data/cutadapt/sample1_r1.fq.gz", "$baseDir/../../../test_data/cutadapt/sample1_r2.fq.gz" ],
+    [[sample_id:'sample2'], "$baseDir/../../../test_data/cutadapt/sample2_r1.fq.gz", "$baseDir/../../../test_data/cutadapt/sample2_r2.fq.gz"],
+    [[sample_id:'sample3'], "$baseDir/../../../test_data/cutadapt/sample3_r1.fq.gz", "$baseDir/../../../test_data/cutadapt/sample3_r2.fq.gz"],
+    [[sample_id:'sample4'], "$baseDir/../../../test_data/cutadapt/sample4_r1.fq.gz", "$baseDir/../../../test_data/cutadapt/sample4_r2.fq.gz"],
+    [[sample_id:'sample5'], "$baseDir/../../../test_data/cutadapt/sample5_r1.fq.gz", "$baseDir/../../../test_data/cutadapt/sample5_r2.fq.gz"],
+    [[sample_id:'sample6'], "$baseDir/../../../test_data/cutadapt/sample6_r1.fq.gz", "$baseDir/../../../test_data/cutadapt/sample6_r2.fq.gz"]
 ]
 
 //Define test data input channels

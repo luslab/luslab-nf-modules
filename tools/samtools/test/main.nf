@@ -16,7 +16,7 @@ params.modules['samtools_view'].args = "-b -h"
 /* Module inclusions 
 --------------------------------------------------------------------------------------*/
 include {samtools_index; samtools_view; samtools_faidx; samtools_sort} from '../main.nf'
-include {decompress} from '../../../tools/luslab_file_tools/main.nf'
+include {decompress} from '../../../tools/luslab_linux_tools/main.nf'
 include {assert_channel_count} from '../../../workflows/test_flows/main.nf'
 
 /*------------------------------------------------------------------------------------*/
@@ -70,7 +70,7 @@ workflow {
 
     //Test samtools faidx
     decompress( ch_fasta )
-    samtools_faidx( params.modules['samtools_faidx'], decompress.out.fileNoMeta )
+    samtools_faidx( params.modules['samtools_faidx'], decompress.out.file_no_meta )
     samtools_faidx.out.indexedFasta | view
     assert_channel_count( samtools_faidx.out.indexedFasta, "indexedFasta", 1)
 }

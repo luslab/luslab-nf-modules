@@ -5,6 +5,8 @@ nextflow.enable.dsl=2
 
 //Process definition
 process homer_annotate_peaks {
+    tag "${meta.sample_id}"
+
     publishDir "${params.outdir}/${opts.publish_dir}",
     mode: "copy", 
     overwrite: true,
@@ -50,6 +52,8 @@ process homer_annotate_peaks {
 
 //Process definition
 process homer_find_motifs {
+    tag "${meta.sample_id}"
+    
     publishDir "${params.outdir}/${opts.publish_dir}",
     mode: "copy", 
     overwrite: true,

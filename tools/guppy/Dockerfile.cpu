@@ -1,9 +1,11 @@
 # Set the base image to Ubuntu 16.04
 FROM ubuntu:16.04
 
-LABEL author="Chris Cheshire <chris.cheshire@crick.ac.uk>" 
+LABEL author="Chris Cheshire <chris.cheshire@crick.ac.uk>"
 
-ARG PACKAGE_VERSION=3.6.0
+COPY VERSION .
+
+ARG PACKAGE_VERSION=4.2.2
 ARG DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get update --fix-missing && \
@@ -11,7 +13,7 @@ RUN apt-get update --fix-missing && \
         libzmq5=4.1.4-7ubuntu0.1 \
         libhdf5-cpp-11=1.8.16+docs-4ubuntu1.1 \
         libcurl4-openssl-dev=7.47.0-1ubuntu2.16 \
-        libssl-dev=1.0.2g-1ubuntu4.16 \
+        libssl-dev=1.0.2g-1ubuntu4.17 \
         libhdf5-10=1.8.16+docs-4ubuntu1.1 \
         libboost-regex1.58.0=1.58.0+dfsg-5ubuntu3.1 \
         libboost-log1.58.0=1.58.0+dfsg-5ubuntu3.1 \
@@ -36,7 +38,7 @@ RUN apt-get update --fix-missing && \
 RUN wget -q https://mirror.oxfordnanoportal.com/software/analysis/ont_guppy_cpu_${PACKAGE_VERSION}-1~xenial_amd64.deb && \
     dpkg -i ./*.deb && \
     rm ./*.deb
- 
+
 # Install conda
 ENV LANG=C.UTF-8 LC_ALL=C.UTF-8
 ENV PATH /opt/conda/bin:$PATH
@@ -56,7 +58,7 @@ RUN chmod +x /usr/bin/tini
 ENTRYPOINT [ "/usr/bin/tini", "--" ]
 CMD [ "/bin/bash" ]
 
-# Update conda 
+# Update conda
 RUN conda update -n base -c defaults conda
 
 # Install conda packages

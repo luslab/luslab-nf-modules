@@ -5,6 +5,8 @@ nextflow.enable.dsl=2
 
 // Process definition
 process getcrosslinks {
+    tag "${meta.sample_id}"
+
     publishDir "${params.outdir}/${opts.publish_dir}",
         mode: "copy", 
         overwrite: true,
@@ -12,7 +14,8 @@ process getcrosslinks {
                       if (opts.publish_results == "none") null
                       else filename }
 
-    container 'luslab/nf-modules-get_crosslinks:latest'
+    // bedtools=2.29.0,pigz=2.3.4
+    container 'quay.io/biocontainers/mulled-v2-c8623b4f6522dddd48913bd12dcf405d1d4f0ce1:10e4c359b727e884f6e19ee978f89c44dbaca255-0'
 
     input:
       val(opts)
