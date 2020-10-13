@@ -27,7 +27,7 @@ process bowtie2_align {
         tuple val(meta), path("*.bam"), path("*.bai"), optional: true, emit: bam
         tuple val(meta), path("${prefix}${opts.unmapped_suffix}.1.fastq.gz"), path("${prefix}${opts.unmapped_suffix}.2.fastq.gz"), optional: true, emit: unmapped_fq_pe
         tuple val(meta), path("${prefix}${opts.unmapped_suffix}.fastq.gz"), optional: true, emit: unmapped_fq_s
-        path "*stats.txt", emit: report
+        path "${opts.summary_name}.txt", emit: report
 
     script:
         args = "-p ${task.cpus} --no-unal"
