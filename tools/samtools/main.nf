@@ -21,7 +21,7 @@ process samtools_index {
         tuple val(meta), path(reads)
 
     output:
-        tuple val(meta), path(prefix), emit: bai
+        tuple val(meta), path("${meta.sample_id}.bam", includeInputs: true), path("${prefix}"), emit: bam
  
     script:
 
@@ -43,8 +43,8 @@ process samtools_index {
         }
         
     """
+    cp ${reads} ${meta.sample_id}.bam
     ${index_command}
-    echo ${prefix}
     """
 }
 

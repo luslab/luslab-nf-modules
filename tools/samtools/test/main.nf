@@ -55,8 +55,8 @@ Channel
 workflow {
     // Run samtools index
     samtools_index ( params.modules['samtools_index'], ch_testDataIndex )
-    samtools_index.out.bai | view
-    assert_channel_count( samtools_index.out.bai, "bai", 2)
+    samtools_index.out.bam | view
+    assert_channel_count( samtools_index.out.bam, "bai", 2)
 
     // Run samtools view
     samtools_view ( params.modules['samtools_view'], ch_testDataIndex )
