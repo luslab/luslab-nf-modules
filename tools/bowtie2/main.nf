@@ -14,7 +14,8 @@ process bowtie2_align {
                       if (opts.publish_results == "none") null
                       else filename }
     
-    container 'luslab/nf-modules-bowtie2:base-1.0.0'
+    // bowtie2=2.4.1,samtools=1.9,pigz=2.3.4
+    container 'quay.io/biocontainers/mulled-v2-ac74a7f02cebcfcc07d8e8d1d750af9c83b4d45a:f480262c6feea34eb5a49c4fdfbb4986490fefbb-0'
 
     input:
         val opts
@@ -26,7 +27,7 @@ process bowtie2_align {
         tuple val(meta), path("*.bam"), path("*.bai"), optional: true, emit: bam
         tuple val(meta), path("${prefix}${opts.unmapped_suffix}.1.fastq.gz"), path("${prefix}${opts.unmapped_suffix}.2.fastq.gz"), optional: true, emit: unmapped_fq_pe
         tuple val(meta), path("${prefix}${opts.unmapped_suffix}.fastq.gz"), optional: true, emit: unmapped_fq_s
-        path "*stats.txt", emit: report
+        path "${opts.summary_name}.txt", emit: report
 
     script:
         args = "-p ${task.cpus} --no-unal"
@@ -57,16 +58,16 @@ process bowtie2_align {
             }
         }
 
-        // command = "bowtie2 -x ${index[0].simpleName} $args $files 2>bowtie2_stats.txt > ${prefix}.sam"
+        // command = "bowtie2 -x ${index[0].simpleName} $args $files 2>${opts.summary_name}.txt > ${prefix}.sam"
 
         sort_command = "samtools sort -@ ${task.cpus} /dev/stdin > ${prefix}.bam"
         index_command = "samtools index -@ ${task.cpus} ${prefix}.bam"
 
         if ( opts.output_sam && opts.output_sam == true ) {
-            command = "bowtie2 -x ${index[0].simpleName} $args $files 2>bowtie2_stats.txt > ${prefix}.sam"
+            command = "bowtie2 -x ${index[0].simpleName} $args $files 2>${opts.summary_name}.txt > ${prefix}.sam"
         }
         else {
-            command = "bowtie2 -x ${index[0].simpleName} $args $files 2>bowtie2_stats.txt | $sort_command && $index_command"
+            command = "bowtie2 -x ${index[0].simpleName} $args $files 2>${opts.summary_name}.txt | $sort_command && $index_command"
         }
 
         if (params.verbose){
@@ -75,7 +76,7 @@ process bowtie2_align {
 
         """
         $command
-        cat bowtie2_stats.txt
+        cat ${opts.summary_name}.txt
         """
 }
 
@@ -89,7 +90,8 @@ process bowtie2_build {
                       if (opts.publish_results == "none") null
                       else filename }
     
-    container 'luslab/nf-modules-bowtie2:base-1.0.0'
+    // bowtie2=2.4.1,samtools=1.9,pigz=2.3.4
+    container 'quay.io/biocontainers/mulled-v2-ac74a7f02cebcfcc07d8e8d1d750af9c83b4d45a:f480262c6feea34eb5a49c4fdfbb4986490fefbb-0'
 
     input:
         val opts 

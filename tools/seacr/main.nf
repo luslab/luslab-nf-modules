@@ -12,7 +12,8 @@ process seacr {
                      if (opts.publish_results == "none") null
                      else filename }
     
-    container 'luslab/nf-modules-seacr:latest'
+    // r-base=4.0.2,seacr=1.3,bedtools=2.29.2
+    container 'quay.io/biocontainers/mulled-v2-03bfeb32fe80910c231f630d4262b83677c8c0f4:5bb5ed4307a8187a7f34730b00431de93688fa59-0'
 
     input:
     val opts
