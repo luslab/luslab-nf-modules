@@ -30,7 +30,7 @@ process samtools_index {
             args += ext_args.trim()
         }
 
-        prefix = opts.suffix ? "${meta.sample_id}${opts.suffix}" : "${meta.sample_id}"
+        prefix = opts.suffix ? "${meta.sample_id}${opts.suffix}.bai" : "${meta.sample_id}.bai"
 
         index_command = "samtools index ${args} -@ ${task.cpus} ${reads} > ${prefix}"
 
@@ -39,11 +39,10 @@ process samtools_index {
         }
         
     """
-    cp ${reads} ${meta.sample_id}.bam
     ${index_command}
+    mv ${reads} ${meta.sample_id}.bam
     """
 }
-
 
 // Samtools view - only works for bam files - requires bam and bai
 process samtools_view {
