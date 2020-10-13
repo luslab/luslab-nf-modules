@@ -13,7 +13,7 @@ jobs:
         matrix:
             tag: ['base']
             docker-file: ['Dockerfile']
-            module-name: ['get_crosslinks','get_crosslinks_coverage','icount','paraclu','peka','star','umi_tools','bowtie2','minionqc','tantan','seacr']
+            module-name: ['paraclu','peka','minionqc','tantan']
             include:
               - tag: 'cpu'
                 docker-file: 'Dockerfile.cpu'
