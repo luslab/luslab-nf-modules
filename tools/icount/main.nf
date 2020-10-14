@@ -5,6 +5,8 @@ nextflow.enable.dsl=2
 
 // Process definition
 process icount {
+    tag "${meta.sample_id}"
+    
     publishDir "${params.outdir}/${opts.publish_dir}",
         mode: "copy", 
         overwrite: true,
@@ -12,7 +14,8 @@ process icount {
                       if (opts.publish_results == "none") null
                       else filename }
 
-    container 'luslab/nf-modules-icount:latest'
+    // icount=2.0.0,bedtools=2.28.0,pigz=2.3.4
+    container 'quay.io/biocontainers/mulled-v2-72b6e5587e443030dafa3295501578c42d27520f:b2abdf2431759fbb85efa4b0323719d6df878912-0'
 
     input:
         val opts
