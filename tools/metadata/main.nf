@@ -7,10 +7,10 @@ import groovy.transform.Synchronized
 nextflow.enable.dsl=2
 
 workflow fastq_metadata {
-    take: filePath
+    take: file_path
     main:
         Channel
-            .fromPath( filePath )
+            .fromPath( file_path )
             .splitCsv(header:true)
             .map { row -> processRow(row) }
             .set { metadata }
@@ -18,11 +18,23 @@ workflow fastq_metadata {
         metadata
 }
 
-workflow tenx_fastq_metadata {
-    take: filePath
+workflow bam_metadata {
+    take: file_path
     main:
         Channel
-            .fromPath( filePath )
+            .fromPath( file_path )
+            .splitCsv(header:true)
+            .map { row -> processRow(row, true) }
+            .set { metadata }
+    emit:
+        metadata
+}
+
+workflow tenx_fastq_metadata {
+    take: file_path
+    main:
+        Channel
+            .fromPath( file_path )
             .splitCsv(header:true)
             .map { row -> processRow(row) }
             .map { row -> listFilesMultiDir(row, '.*.gz') }
@@ -32,10 +44,10 @@ workflow tenx_fastq_metadata {
 }
 
 workflow smartseq2_fastq_metadata {
-    take: filePath
+    take: file_path
     main:
         Channel
-            .fromPath( filePath )
+            .fromPath( file_path )
             .splitCsv(header:true)
             .map { row -> processRow(row) }
             .map { row -> listFiles(row, '.*.gz') }
@@ -58,7 +70,7 @@ def listFiles(row, glob){
     return array
 }
 
-def processRow(LinkedHashMap row) {
+def processRow(LinkedHashMap row, boolean flattenData = false) {
     def meta = [:]
     meta.sample_id = row.sample_id
 
@@ -72,10 +84,19 @@ def processRow(LinkedHashMap row) {
     }
 
     def array = []
-    if (row.data2 == null) {
-        array = [ meta, [ file(row.data1, checkIfExists: true) ] ]
-    } else {
-        array = [ meta, [ file(row.data1, checkIfExists: true), file(row.data2, checkIfExists: true) ] ]
+    if(!flattenData) {
+        if (row.data2 == null) {
+            array = [ meta, [ file(row.data1, checkIfExists: true) ] ]
+        } else {
+            array = [ meta, [ file(row.data1, checkIfExists: true), file(row.data2, checkIfExists: true) ] ]
+        }
+    }
+    else { 
+        if (row.data2 == null) {
+            array = [ meta, file(row.data1, checkIfExists: true) ]
+        } else {
+            array = [ meta, file(row.data1, checkIfExists: true), file(row.data2, checkIfExists: true) ]
+        }
     }
     return array
 }
