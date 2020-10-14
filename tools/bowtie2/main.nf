@@ -27,7 +27,7 @@ process bowtie2_align {
         tuple val(meta), path("*.bam"), path("*.bai"), optional: true, emit: bam
         tuple val(meta), path("${prefix}${opts.unmapped_suffix}.1.fastq.gz"), path("${prefix}${opts.unmapped_suffix}.2.fastq.gz"), optional: true, emit: unmapped_fq_pe
         tuple val(meta), path("${prefix}${opts.unmapped_suffix}.fastq.gz"), optional: true, emit: unmapped_fq_s
-        path "${opts.summary_name}.txt", emit: report
+        path "${summary_name}.txt", emit: report
 
     script:
         args = "-p ${task.cpus} --no-unal"
@@ -36,6 +36,13 @@ process bowtie2_align {
         if(opts.args && opts.args != '') {
             ext_args = opts.args
             args += ' ' + ext_args.trim()
+        }
+
+        if(opts.summary_name && opts.summary_name != '') {
+            summary_name = opts.summary_name
+        }
+        else {
+            summary_name = "${meta.sample_id}_bowtie2_stats"
         }
 
         readList = reads.collect{it.toString()}
@@ -64,10 +71,10 @@ process bowtie2_align {
         index_command = "samtools index -@ ${task.cpus} ${prefix}.bam"
 
         if ( opts.output_sam && opts.output_sam == true ) {
-            command = "bowtie2 -x ${index[0].simpleName} $args $files 2>${opts.summary_name}.txt > ${prefix}.sam"
+            command = "bowtie2 -x ${index[0].simpleName} $args $files 2>${summary_name}.txt > ${prefix}.sam"
         }
         else {
-            command = "bowtie2 -x ${index[0].simpleName} $args $files 2>${opts.summary_name}.txt | $sort_command && $index_command"
+            command = "bowtie2 -x ${index[0].simpleName} $args $files 2>${summary_name}.txt | $sort_command && $index_command"
         }
 
         if (params.verbose){
@@ -76,7 +83,7 @@ process bowtie2_align {
 
         """
         $command
-        cat ${opts.summary_name}.txt
+        cat ${summary_name}.txt
         """
 }
 
