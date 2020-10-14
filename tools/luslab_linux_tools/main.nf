@@ -82,6 +82,47 @@ process awk {
     """
 }
 
+process awk_file {
+    tag "${input_file}"
+
+    publishDir "${params.outdir}/${opts.publish_dir}",
+      mode: "copy", 
+      overwrite: true,
+      saveAs: { filename ->
+                    if (opts.publish_results == "none") null
+                    else filename }
+
+    container 'ubuntu:16.04'
+
+    input:
+      val opts
+      tuple val(meta), path(input)
+      path(awk_script)
+
+    output:
+        tuple val(meta), path("${outfile_name}"), emit: file
+        path "${outfile_name}", emit: file_no_meta
+
+    script:
+        outfile_name = "awk_${input}"
+        if(opts.outfile_name) {
+          outfile_name = opts.outfile_name
+        }
+
+        awk_command = "awk ${opts.args} -f ${awk_script} ${input}"
+
+        if(opts.write_to_output) {
+          awk_command += " > ${outfile_name}"
+        }
+
+        if (params.verbose){
+          println ("[MODULE] linux/awk command: " + awk_command)
+        }
+    """
+    ${awk_command}
+    """
+}
+
 process cut {
       container 'ubuntu:16.04'
 
