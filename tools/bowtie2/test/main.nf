@@ -12,6 +12,7 @@ log.info ("Starting tests for bowtie2...")
 
 params.verbose = true
 params.modules['bowtie2_align'].args = '--very-sensitive'
+params.modules['bowtie2_align'].summary_name = "bowtie_summary"
 
 /*------------------------------------------------------------------------------------*/
 /* Module inclusions
@@ -48,6 +49,7 @@ workflow {
     bowtie2_align( params.modules['bowtie2_align'], ch_fastq_paired_end, bowtie2_build.out.bowtieIndex.collect() )
 
     bowtie2_align.out.bam | view
+    bowtie2_align.out.report | view
 
     //Check count
     assert_channel_count( bowtie2_align.out.sam, "sam", 0)

@@ -11,7 +11,9 @@ process paraclu {
         mode: "copy", overwrite: true
       
     container 'luslab/nf-modules-paraclu:base-1.0.0'
-    //container 'quay.io/biocontainers/paraclu:9--he513fc3_0'
+    
+    //Biocontainer with pandas, pigz
+    //quay.io/biocontainers/mulled-v2-ccd4ff06b8023185d0deb02b965a1d0f166896aa:dc4f57656c582f41e3b608365c900a485379b0c7-0
 
     input:
         tuple val(sample_id), path(crosslinks)
