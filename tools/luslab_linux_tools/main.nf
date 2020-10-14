@@ -104,9 +104,11 @@ process awk_file {
         path "${outfile_name}", emit: file_no_meta
 
     script:
-        outfile_name = "awk_${input}"
-        if(opts.outfile_name) {
+        if(opts.outfile_name && opts.outfile_name != ''){
           outfile_name = opts.outfile_name
+        }
+        else {
+          outfile_name = "${meta.sample_id}_awk_file"
         }
 
         awk_command = "awk ${opts.args} -f ${awk_script} ${input}"
