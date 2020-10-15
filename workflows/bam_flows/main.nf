@@ -27,6 +27,8 @@ workflow sort_index_bam {
         // Define workflow parameters
         params.modules['samtools_sort'].publish_results = 'none'
         params.modules['samtools_index'].publish_results = 'none'
+        params.modules['samtools_sort'].publish_dir = '_'
+        params.modules['samtools_index'].publish_dir = '_'
 
         // Sort bam
         samtools_sort( params.modules['samtools_sort'], tuple_meta_bam )
