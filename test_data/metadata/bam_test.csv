@@ -1,0 +1,4 @@
+sample_id,data1,data2
+sample1,$baseDir/../test_data/bam_bai/sample1.bam,$baseDir/../test_data/bam_bai/sample1.bam.bai
+sample2,$baseDir/../test_data/bam_bai/sample1.bam,$baseDir/../test_data/bam_bai/sample1.bam.bai
+sample3,$baseDir/../test_data/bam_bai/sample1.bam,$baseDir/../test_data/bam_bai/sample1.bam.bai
