@@ -26,7 +26,6 @@ workflow meta_report_annotate {
             .join ( ch_split_path_meta )
             .map { row -> row[1..-1] }
             .set { ch_annotated_meta }
-        ch_annotated_meta | view
 
     emit : annotated_input = ch_annotated_meta
 }
