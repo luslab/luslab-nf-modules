@@ -3,46 +3,29 @@
 // Specify DSL2
 nextflow.enable.dsl=2
 
-include { awk } from '../../tools/luslab_linux_tools/main.nf'
+include { awk_file } from '../../tools/luslab_linux_tools/main.nf'
+include { processRow } from '../../tools/metadata/main.nf'
 
-workflow bt2_parse {
+workflow meta_report_annotate {
     take: tuple_report_meta
+    take: awk_script
+    take: module_params
     main:
 
-        // Define workflow parameters
-        awk_command ='-v cols="total_reads:align1:align_gt1:non_aligned:total_aligned" \' \
-        BEGIN { \
-            col_count=split(cols, col_arr, ":"); \
-            for(i=1; i<=col_count; i++) printf col_arr[i] ((i==col_count) ? "\\n" : ","); \
-        } \
-        { \
-            for (i=1; i<=NF; i++) { \
-                if(index($i,"reads; of these:") != 0) { \
-                    split($i, line_split, " "); \
-                    data["total_reads"]=line_split[1]; \
-                } \
-                if(index($i,"aligned concordantly exactly 1 time") != 0) { \
-                    split($i, line_split, " "); \
-                    data["align1"]=line_split[1]; \
-                } \
-                if(index($i,"aligned concordantly >1 times") != 0) { \
-                    split($i, line_split, " "); \
-                    data["align_gt1"]=line_split[1]; \
-                } \
-                if(index($i,"aligned concordantly 0 times") != 0) { \
-                    split($i, line_split, " "); \
-                    data["non_aligned"]=line_split[1]; \
-                } \
-            } \
-        } \
-        END { \
-            data["total_aligned"] = data["align1"] + data["align_gt1"] \
-            for (i=1; i<=col_count; i++) printf data[col_arr[i]] ((i==col_count) ? "\\n" : ","); \
-        } \' FS="\\n" RS="\\n\\n"'
+        // Produce csv to encorporate into metadata
+        awk_file ( module_params['awk_file'], tuple_report_meta, awk_script )
 
-        params.modules['awk'].args = awk_command
+        awk_file.out.file | view
 
-        awk(params.modules['awk'], tuple_report_meta)
+        awk_file.out.file_no_meta
+            .splitCsv(header:true)
+            .view()
+
+        // Encorporat
+
+        // params.modules['awk'].args = awk_command
+
+        // awk(params.modules['awk'], tuple_report_meta)
 
  
 }

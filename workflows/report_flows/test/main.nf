@@ -16,7 +16,7 @@ params.verbose = true
 /* Module inclusions 
 --------------------------------------------------------------------------------------*/
 
-include { bt2_parse } from '../main.nf'
+include { meta_report_annotate } from '../main.nf'
 
 /*------------------------------------------------------------------------------------*/
 /* Define input channels
@@ -33,13 +33,17 @@ Channel
     .map { row -> [ row[0], file(row[1], checkIfExists: true) ] }
     .set { ch_report_meta }
 
+Channel
+    .value("$baseDir/../../../assets/awk_scripts/bt2_report_to_csv.awk")
+    .set {ch_awk_file_script}
+
 /*------------------------------------------------------------------------------------*/
 /* Run tests
 --------------------------------------------------------------------------------------*/
 
 workflow {
     // Parse bt2 report 
-    bt2_parse ( ch_report_meta )
+    meta_report_annotate ( ch_report_meta, ch_awk_file_script, params.modules )
 
     //bt2_parse.out.key_values
 }
