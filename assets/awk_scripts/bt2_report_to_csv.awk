@@ -1,7 +1,7 @@
 #!/bin/awk -f
 
 BEGIN {
-    cols="total_reads:align1:align_gt1:non_aligned:total_aligned"
+    cols="total_reads:bt2_align1:bt2_align_gt1:bt2_non_aligned:bt2_total_aligned"
     FS="\n"
     RS="\n\n"
     col_count=split(cols, col_arr, ":");

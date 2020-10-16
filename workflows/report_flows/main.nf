@@ -4,28 +4,29 @@
 nextflow.enable.dsl=2
 
 include { awk_file } from '../../tools/luslab_linux_tools/main.nf'
-include { processRow } from '../../tools/metadata/main.nf'
 
 workflow meta_report_annotate {
     take: tuple_report_meta
+    take: tuple_path_meta
     take: awk_script
     take: module_params
     main:
 
+        // turn meta data to value from map
+        ch_split_path_meta = tuple_path_meta
+            .map { row -> [row[0].sample_id, row[1..-1]].flatten() }
+
         // Produce csv to encorporate into metadata
         awk_file ( module_params['awk_file'], tuple_report_meta, awk_script )
 
-        awk_file.out.file | view
-
-        awk_file.out.file_no_meta
+        // Encorporate report data into annotated meta and original data path
+        awk_file.out.file
             .splitCsv(header:true)
-            .view()
+            .map { row -> [ row[0].sample_id, row[0] << row[1] ] }
+            .join ( ch_split_path_meta )
+            .map { row -> row[1..-1] }
+            .set { ch_annotated_meta }
+        ch_annotated_meta | view
 
-        // Encorporat
-
-        // params.modules['awk'].args = awk_command
-
-        // awk(params.modules['awk'], tuple_report_meta)
-
- 
+    emit : annotated_input = ch_annotated_meta
 }
