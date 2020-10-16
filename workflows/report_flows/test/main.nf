@@ -54,6 +54,4 @@ Channel
 workflow {
     // Parse bt2 report 
     meta_report_annotate ( ch_report_meta, ch_bami_bai_meta, ch_awk_file_script, params.modules )
-
-    //bt2_parse.out.key_values
 }
