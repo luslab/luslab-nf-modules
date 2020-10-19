@@ -12,7 +12,6 @@ log.info ("Starting tests for bowtie2...")
 
 params.verbose = true
 params.modules['bowtie2_align'].args = '--very-sensitive'
-params.modules['bowtie2_align'].summary_name = "bowtie_summary"
 
 /*------------------------------------------------------------------------------------*/
 /* Module inclusions
