@@ -16,11 +16,10 @@ process last_db {
 
     input:
         val opts
-        val(meta),  val(mode), path(fasta)
+        val(meta), path(reference_sequences)
 
     output:
-        tuple val(meta), path("*.lastdb.prj"), emit: last_db_prj
-				tuple path("*.lastdb.bck"), path("*.lastdb.des"), path("*.lastdb.sds"), path("*.lastdb.ssp"), path("*.lastdb.suf"), path("*.lastdb.tis"), emit: last_db
+        tuple val(meta), path("*.prj"), path("*.bck"), path("*.des"), path("*.sds"), path("*.ssp"), path("*.suf"), path("*.tis"), emit: last_db
 
     script:
         args = ""
@@ -31,16 +30,7 @@ process last_db {
 
         prefix = opts.suffix ? "${meta.sample_id}${opts.suffix}" : "${meta.sample_id}"
 
-				if( mode == "genome_vs_genome_near" )
-            last_command = "lastdb $args -P ${tasks.cpus} -uNEAR -R01 ${fasta.simpleName} ${fasta}"
-				else if ( mode == "genome_vs_genome_distant" )
-            last_command = "lastdb $args -P ${tasks.cpus} -uMAM4 -R01 ${fasta.simpleName} ${fasta}"
-				else if ( mode == "reads_vs_genome_simple_repeat_masking" )
-            last_command = "lastdb $args -P ${tasks.cpus} -uNEAR -R01 ${fasta.simpleName} ${fasta}"
-				else if ( mode == "reads_vs_genome_external_repeat_masking" )
-            last_command = "lastdb $args -P ${tasks.cpus} -uNEAR -R11 -c ${fasta.simpleName} ${fasta}"
-				else
-            error "Invalid lastdb creation mode: ${mode}"
+        last_command = "lastdb $args -P ${tasks.cpus} ${reference_sequences.simpleName} ${reference_sequences}"
 
         if (params.verbose){
             println ("[MODULE] last command: " + last_command)
@@ -66,11 +56,12 @@ process last_train {
 
     input:
         val opts
-        tuple val(meta), val(mode), path(fastq)
-        path(last_db_prj)
+        tuple val(meta), path(reference_sequences)
+        tuple val(meta), path(last_db)
+        tuple val(meta), path(query_sequences)
 
     output:
-				tuple val(meta), path("*.par"), emit: last_train_par
+        tuple val(meta), path("*.par"), emit: last_train_par
 
     script:
         args = ""
@@ -81,16 +72,7 @@ process last_train {
 
         prefix = opts.suffix ? "${meta.sample_id}${opts.suffix}" : "${meta.sample_id}"
 
-				if( mode == "genome_vs_genome" )
-            last_command = "last-train $args -P ${tasks.cpus} --revsym --matsym --gapsym -E0.05 -C2 ${last_db_prj.simpleName} ${fasta}"
-				else if ( mode == "reads_vs_genome" )
-            last_command = "last-train $args -P ${tasks.cpus} -Q 1 ${last_db_prj.simpleName} ${fastq} > ${last_db_prj.simpleName}.par"
-				else
-            error "Invalid lastdb training mode: ${mode}"
-
-        if (params.verbose){
-            println ("[MODULE] last command: " + last_command)
-        }
+        last_command = "last-train $args -P ${tasks.cpus} ${reference_sequences.simpleName} ${fasta}"
 
         //SHELL
         """
@@ -112,12 +94,13 @@ process last_align {
 
     input:
         val opts
-        tuple val(meta), val(mode), path(last_db_prj), path(last_train_par)
-				path(query_fastq), optional: true
-				path(query_fasta), optional: true
+        tuple val(meta), path(reference_sequences)
+        tuple val(meta), path(last_db)
+        tuple val(meta), path(last_train_par)
+        tuple val(meta), path(query_sequences)
 
     output:
-				tuple val(meta), path("*.maf"), emit: maf
+        tuple val(meta), path("*.maf"), emit: maf
 
     script:
         args = ""
@@ -128,14 +111,7 @@ process last_align {
 
         prefix = opts.suffix ? "${meta.sample_id}${opts.suffix}" : "${meta.sample_id}"
 
-				if( mode == "genome_vs_genome_near" )
-            last_command = "lastal $args -P ${tasks.cpus} -m 50 -E0.05 -C2 -p ${last_train_par} ${last_db_prj.simpleName} ${query_fasta} | last-split -m1 > ${last_db_prj.simpleName}-${query_fasta.simpleName}.maf"
-				else if( mode == "genome_vs_genome_distant" )
-            last_command = "lastal $args -P ${tasks.cpus} -m 100 -E0.05 -C2 -p ${last_train_par} ${last_db_prj.simpleName} ${query_fasta} | last-split -m1 > ${query_fasta.simpleName}.maf"
-				else if ( mode == "reads_vs_genome" )
-            last_command = "lastal $args -P ${tasks.cpus} -p ${last_train_par} ${last_db_prj} ${query_fastq}"
-				else
-            error "Invalid lastdb training mode: ${mode}"
+        last_command = "lastal $args -P ${tasks.cpus} -p ${last_train_par} ${reference_sequences.simpleName} ${query_sequences} | last-split -m1 > ${reference_sequences.simpleName}-${query_sequences.simpleName}.maf"
 
         if (params.verbose){
             println ("[MODULE] last command: " + last_command)
@@ -164,8 +140,8 @@ process last_filter_maf {
         tuple val(meta), path(unfiltered_maf)
 
     output:
-				tuple val(meta), path("*.filtered.maf"), emit: maf
-				path("*.tab"), emit: tab
+        tuple val(meta), path("*.filtered.maf"), emit: maf
+        tuple val(meta), path("*.tab"), emit: tab
 
     script:
         args = ""
@@ -177,7 +153,7 @@ process last_filter_maf {
         prefix = opts.suffix ? "${meta.sample_id}${opts.suffix}" : "${meta.sample_id}"
 
         last_rerarrange_command = "maf-swap ${unfiltered_maf} | last-split -m1 | maf-swap > ${unfiltered_maf.simpleName}.filtered.maf"
-				last_postmask_command = "last-postmask ${unfiltered_maf.simpleName}.filtered.maf | maf-convert -n tab > ${unfiltered_maf.simpleName}.filtered.tab"
+        last_postmask_command = "last-postmask ${unfiltered_maf.simpleName}.filtered.maf | maf-convert -n tab > ${unfiltered_maf.simpleName}.filtered.tab"
 
         if (params.verbose){
             println ("[MODULE] LAST one-to-one rearrangement command: " + last_rerarrange_command)
