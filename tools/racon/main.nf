@@ -5,6 +5,8 @@ nextflow.enable.dsl = 2
 
 // Process definition
 process racon {
+    tag "${meta.sample_id}"
+
     publishDir "${params.outdir}/${opts.publish_dir}",
         mode: "copy",
         overwrite: true,
@@ -30,7 +32,7 @@ process racon {
 			$overlap_paf \
 			$assembly_fasta > racon.fasta "
 
-	//SHELL
+    //SHELL
     """
     ${racon_command}
     """

@@ -1,10 +1,8 @@
-name: module-testing
+name: module-single-test
 
-on:
-  #push:
-  #  branches: [ feat-chris ]
-  pull_request:
-    branches: [ master ]
+#on:
+#  push:
+#    branches: [ feat-mod-busco ]
 
 jobs:
   test-modules:
@@ -14,16 +12,7 @@ jobs:
         nxf_ver: ['20.07.1','']
         tag: ['base']
         docker-name: ['Dockerfile']
-        module-name: ['htseq', 'velocyto', 'flye', 'homer', 'umi_tools', 'fastqc', 'cutadapt', 'bedtools', 'samtools', 'get_crosslinks','get_crosslinks_coverage', 'icount', 'minimap2', 'seqtk', 'paraclu', 'luslab_genome_tools', 'luslab_linux_tools', 'bowtie2', 'metadata', 'minionqc', 'tantan', 'hisat2', 'star', 'multiqc', 'macs2', 'racon', 'seacr', 'nanoplot', 'busco']
-        include:
-          - nxf_ver: '20.07.1'
-            tag: 'cpu'
-            docker-name: 'Dockerfile.cpu'
-            module-name: 'guppy'
-          - nxf_ver: ''
-            tag: 'cpu'
-            docker-name: 'Dockerfile.cpu'
-            module-name: 'guppy'
+        module-name: ['busco']
     steps:
       - uses: actions/checkout@v2
       - name: Set version and tags
