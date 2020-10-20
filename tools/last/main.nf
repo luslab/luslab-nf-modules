@@ -16,10 +16,10 @@ process last_db {
 
     input:
         val opts
-        val(meta), path(reference_sequences)
+        tuple val(meta), path(reference_sequences)
 
     output:
-        tuple val(meta), path("*.prj"), path("*.bck"), path("*.des"), path("*.sds"), path("*.ssp"), path("*.suf"), path("*.tis"), emit: last_db
+        tuple val(meta), path("*"), emit: last_db
 
     script:
         args = ""
@@ -30,7 +30,7 @@ process last_db {
 
         prefix = opts.suffix ? "${meta.sample_id}${opts.suffix}" : "${meta.sample_id}"
 
-        last_command = "lastdb $args -P ${tasks.cpus} ${reference_sequences.simpleName} ${reference_sequences}"
+        last_command = "lastdb $args -P ${task.cpus} ${reference_sequences.simpleName} ${reference_sequences}"
 
         if (params.verbose){
             println ("[MODULE] last command: " + last_command)
@@ -72,7 +72,7 @@ process last_train {
 
         prefix = opts.suffix ? "${meta.sample_id}${opts.suffix}" : "${meta.sample_id}"
 
-        last_command = "last-train $args -P ${tasks.cpus} ${reference_sequences.simpleName} ${fasta}"
+        last_command = "last-train $args -P ${task.cpus} ${reference_sequences.simpleName} ${query_sequences} > ${reference_sequences.simpleName}-${query_sequences.simpleName}.par"
 
         //SHELL
         """
@@ -111,7 +111,7 @@ process last_align {
 
         prefix = opts.suffix ? "${meta.sample_id}${opts.suffix}" : "${meta.sample_id}"
 
-        last_command = "lastal $args -P ${tasks.cpus} -p ${last_train_par} ${reference_sequences.simpleName} ${query_sequences} | last-split -m1 > ${reference_sequences.simpleName}-${query_sequences.simpleName}.maf"
+        last_command = "lastal $args -P ${task.cpus} -p ${last_train_par} ${reference_sequences.simpleName} ${query_sequences} | last-split -m1 > ${reference_sequences.simpleName}-${query_sequences.simpleName}.maf"
 
         if (params.verbose){
             println ("[MODULE] last command: " + last_command)

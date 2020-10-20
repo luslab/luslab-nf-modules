@@ -4,7 +4,7 @@
 nextflow.enable.dsl=2
 
 // Log
-log.info ("Starting tests for last...")
+log.info ("Starting tests for LAST...")
 
 /*------------------------------------------------------------------------------------*/
 /* Define params
@@ -21,73 +21,34 @@ params.verbose = true
 // as a placeholder, and fill in the "args" with the necessary
 // parameters.
 
-// Parameter sets for genome-genome comparisons between close relatives:
-include {last_db} from "../main.nf" as last_db_genome_to_genome_near
-include {last_align} from "../main.nf" as last_align_genome_to_genome_near
-params{
-    modules {
-        "last_db_genome_to_genome_near" {
-            args             = "-uNEAR -R01"
-            publish_dir      = "last_db_genome_to_genome_near"
-            publish_results  = "all"
-        }
-        "last_align_genome_to_genome_near" {
-            args             = "-m50 -E0.05 -C2"
-            publish_dir      = "last_db_genome_to_genome_near"
-            publish_results  = "all"
-        }
-    }
-}
-// Parameter sets for genome-genome comparisons between distant relatives:
-include {last_db} from "../main.nf" as last_db_genome_to_genome_distant
-params{
-    modules {
-        "last_db_genome_to_genome_distant" {
-            args             = "-uMAM4 -R01"
-            publish_dir      = "last_db_genome_to_genome_distant"
-            publish_results  = "all"
-        }
-    }
-}
+// Parameters for genome-genome alignment
+// Two sets: for closely related sequences, and for distantly related
+// sequences.
+// The two DB commands do differ by parameter selection; see last.config.
+include {last_db as last_db_genome_to_genome_near} from "../main.nf"
+include {last_db as last_db_genome_to_genome_distant} from "../main.nf"
 
-include {last_train} from "../main.nf" as last_train_genome_to_genome
-params{
-    modules {
-        "last_train_genome_to_genome" {
-            args             = "--revsym --matsym --gapsym -E0.05 -C2"
-            publish_dir      = "last_train_genome_to_genome"
-            publish_results  = "all"
-        }
-    }
-}
+// Similarly the align commands differ by parameters
+include {last_align as last_align_genome_to_genome_near} from "../main.nf"
+include {last_align as last_align_genome_to_genome_distant} from "../main.nf"
+
+// The train commands are actually the same, but they need to be named
+// separately for Nextflow comptability.
+include {last_train as last_train_genome_to_genome_near} from "../main.nf"
+include {last_train as last_train_genome_to_genome_distant} from "../main.nf"
+
+// As the train steps, these are the same processes imported to use
+// different names  ¯\_(ツ)_/¯
+include {last_filter_maf as last_filter_maf_near} from "../main.nf"
+include {last_filter_maf as last_filter_maf_distant} from "../main.nf"
+include {last_dotplot as last_dotplot_near} from "../main.nf"
+include {last_dotplot as last_dotplot_distant} from "../main.nf"
 
 // Parameter sets for read-to-genome alignment:
-include {last_db} from "../main.nf" as last_db_reads_to_genome_simple_masking
-include {last_db} from "../main.nf" as last_db_reads_to_genome_external_masking
-params{
-    modules {
-        "last_db_reads_to_genome_simple_masking" {
-            args             = "-uNEAR -R01"
-            publish_dir      = "last_db"
-            publish_results  = "all"
-        }
-        "last_db_reads_to_genome_external_masking" {
-            args             = "-uNEAR -R01"
-            publish_dir      = "last_db"
-            publish_results  = "all"
-        }
-    }
-}
-
-include {last_db} from "../main.nf" as last_db_genome_to_genome_distant
-include {last_db} from "../main.nf" as last_db_reads_to_genome
-
-// Import processes that do not change between
-include {last_train} from "../main.nf"
-include {last_align} from "../main.nf"
-include {last_filter_maf} from "../main.nf"
+include {last_db as last_db_reads_to_genome} from "../main.nf"
+include {last_train as last_train_reads_to_genome} from "../main.nf"
+include {last_align as last_align_reads_to_genome} from "../main.nf"
 include {last_convert_maf_to_sam} from "../main.nf"
-include {last_dotplot} from "../main.nf"
 
 include {assert_channel_count} from "../../../workflows/test_flows/main.nf"
 
@@ -96,32 +57,66 @@ include {assert_channel_count} from "../../../workflows/test_flows/main.nf"
 /*------------------------------------------------------------------------------------*/
 
 // Define test data
-test_alignment_files = [
-    [[sample_id:"ref_genome"], "$baseDir/../../../test_data/last/E_coli_K-12.fna"],
+test_reference_genome = [
+    [[sample_id:"ref_genome"], "$baseDir/../../../test_data/lambda1000a/lambda_top10.fasta"],
+]
+test_query_genome_near = [
+    [[sample_id:"ref_genome"], "$baseDir/../../../test_data/last/Enterobacteria_phage_HK630.fasta"],
+]
+test_query_genome_distant = [
+    [[sample_id:"ref_genome"], "$baseDir/../../../test_data/last/Shigella_sonnei_strain_6207_plasmid_unnamed1.fasta"],
+]
+test_query_reads = [
+    [[sample_id:"ref_genome"], "$baseDir/../../../test_data/lambda1000a/lambda_top10.fastq.gz"],
 ]
 
-// Define regions file input channel
+// Define test data input channels
 Channel
-    .fromPath("$baseDir/../../../test_data/fasta/homo-hg37-21.fa.gz")
-    .set {ch_test_fasta}
-
-// Define test data input channel
-Channel
-    .from(test_genome)
+    .from(test_reference_genome)
     .map { row -> [ row[0], file(row[1], checkIfExists: true) ] }
     .set {ch_ref_genome}
+Channel
+    .from(test_query_genome_near)
+    .map { row -> [ row[0], file(row[1], checkIfExists: true) ] }
+    .set {ch_query_genome_near}
+Channel
+    .from(test_query_genome_distant)
+    .map { row -> [ row[0], file(row[1], checkIfExists: true) ] }
+    .set {ch_query_genome_distant}
+Channel
+    .from(test_query_reads)
+    .map { row -> [ row[0], file(row[1], checkIfExists: true) ] }
+    .set {ch_query_reads}
 
 /*------------------------------------------------------------------------------------*/
 /* Run tests
 --------------------------------------------------------------------------------------*/
 
 workflow {
-    // Run last
-    last_db.
+    // Genome-genome alignment for near relatives
+    // Make a reference genome database, train the genome-genome alignment parameters,
+    // make the alignment, filter the alignment, then make a dot plot.
+    last_db_genome_to_genome_near( params.modules['last_db_genome_to_genome_near'], ch_ref_genome )
+    last_train_genome_to_genome_near( params.modules['last_train_genome_to_genome_near'], ch_ref_genome, last_db_genome_to_genome_near.out.last_db, ch_query_genome_near )
+    last_align_genome_to_genome_near( params.modules['last_align_genome_to_genome_near'], ch_ref_genome, last_db_genome_to_genome_near.out.last_db, last_train_genome_to_genome_near.out.last_train_par, ch_query_genome_near)
+    last_filter_maf_near( params.modules['last_filter_maf_near'], last_align_genome_to_genome_near.out.maf )
+    last_dotplot_near( params.modules['last_dotplot_near'], last_filter_maf_near.out.maf )
 
     // Collect file names and view output
+    last_db_genome_to_genome_distant( params.modules['last_db_genome_to_genome_distant'], ch_ref_genome )
+    last_train_genome_to_genome_distant( params.modules['last_train_genome_to_genome_distant'], ch_ref_genome, last_db_genome_to_genome_distant.out.last_db, ch_query_genome_distant )
+    last_align_genome_to_genome_distant( params.modules['last_align_genome_to_genome_distant'], ch_ref_genome, last_db_genome_to_genome_distant.out.last_db, last_train_genome_to_genome_distant.out.last_train_par, ch_query_genome_distant)
+    last_filter_maf_distant( params.modules['last_filter_maf_distant'], last_align_genome_to_genome_distant.out.maf )
+    last_dotplot_distant( params.modules['last_dotplot_distant'], last_filter_maf_distant.out.maf )
 
+    // Read-genome alignment for long reads
+    // Make a reference genome database, train the read-genome alignment parameters,
+    // make the alignment, then convert the maf to a sam file.
+    last_db_reads_to_genome( params.modules['last_db_reads_to_genome'], ch_ref_genome )
+    last_train_reads_to_genome( params.modules['last_train_reads_to_genome'], ch_ref_genome, last_db_reads_to_genome.out.last_db, ch_query_reads )
+    last_align_reads_to_genome( params.modules['last_align_reads_to_genome'], ch_ref_genome, last_db_reads_to_genome.out.last_db, last_train_reads_to_genome.out.last_train_par, ch_query_reads )
+    last_convert_maf_to_sam( params.modules['last_convert_maf_to_sam'], last_align_reads_to_genome.out.maf )
 
     // Double check the channel count
-    assert_channel_count( last_db.out., "last_indices", 5 )
+    // assert_channel_count(, "last_indices", 5 )
 }
