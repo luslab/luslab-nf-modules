@@ -1,4 +1,4 @@
-name: module-testing
+name: module-single-test
 
 on:
   push:
