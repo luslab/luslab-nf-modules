@@ -5,6 +5,8 @@ nextflow.enable.dsl=2
 
 include { awk_file } from '../../tools/luslab_linux_tools/main.nf'
 
+//comment
+
 workflow meta_report_annotate {
     take: tuple_report_meta
     take: tuple_path_meta
