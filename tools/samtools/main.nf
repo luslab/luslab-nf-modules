@@ -21,33 +21,28 @@ process samtools_index {
         tuple val(meta), path(reads)
 
     output:
-        tuple val(meta), path(prefix), emit: bai
+        tuple val(meta), path("${meta.sample_id}.bam", includeInputs: true), path("${prefix}"), emit: bam
  
     script:
-
-        // Check main args string exists and strip whitespace
         args = ""
         if(opts.args && opts.args != '') {
             ext_args = opts.args
             args += ext_args.trim()
         }
 
-        prefix = opts.suffix ? "${meta.sample_id}${opts.suffix}" : "${meta.sample_id}"
+        prefix = opts.suffix ? "${meta.sample_id}${opts.suffix}.bai" : "${meta.sample_id}.bai"
 
-        // Construct CL line
         index_command = "samtools index ${args} -@ ${task.cpus} ${reads} > ${prefix}"
 
-        // Log
         if (params.verbose){
             println ("[MODULE] samtools/index command: " + index_command)
         }
         
     """
     ${index_command}
-    echo ${prefix}
+    mv ${reads} ${meta.sample_id}.bam
     """
 }
-
 
 // Samtools view - only works for bam files - requires bam and bai
 process samtools_view {
