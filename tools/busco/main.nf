@@ -15,6 +15,7 @@ process busco_genome {
                       else filename }
 
     container "ezlabgva/busco:v4.1.2_cv1"
+    containerOptions "-v \$(pwd):/busco_wd"
 
     input:
         val opts
