@@ -1,8 +1,8 @@
 name: module-single-test
 
-on:
-  push:
-    branches: [ feat-mod-busco ]
+#on:
+#  push:
+#    branches: [ feat-mod-busco ]
 
 jobs:
   test-modules:
