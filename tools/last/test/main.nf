@@ -117,6 +117,20 @@ workflow {
     last_align_reads_to_genome( params.modules['last_align_reads_to_genome'], ch_ref_genome, last_db_reads_to_genome.out.last_db, last_train_reads_to_genome.out.last_train_par, ch_query_reads )
     last_convert_maf_to_sam( params.modules['last_convert_maf_to_sam'], last_align_reads_to_genome.out.maf )
 
-    // Double check the channel count
-    // assert_channel_count(, "last_indices", 5 )
+    // Double check the channel counts
+    assert_channel_count( last_db_genome_to_genome_near.out.last_db, "last_db", 1 )
+    assert_channel_count( last_db_genome_to_genome_distant.out.last_db, "last_db", 1 )
+    assert_channel_count( last_db_reads_to_genome.out.last_db, "last_db", 1 )
+    assert_channel_count( last_train_genome_to_genome_near.out.last_train_par, "last_train", 1 )
+    assert_channel_count( last_train_genome_to_genome_distant.out.last_train_par, "last_train", 1 )
+    assert_channel_count( last_train_reads_to_genome.out.last_train_par, "last_train", 1 )
+    assert_channel_count( last_align_genome_to_genome_near.out.maf, "last_align", 1 )
+    assert_channel_count( last_align_genome_to_genome_distant.out.maf, "last_align", 1 )
+    assert_channel_count( last_align_reads_to_genome.out.maf, "last_align", 1 )
+    assert_channel_count( last_filter_maf_near.out.maf, "last_filter", 1 )
+    assert_channel_count( last_filter_maf_distant.out.maf, "last_filter", 1 )
+    assert_channel_count( last_convert_maf_to_sam.out.sam, "last_convert", 1 )
+    assert_channel_count( last_dotplot_near.out.tiff, "last_dotplot", 1 )
+    assert_channel_count( last_dotplot_distant.out.tiff, "last_dotplot", 1 )
+
 }
