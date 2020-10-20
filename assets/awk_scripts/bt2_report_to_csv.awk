@@ -15,19 +15,19 @@ BEGIN {
        }
        if(index($i,"aligned concordantly exactly 1 time") != 0) {
            split($i, line_split, " ");
-           data["align1"]=line_split[1];
+           data["bt2_align1"]=line_split[1];
        }
        if(index($i,"aligned concordantly >1 times") != 0) {
            split($i, line_split, " ");
-           data["align_gt1"]=line_split[1];
+           data["bt2_align_gt1"]=line_split[1];
        }
        if(index($i,"aligned concordantly 0 times") != 0) {
            split($i, line_split, " ");
-           data["non_aligned"]=line_split[1];
+           data["bt2_non_aligned"]=line_split[1];
        }
     }
 }
 END {
-    data["total_aligned"] = data["align1"] + data["align_gt1"]
+    data["bt2_total_aligned"] = data["bt2_align1"] + data["bt2_align_gt1"]
     for (i=1; i<=col_count; i++) printf data[col_arr[i]] ((i==col_count) ? "\n" : ",");
 } 
