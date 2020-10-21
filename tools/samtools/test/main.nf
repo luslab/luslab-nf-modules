@@ -72,5 +72,7 @@ workflow {
     decompress( ch_fasta )
     samtools_faidx( params.modules['samtools_faidx'], decompress.out.file_no_meta )
     samtools_faidx.out.indexedFasta | view
+    samtools_faidx.out.fai | view
     assert_channel_count( samtools_faidx.out.indexedFasta, "indexedFasta", 1)
+    assert_channel_count( samtools_faidx.out.fai, "fai", 1)
 }

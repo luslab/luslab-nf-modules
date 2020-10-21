@@ -112,6 +112,7 @@ process samtools_faidx {
 
     output:
         tuple path("*.fa", includeInputs: true), path("*.fai"), emit: indexedFasta
+        path "*.fai", emit: fai
  
     script:
         // Check main args string exists and strip whitespace
