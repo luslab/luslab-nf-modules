@@ -15,4 +15,4 @@ Please check you have done the following:
 - [ ] Added any new containers to `.github/workflows/docker-build-push.yml` and `.github/workflows/docker-linting.yml`
 - [ ] Added any new workflows to `.github/workflows/workflow-testing.yml`
 - [ ] Added any new test data to `test_data`
-- [ ] When changing an existing module, have you bumped the version? Major.Minor.Patch - Major for breaking changes, Minor for feature updates and most things, Patch for bug fixes and small things like comment variable name updates
+- [ ] When changing an existing module, have you bumped the version? Major.Minor.Patch - Major for breaking changes, Minor for feature updates and most things, Patch for bug fixes and small things like comment and variable name updates
