@@ -1,10 +1,10 @@
 #!/usr/bin/env nextflow
 
 // Specify DSL2
-nextflow.enable.dsl=2
+nextflow.enable.dsl = 2
 
 // Process definition
-process minionqc {
+process busco_genome {
     tag "${meta.sample_id}"
 
     publishDir "${params.outdir}/${opts.publish_dir}",
@@ -14,15 +14,15 @@ process minionqc {
                       if (opts.publish_results == "none") null
                       else filename }
 
-    container "luslab/nf-modules-minionqc:base-1.0.0"
-    //container "quay.io/biocontainers/r-minionqc:1.4.2--r40_0"
+    container "ezlabgva/busco:v4.1.2_cv1"
+    containerOptions '-u \$(id -u):\$(id -g) -v "$PWD":/busco_wd'
 
     input:
         val opts
-        tuple val(meta), path(sequencing_summary)
+        tuple val(meta), path(genome)
 
     output:
-        tuple val(meta), path("minionqc"), emit: minionqc_output_dir
+        tuple val(meta), path("busco"), emit: report
 
     script:
 
@@ -32,14 +32,14 @@ process minionqc {
         args += ext_args.trim()
     }
 
-    minionqc_command = "MinIONQC.R -p ${task.cpus} ${args} -o minionqc -i $sequencing_summary"
+    busco_command = "busco $args -m genome -c ${task.cpus} -i $genome -o busco"
 
     if (params.verbose){
-        println ("[MODULE] minionqc command: " + minionqc_command)
+        println ("[MODULE] busco command: " + busco_command)
     }
 
 	//SHELL
     """
-    ${minionqc_command}
+    ${busco_command}
     """
 }
