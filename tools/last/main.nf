@@ -184,7 +184,7 @@ process last_convert_maf_to_sam {
         tuple val(meta), path(maf)
 
     output:
-				tuple val(meta), path("*.sam"), emit: sam
+        tuple val(meta), path("*.sam"), emit: sam
 
     script:
         args = ""
