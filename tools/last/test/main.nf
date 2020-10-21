@@ -98,14 +98,14 @@ workflow {
     // make the alignment, filter the alignment, then make a dot plot.
     last_db_genome_to_genome_near( params.modules['last_db_genome_to_genome_near'], ch_ref_genome )
     last_train_genome_to_genome_near( params.modules['last_train_genome_to_genome_near'], ch_ref_genome, last_db_genome_to_genome_near.out.last_db, ch_query_genome_near )
-    last_align_genome_to_genome_near( params.modules['last_align_genome_to_genome_near'], ch_ref_genome, last_db_genome_to_genome_near.out.last_db, last_train_genome_to_genome_near.out.last_train_par, ch_query_genome_near)
+    last_align_genome_to_genome_near( params.modules['last_align_genome_to_genome_near'], ch_ref_genome, last_db_genome_to_genome_near.out.last_db, last_train_genome_to_genome_near.out.par, ch_query_genome_near)
     last_filter_maf_near( params.modules['last_filter_maf_near'], last_align_genome_to_genome_near.out.maf )
     last_dotplot_near( params.modules['last_dotplot_near'], last_filter_maf_near.out.maf )
 
     // Collect file names and view output
     last_db_genome_to_genome_distant( params.modules['last_db_genome_to_genome_distant'], ch_ref_genome )
     last_train_genome_to_genome_distant( params.modules['last_train_genome_to_genome_distant'], ch_ref_genome, last_db_genome_to_genome_distant.out.last_db, ch_query_genome_distant )
-    last_align_genome_to_genome_distant( params.modules['last_align_genome_to_genome_distant'], ch_ref_genome, last_db_genome_to_genome_distant.out.last_db, last_train_genome_to_genome_distant.out.last_train_par, ch_query_genome_distant)
+    last_align_genome_to_genome_distant( params.modules['last_align_genome_to_genome_distant'], ch_ref_genome, last_db_genome_to_genome_distant.out.last_db, last_train_genome_to_genome_distant.out.par, ch_query_genome_distant)
     last_filter_maf_distant( params.modules['last_filter_maf_distant'], last_align_genome_to_genome_distant.out.maf )
     last_dotplot_distant( params.modules['last_dotplot_distant'], last_filter_maf_distant.out.maf )
 
@@ -114,16 +114,16 @@ workflow {
     // make the alignment, then convert the maf to a sam file.
     last_db_reads_to_genome( params.modules['last_db_reads_to_genome'], ch_ref_genome )
     last_train_reads_to_genome( params.modules['last_train_reads_to_genome'], ch_ref_genome, last_db_reads_to_genome.out.last_db, ch_query_reads )
-    last_align_reads_to_genome( params.modules['last_align_reads_to_genome'], ch_ref_genome, last_db_reads_to_genome.out.last_db, last_train_reads_to_genome.out.last_train_par, ch_query_reads )
+    last_align_reads_to_genome( params.modules['last_align_reads_to_genome'], ch_ref_genome, last_db_reads_to_genome.out.last_db, last_train_reads_to_genome.out.par, ch_query_reads )
     last_convert_maf_to_sam( params.modules['last_convert_maf_to_sam'], last_align_reads_to_genome.out.maf )
 
     // Double check the channel counts
     assert_channel_count( last_db_genome_to_genome_near.out.last_db, "last_db", 1 )
     assert_channel_count( last_db_genome_to_genome_distant.out.last_db, "last_db", 1 )
     assert_channel_count( last_db_reads_to_genome.out.last_db, "last_db", 1 )
-    assert_channel_count( last_train_genome_to_genome_near.out.last_train_par, "last_train", 1 )
-    assert_channel_count( last_train_genome_to_genome_distant.out.last_train_par, "last_train", 1 )
-    assert_channel_count( last_train_reads_to_genome.out.last_train_par, "last_train", 1 )
+    assert_channel_count( last_train_genome_to_genome_near.out.par, "last_train", 1 )
+    assert_channel_count( last_train_genome_to_genome_distant.out.par, "last_train", 1 )
+    assert_channel_count( last_train_reads_to_genome.out.par, "last_train", 1 )
     assert_channel_count( last_align_genome_to_genome_near.out.maf, "last_align", 1 )
     assert_channel_count( last_align_genome_to_genome_distant.out.maf, "last_align", 1 )
     assert_channel_count( last_align_reads_to_genome.out.maf, "last_align", 1 )

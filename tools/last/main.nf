@@ -61,7 +61,7 @@ process last_train {
         tuple val(meta), path(query_sequences)
 
     output:
-        tuple val(meta), path("*.par"), emit: last_train_par
+        tuple val(meta), path("*.par"), emit: par
 
     script:
         args = ""
