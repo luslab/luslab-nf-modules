@@ -22,5 +22,5 @@ workflow subset_genome {
         samtools_faidx( params.modules['samtools_faidx'], seqtk_subseq.out.subset )
 
     emit:
-        fasta = samtools_faidx.out.indexedFasta
+        fasta = samtools_faidx.out.fasta
 }
