@@ -12,6 +12,7 @@ include { sort } from '../../tools/luslab_linux_tools/main.nf'
 workflow paired_bam_to_bedgraph {
     take: tuple_meta_bam
     take: genome
+    take: scale_factor
     main:
 
         // Define workflow parameters
@@ -19,7 +20,7 @@ workflow paired_bam_to_bedgraph {
         params.modules['awk'].args = '\'$1==$4 && $6-$2 < 1000 {print $0}\''
         params.modules['cut'].args = '-f 1,2,6'
         params.modules['sort'].args = '-k1,1 -k2,2n -k3,3n'
-        params.modules['bedtools_genomecov'].args = '-bg'
+        params.modules['bedtools_genomecov'].args = "-bg -scale ${scale_factor}"
         params.modules['bedtools_genomecov'].suffix = '.bedgraph'
 
 
