@@ -111,7 +111,7 @@ process samtools_faidx {
         path fasta
 
     output:
-        tuple path("*.fa", includeInputs: true), path("*.fai"), emit: indexedFasta
+        tuple path("*.fa", includeInputs: true), path("*.fai"), emit: fasta
         path "*.fai", emit: fai
  
     script:
