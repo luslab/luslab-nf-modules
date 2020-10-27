@@ -100,7 +100,7 @@ workflow {
     // Run bedtools_genomecov
     bedtools_genomecov (params.modules['bedtools_genomecov'], ch_test_bed, genomecov_genome)
     // Run bedtools_genomecov
-    bedtools_genomecov_scale (params.modules['bedtools_genomecov_scale'], ch_test_bed_scale, genomecov_genome, 1)
+    bedtools_genomecov_scale (params.modules['bedtools_genomecov_scale'], ch_test_bed, genomecov_genome, 1)
     // Run bedtools_genomecov_bam
     bedtools_genomecov_bam (params.modules['bedtools_genomecov_bam'], ch_test_bam_bai)
 
@@ -112,7 +112,7 @@ workflow {
     bedtools_subtract.out.bed | view
     bedtools_bamtobed.out.bed | view
     bedtools_genomecov.out.bed | view
-    bedtools_genomecov_scale.out.bed | view
+    bedtools_genomecov_scale.out.bedgraph | view
     bedtools_genomecov_bam.out.bed | view
 
     //Check count
@@ -121,6 +121,6 @@ workflow {
     assert_channel_count( bedtools_subtract.out.bed, "bed", 1)
     assert_channel_count( bedtools_bamtobed.out.bed, "bed", 2)
     assert_channel_count( bedtools_genomecov.out.bed, "bed", 2)
-    assert_channel_count( bedtools_genomecov_scale.out.bed, "bed", 2)
+    assert_channel_count( bedtools_genomecov_scale.out.bedgraph, "bedgraph", 2)
     assert_channel_count( bedtools_genomecov_bam.out.bed, "bed", 2)
 }
