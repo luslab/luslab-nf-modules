@@ -46,7 +46,7 @@ Channel
 
 workflow {
     // Run paired_bam_to_bedgraph
-    paired_bam_to_bedgraph ( ch_bam_bai, ch_genome )
+    paired_bam_to_bedgraph ( ch_bam_bai, ch_genome , 1)
     // View output
     paired_bam_to_bedgraph.out.bedgraph | view
     // Check count
