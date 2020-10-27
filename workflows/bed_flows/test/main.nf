@@ -50,6 +50,6 @@ workflow {
     // View output
     paired_bam_to_bedgraph.out.bedgraph | view
     // Check count
-    assert_channel_count( paired_bam_to_bedgraph.out.bedgraph, "bed", 2)
+    assert_channel_count( paired_bam_to_bedgraph.out.bedgraph, "bedgraph", 2)
 }
 
