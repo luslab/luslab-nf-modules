@@ -4,7 +4,7 @@
 nextflow.enable.dsl=2
 
 include { bedtools_bamtobed } from '../../tools/bedtools/main.nf'
-include { bedtools_genomecov } from '../../tools/bedtools/main.nf'
+include { bedtools_genomecov_scale } from '../../tools/bedtools/main.nf'
 include { awk } from '../../tools/luslab_linux_tools/main.nf'
 include { cut } from '../../tools/luslab_linux_tools/main.nf'
 include { sort } from '../../tools/luslab_linux_tools/main.nf'
@@ -20,7 +20,6 @@ workflow paired_bam_to_bedgraph {
         params.modules['awk'].args = '\'$1==$4 && $6-$2 < 1000 {print $0}\''
         params.modules['cut'].args = '-f 1,2,6'
         params.modules['sort'].args = '-k1,1 -k2,2n -k3,3n'
-        params.modules['bedtools_genomecov'].args = "-bg -scale ${scale_factor}"
         params.modules['bedtools_genomecov'].suffix = '.bedgraph'
 
 
@@ -37,10 +36,10 @@ workflow paired_bam_to_bedgraph {
         sort( params.modules['sort'], cut.out.file )
 
         // Get genome coverage in bedgraph format
-        bedtools_genomecov( params.modules['bedtools_genomecov'], sort.out.file, genome)
+        bedtools_genomecov_scale( params.modules['bedtools_genomecov_scale'], sort.out.file, genome, scale_factor)
 
 
     emit:
-        bedgraph = bedtools_genomecov.out.bed
+        bedgraph = bedtools_genomecov_scale.out.bedgraph
 
 }
