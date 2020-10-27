@@ -220,7 +220,7 @@ process bedtools_genomecov_scale {
         val scale
 
     output:
-        tuple val(meta), path("${prefix}"), emit: bed
+        tuple val(meta), path("${prefix}"), emit: bedgraph
 
     script:
         args = ""
