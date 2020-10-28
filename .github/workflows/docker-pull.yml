@@ -2,7 +2,7 @@ name: docker-pull
 
 on:
   schedule:
-    - cron: 10 * * * *
+    - cron: 0 0 1 * *
 
 jobs:
   docker-pull:
