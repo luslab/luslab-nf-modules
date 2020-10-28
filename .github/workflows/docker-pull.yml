@@ -1,0 +1,34 @@
+name: docker-pull
+
+on:
+  schedule:
+    - cron: * * * * *
+
+jobs:
+  docker-pull:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Pull images
+        run: |
+            lastrepo=""
+            lastseen=""
+            
+            for module in ../../tools/*; do
+                if [ -f "$module"/Dockerfile ]; then
+                    echo "luslab/nf-modules-${module##*/}:$(cat "$module"/VERSION)" >> ../../legacy-docker-images.txt
+                fi
+            done
+            
+            for image in $(cat legacy-docker-images.txt); do
+                # Parse repository name, we will remove the previous image if different
+                readarray -d : -t repository <<< "$image"
+                if [ "${lastseen}" != "" ] && [ "${repository[0]}" != "${lastseen}" ]; then
+                    printf "Removing image ${lastseen} to make room."
+                    docker rmi "${lastrepo}" || docker rmi "${lastseen}"
+                fi
+                lastrepo="${repository[0]}"
+                lastseen="${image}"
+                printf "Pulling $image\n";
+                docker pull "${image}"
+            done
