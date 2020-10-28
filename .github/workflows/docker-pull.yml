@@ -2,7 +2,7 @@ name: docker-pull
 
 on:
   schedule:
-    - cron: 15 * * * *
+    - cron: 18 * * * *
 
 jobs:
   docker-pull:
@@ -15,11 +15,11 @@ jobs:
             lastseen=""
             images=()
             
-            for image in $(cat ../../legacy-docker-images.txt); do
+            for image in $(cat legacy-docker-images.txt); do
                 images+=("${image}")
             done
             
-            for module in ../../tools/*; do
+            for module in tools/*; do
                 if [ -f "$module"/Dockerfile ]; then
                     images+=($(echo "luslab/nf-modules-${module##*/}:$(cat "$module"/VERSION)"))
                 fi
