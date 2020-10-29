@@ -33,7 +33,7 @@ process last_db {
         last_command = "lastdb $args -P ${task.cpus} ${reference_sequences.simpleName} ${reference_sequences}"
 
         if (params.verbose){
-            println ("[MODULE] last command: " + last_command)
+            println ("[MODULE] last_db command: " + last_command)
         }
 
         //SHELL
@@ -73,6 +73,10 @@ process last_train {
         prefix = opts.suffix ? "${meta.sample_id}${opts.suffix}" : "${meta.sample_id}"
 
         last_command = "last-train $args -P ${task.cpus} ${reference_sequences.simpleName} ${query_sequences} > ${reference_sequences.simpleName}-${query_sequences.simpleName}.par"
+
+        if (params.verbose){
+            println ("[MODULE] last_train command: " + last_command)
+        }
 
         //SHELL
         """
@@ -114,7 +118,7 @@ process last_align {
         last_command = "lastal $args -P ${task.cpus} -p ${last_train_par} ${reference_sequences.simpleName} ${query_sequences} | last-split -m1 > ${reference_sequences.simpleName}-${query_sequences.simpleName}.maf"
 
         if (params.verbose){
-            println ("[MODULE] last command: " + last_command)
+            println ("[MODULE] last_align command: " + last_command)
         }
 
         //SHELL
@@ -198,7 +202,7 @@ process last_convert_maf_to_sam {
         last_command = "maf-convert sam ${maf} > ${maf.simpleName}.sam"
 
         if (params.verbose){
-            println ("[MODULE] last command: " + last_command)
+            println ("[MODULE] last_convert_maf_to_sam command: " + last_command)
         }
 
         //SHELL
@@ -238,7 +242,7 @@ process last_dotplot {
         last_command = "last-dotplot -x 2000 -y 2000 --sort1=1 --sort2=3 --strands2=1 --rot1=v --rot2=h ${tab} ${tab.simpleName}.tiff"
 
         if (params.verbose){
-            println ("[MODULE] last command: " + last_command)
+            println ("[MODULE] last_dotplot command: " + last_command)
         }
 
         //SHELL

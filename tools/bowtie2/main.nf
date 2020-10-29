@@ -39,11 +39,11 @@ process bowtie2_align {
             args += ' ' + ext_args.trim()
         }
 
-        if(opts.summary_name && opts.summary_name != '') {
-            summary_name = opts.summary_name
+        if(opts.suffix != '') {
+            summary_name = "${meta.sample_id}_${opts.suffix}_bt2_stats"
         }
         else {
-            summary_name = "${meta.sample_id}_bowtie2_stats"
+            summary_name = "${meta.sample_id}_bt2_stats"
         }
 
         readList = reads.collect{it.toString()}
