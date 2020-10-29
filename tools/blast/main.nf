@@ -25,20 +25,20 @@ process blast_makeblastdb {
 
     script:
 
-    args = ""
-    if(opts.args) {
-        ext_args = opts.args
-        args += ext_args.trim()
-    }
+        args = ""
+        if(opts.args) {
+            ext_args = opts.args
+            args += ext_args.trim()
+        }
 
-    blast_command = "makeblastdb $args -in ${fasta}"
+        blast_command = "makeblastdb $args -in ${fasta}"
 
-    if (params.verbose){
-        println ("[MODULE] blast_makeblastdb command: " + minionqc_command)
-    }
+        if (params.verbose){
+            println ("[MODULE] blast_makeblastdb command: " + minionqc_command)
+        }
 
-	//SHELL
-    """
-    ${blast_command}
-    """
+        //SHELL
+        """
+        ${blast_command}
+        """
 }
