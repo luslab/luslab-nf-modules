@@ -72,7 +72,7 @@ process blast_blastn {
             args += ext_args.trim()
         }
 
-        blast_blastn_command = "blastn $args -num_threads ${task.cpus} -query ${query_fasta} -db ${ref_fasta.simpleName} -out ${ref_fasta.simpleName}-${query_fasta.simpleName}.asn"
+        blast_blastn_command = "blastn $args -evalue ${opts.evalue} -num_threads ${task.cpus} -query ${query_fasta} -db ${ref_fasta.simpleName} -out ${ref_fasta.simpleName}-${query_fasta.simpleName}.asn"
 
         if (params.verbose){
             println ("[MODULE] blast_blastn command: " + blast_blastn_command)
@@ -113,7 +113,7 @@ process blast_blastp {
             args += ext_args.trim()
         }
 
-        blast_blastp_command = "blastp $args -num_threads ${task.cpus} -query ${query_fasta} -db ${ref_fasta.simpleName} -out ${ref_fasta.simpleName}-${query_fasta.simpleName}.asn"
+        blast_blastp_command = "blastp $args -evalue ${opts.evalue} -num_threads ${task.cpus} -query ${query_fasta} -db ${ref_fasta.simpleName} -out ${ref_fasta.simpleName}-${query_fasta.simpleName}.asn"
 
         if (params.verbose){
             println ("[MODULE] blast_blastp command: " + blast_blastp_command)
@@ -154,7 +154,7 @@ process blast_blastx {
             args += ext_args.trim()
         }
 
-        blast_blastx_command = "blastx $args -num_threads ${task.cpus} -query ${query_fasta} -db ${ref_fasta.simpleName} -out ${ref_fasta.simpleName}-${query_fasta.simpleName}.asn"
+        blast_blastx_command = "blastx $args -evalue ${opts.evalue} -num_threads ${task.cpus} -query ${query_fasta} -db ${ref_fasta.simpleName} -out ${ref_fasta.simpleName}-${query_fasta.simpleName}.asn"
 
         if (params.verbose){
             println ("[MODULE] blast_blastx command: " + blast_blastx_command)
@@ -195,7 +195,7 @@ process blast_tblastn {
             args += ext_args.trim()
         }
 
-        blast_tblastn_command = "tblastn $args -num_threads ${task.cpus} -query ${query_fasta} -db ${ref_fasta.simpleName} -out ${ref_fasta.simpleName}-${query_fasta.simpleName}.asn"
+        blast_tblastn_command = "tblastn $args -evalue ${opts.evalue} -num_threads ${task.cpus} -query ${query_fasta} -db ${ref_fasta.simpleName} -out ${ref_fasta.simpleName}-${query_fasta.simpleName}.asn"
 
         if (params.verbose){
             println ("[MODULE] blast_tblastn command: " + blast_tblastn_command)
@@ -236,7 +236,7 @@ process blast_tblastx {
             args += ext_args.trim()
         }
 
-        blast_tblastx_command = "tblastn $args -num_threads ${task.cpus} -query ${query_fasta.simpleName} -db ${ref_fasta.simpleName} -out ${ref_fasta}-${query_fasta.simpleName}.asn"
+        blast_tblastx_command = "tblastn $args -evalue ${opts.evalue} -num_threads ${task.cpus} -query ${query_fasta.simpleName} -db ${ref_fasta.simpleName} -out ${ref_fasta}-${query_fasta.simpleName}.asn"
 
         if (params.verbose){
             println ("[MODULE] blast_tblastx command: " + blast_tblastx_command)
