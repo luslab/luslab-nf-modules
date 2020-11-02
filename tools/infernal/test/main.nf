@@ -4,7 +4,7 @@
 nextflow.enable.dsl=2
 
 // Log
-log.info ("Starting tests for BUSCO...")
+log.info ("Starting tests for Infernal...")
 
 /*------------------------------------------------------------------------------------*/
 /* Define params
@@ -16,7 +16,11 @@ params.verbose = true
 /* Module inclusions
 --------------------------------------------------------------------------------------*/
 
-include {busco_genome} from "../main.nf"
+include {infernal_cmscan} from "../main.nf"
+params.modules["infernal_cmscan"].search_space = "1000000"
+params.modules["infernal_cmscan"].db = "$baseDir/../../../test_data/rfam/RF00001.cm"
+params.modules["infernal_cmscan"].clanin = "$baseDir/../../../test_data/rfam/RF00001.clanin"
+
 include {assert_channel_count} from "../../../workflows/test_flows/main.nf"
 
 /*------------------------------------------------------------------------------------*/
@@ -24,7 +28,7 @@ include {assert_channel_count} from "../../../workflows/test_flows/main.nf"
 --------------------------------------------------------------------------------------*/
 
 test_data_genome = [
-    [[sample_id:"sample1"], "$baseDir/../../../test_data/fasta/S_cerevisiae_chrI.fa"],
+	[[sample_id:"sample1"], "$baseDir/../../../test_data/fasta/S_cerevisiae_chrXII.fa"],
 ]
 
 Channel
@@ -38,11 +42,11 @@ Channel
 
 workflow {
     // Run BUSCO on the test genome FASTA file
-    busco_genome( params.modules["busco_genome"], ch_fasta )
+    infernal_cmscan( params.modules["infernal_cmscan"], ch_fasta )
 
     // Confirm the outputs of the above command
-    busco_genome.out.report | view
+    infernal_cmscan.out.table | view
 
     // Double check the channel count
-    assert_channel_count( busco_genome.out.report, "busco", 1 )
+    assert_channel_count( infernal_cmscan.out.table, "cmscan", 1 )
 }
