@@ -4,7 +4,7 @@
 nextflow.enable.dsl=2
 
 // Log
-log.info ("Starting tests for Infernal...")
+log.info ("Starting tests for HMMER...")
 
 /*------------------------------------------------------------------------------------*/
 /* Define params
@@ -16,10 +16,10 @@ params.verbose = true
 /* Module inclusions
 --------------------------------------------------------------------------------------*/
 
-include {infernal_cmscan} from "../main.nf"
-params.modules["infernal_cmscan"].search_space = "1000000"
-params.modules["infernal_cmscan"].db = "$baseDir/../../../test_data/infernal/RF00001.cm"
-params.modules["infernal_cmscan"].clanin = "$baseDir/../../../test_data/infernal/RF00001.clanin"
+include {hmmer_hmmscan} from "../main.nf"
+params.modules["hmmer_hmmscan"].db = "$baseDir/../../../test_data/hmmer/Pfam_subset.hmm"
+include {hmmer_hmmsearch} from "../main.nf"
+params.modules["hmmer_hmmsearch"].db = "$baseDir/../../../test_data/hmmer/Pfam_subset.hmm"
 
 include {assert_channel_count} from "../../../workflows/test_flows/main.nf"
 
@@ -28,7 +28,7 @@ include {assert_channel_count} from "../../../workflows/test_flows/main.nf"
 --------------------------------------------------------------------------------------*/
 
 test_data_genome = [
-	[[sample_id:"sample1"], "$baseDir/../../../test_data/fasta/S_cerevisiae_chrXII.fa"],
+    [[sample_id:"sample1"], "$baseDir/../../../test_data/fasta/S_cerevisiae_prot.fa"],
 ]
 
 Channel
@@ -42,11 +42,14 @@ Channel
 
 workflow {
     // Run BUSCO on the test genome FASTA file
-    infernal_cmscan( params.modules["infernal_cmscan"], ch_fasta )
+    hmmer_hmmscan( params.modules["hmmer_hmmscan"], ch_fasta )
+    hmmer_hmmsearch( params.modules["hmmer_hmmsearch"], ch_fasta )
 
     // Confirm the outputs of the above command
-    infernal_cmscan.out.table | view
+    hmmer_hmmscan.out.table | view
+    hmmer_hmmsearch.out.table | view
 
     // Double check the channel count
-    assert_channel_count( infernal_cmscan.out.table, "cmscan", 1 )
+    assert_channel_count( hmmer_hmmscan.out.table, "hmmscan", 1 )
+    assert_channel_count( hmmer_hmmsearch.out.table, "hmmscan", 1 )
 }
