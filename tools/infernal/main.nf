@@ -14,7 +14,7 @@ process infernal_cmscan {
                       if (opts.publish_results == "none") null
                       else filename }
 
-    container "biocontainers/infernal:v1.1.2-2-deb_cv1"
+    container "quay.io/biocontainers/infernal:1.1.3--h516909a_0"
 
     input:
         val opts
