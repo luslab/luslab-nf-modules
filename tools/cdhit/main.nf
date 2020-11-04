@@ -22,7 +22,7 @@ process cdhit_prot {
 
     output:
         tuple val(meta), path("*.fasta"), emit: fasta
-        tuple val(meta), path("*.clster"), emit: clster
+        tuple val(meta), path("*.clstr"), emit: clstr
 
     script:
 
@@ -32,7 +32,7 @@ process cdhit_prot {
         args += ext_args.trim()
     }
 
-    cdhit_command = "cd-hit $args -c ${opts.identity} -i ${fasta} -o ${fasta.simpleName}-${opts.identity}.fasta -p ${fasta.simpleName}-${opts.identity}.clstr"
+    cdhit_command = "cd-hit $args -T ${task.cpus} -c ${opts.identity} -i ${fasta} -o ${fasta.simpleName}-${opts.identity}.fasta -p ${fasta.simpleName}-${opts.identity}.clstr"
 
     if (params.verbose){
         println ("[MODULE] cdhit_prot command: " + cdhit_command)
@@ -62,7 +62,7 @@ process cdhit_nucl {
 
     output:
         tuple val(meta), path("*.fasta"), emit: fasta
-        tuple val(meta), path("*.clster"), emit: clster
+        tuple val(meta), path("*.clstr"), emit: clstr
 
     script:
 
@@ -72,7 +72,7 @@ process cdhit_nucl {
         args += ext_args.trim()
     }
 
-    cdhit_command = "cd-hit-est $args -c ${opts.identity} -i ${fasta} -o ${fasta.simpleName}-${opts.identity}.fasta -p ${fasta.simpleName}-${opts.identity}.clstr"
+    cdhit_command = "cd-hit-est $args -T ${task.cpus} -c ${opts.identity} -i ${fasta} -o ${fasta.simpleName}-${opts.identity}.fasta -p ${fasta.simpleName}-${opts.identity}.clstr"
 
     if (params.verbose){
         println ("[MODULE] cdhit_nucl command: " + cdhit_command)

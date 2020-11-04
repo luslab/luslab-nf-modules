@@ -25,18 +25,24 @@ include {assert_channel_count} from "../../../workflows/test_flows/main.nf"
 /* Define input channels
 --------------------------------------------------------------------------------------*/
 
-test_fasta_nucl = [
-    [[sample_id:"test-sample"], "$baseDir/../../../test_data/lambda1000a/lambda_top10.fasta"],
-]
 
 test_fasta_prot = [
-    [[sample_id:"test-sample"], "$baseDir/../../../test_data/lambda1000a/lambda_top10.fasta"],
+    [[sample_id:"test-sample"], "$baseDir/../../../test_data/cdhit/insulin.faa"],
+]
+
+test_fasta_nucl = [
+    [[sample_id:"test-sample"], "$baseDir/../../../test_data/cdhit/insulin.fna"],
 ]
 
 Channel
-    .from(test_fasta)
+    .from(test_fasta_prot)
     .map { row -> [ row[0], file(row[1], checkIfExists: true) ] }
-    .set {ch_fasta}
+    .set {ch_fasta_prot}
+
+Channel
+    .from(test_fasta_nucl)
+    .map { row -> [ row[0], file(row[1], checkIfExists: true) ] }
+    .set {ch_fasta_nucl}
 
 /*------------------------------------------------------------------------------------*/
 /* Run tests
@@ -44,10 +50,13 @@ Channel
 
 workflow {
     // Run minionqc on the test set
-    minionqc(params.modules['minionqc'], ch_sequencing_summary)
+    cdhit_prot(params.modules['cdhit_prot'], ch_fasta_prot)
+    cdhit_nucl(params.modules['cdhit_nucl'], ch_fasta_nucl)
 
     // Collect file names and view output
-    minionqc.out.minionqc_output_dir | view
+    cdhit_prot.out.fasta | view
+    cdhit_nucl.out.fasta | view
 
-    assert_channel_count( minionqc.out.minionqc_output_dir, "reads", 1)
+    assert_channel_count( cdhit_prot.out.fasta, "cdhit_prot", 1)
+    assert_channel_count( cdhit_nucl.out.fasta, "cdhit_nucl", 1)
 }
