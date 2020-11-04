@@ -38,7 +38,7 @@ process cdhit_prot {
         println ("[MODULE] cdhit_prot command: " + cdhit_command)
     }
 
-	//SHELL
+    //SHELL
     """
     ${cdhit_command}
     """
@@ -78,7 +78,7 @@ process cdhit_nucl {
         println ("[MODULE] cdhit_nucl command: " + cdhit_command)
     }
 
-	//SHELL
+    //SHELL
     """
     ${cdhit_command}
     """
