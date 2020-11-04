@@ -27,11 +27,11 @@ include {assert_channel_count} from "../../../workflows/test_flows/main.nf"
 
 
 test_fasta_prot = [
-    [[sample_id:"test-sample"], "$baseDir/../../../test_data/cdhit/insulin.faa"],
+    [[sample_id:"test-sample"], "$baseDir/../../../test_data/fasta/insulin.faa"],
 ]
 
 test_fasta_nucl = [
-    [[sample_id:"test-sample"], "$baseDir/../../../test_data/cdhit/insulin.fna"],
+    [[sample_id:"test-sample"], "$baseDir/../../../test_data/fasta/insulin.fna"],
 ]
 
 Channel
