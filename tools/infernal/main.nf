@@ -22,7 +22,7 @@ process infernal_cmscan {
 
     output:
         tuple val(meta), path("*.cmscan"), emit: cmscan
-        tuple val(meta), path("*.tbl"), emit: table
+        tuple val(meta), path("*.tbl"), emit: tbl
 
     script:
 

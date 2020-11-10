@@ -45,8 +45,8 @@ workflow {
     infernal_cmscan( params.modules["infernal_cmscan"], ch_fasta )
 
     // Confirm the outputs of the above command
-    infernal_cmscan.out.table | view
+    infernal_cmscan.out.tbl | view
 
     // Double check the channel count
-    assert_channel_count( infernal_cmscan.out.table, "cmscan", 1 )
+    assert_channel_count( infernal_cmscan.out.tbl, "cmscan", 1 )
 }

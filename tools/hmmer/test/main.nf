@@ -46,10 +46,10 @@ workflow {
     hmmer_hmmsearch( params.modules["hmmer_hmmsearch"], ch_fasta )
 
     // Confirm the outputs of the above command
-    hmmer_hmmscan.out.table | view
-    hmmer_hmmsearch.out.table | view
+    hmmer_hmmscan.out.tbl | view
+    hmmer_hmmsearch.out.tbl | view
 
     // Double check the channel count
-    assert_channel_count( hmmer_hmmscan.out.table, "hmmscan", 1 )
-    assert_channel_count( hmmer_hmmsearch.out.table, "hmmscan", 1 )
+    assert_channel_count( hmmer_hmmscan.out.tbl, "hmmscan", 1 )
+    assert_channel_count( hmmer_hmmsearch.out.tbl, "hmmscan", 1 )
 }

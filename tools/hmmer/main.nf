@@ -22,7 +22,7 @@ process hmmer_hmmscan {
 
     output:
         tuple val(meta), path("*.hmmscan"), emit: hmmscan
-        tuple val(meta), path("*.tbl"), emit: table
+        tuple val(meta), path("*.tbl"), emit: tbl
 
     script:
 
@@ -63,7 +63,7 @@ process hmmer_hmmsearch {
 
     output:
         tuple val(meta), path("*.hmmsearch"), emit: hmmsearch
-        tuple val(meta), path("*.tbl"), emit: table
+        tuple val(meta), path("*.tbl"), emit: tbl
 
     script:
 
