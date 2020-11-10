@@ -3,7 +3,6 @@
 // Specify DSL2
 nextflow.enable.dsl=2
 
-// Process definition
 process hmmer_hmmscan {
     tag "${meta.sample_id}"
 
