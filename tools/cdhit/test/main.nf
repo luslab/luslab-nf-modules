@@ -1,10 +1,10 @@
 #!/usr/bin/env nextflow
 
-// Define DSL2
+// Specify DSL2
 nextflow.enable.dsl=2
 
-// Log
-log.info ("Starting tests for BUSCO...")
+// Log out
+log.info ("Starting tests for CD-HIT...")
 
 /*------------------------------------------------------------------------------------*/
 /* Define params
@@ -16,33 +16,47 @@ params.verbose = true
 /* Module inclusions
 --------------------------------------------------------------------------------------*/
 
-include {busco_genome} from "../main.nf"
+include {cdhit_prot} from "../main.nf"
+include {cdhit_nucl} from "../main.nf"
+
 include {assert_channel_count} from "../../../workflows/test_flows/main.nf"
 
 /*------------------------------------------------------------------------------------*/
 /* Define input channels
 --------------------------------------------------------------------------------------*/
 
-test_data_genome = [
-    [[sample_id:"sample1"], "$baseDir/../../../test_data/fasta/S_cerevisiae_chrI.fa"],
+
+test_fasta_prot = [
+    [[sample_id:"test-sample"], "$baseDir/../../../test_data/fasta/insulin.faa"],
+]
+
+test_fasta_nucl = [
+    [[sample_id:"test-sample"], "$baseDir/../../../test_data/fasta/insulin.fna"],
 ]
 
 Channel
-    .from(test_data_genome)
+    .from(test_fasta_prot)
     .map { row -> [ row[0], file(row[1], checkIfExists: true) ] }
-    .set {ch_fasta}
+    .set {ch_fasta_prot}
+
+Channel
+    .from(test_fasta_nucl)
+    .map { row -> [ row[0], file(row[1], checkIfExists: true) ] }
+    .set {ch_fasta_nucl}
 
 /*------------------------------------------------------------------------------------*/
 /* Run tests
 --------------------------------------------------------------------------------------*/
 
 workflow {
-    // Run BUSCO on the test genome FASTA file
-    busco_genome( params.modules["busco_genome"], ch_fasta )
+    // Run minionqc on the test set
+    cdhit_prot(params.modules['cdhit_prot'], ch_fasta_prot)
+    cdhit_nucl(params.modules['cdhit_nucl'], ch_fasta_nucl)
 
-    // Confirm the outputs of the above command
-    busco_genome.out.report | view
+    // Collect file names and view output
+    cdhit_prot.out.fasta | view
+    cdhit_nucl.out.fasta | view
 
-    // Double check the channel count
-    assert_channel_count( busco_genome.out.report, "busco", 1 )
+    assert_channel_count( cdhit_prot.out.fasta, "cdhit_prot", 1)
+    assert_channel_count( cdhit_nucl.out.fasta, "cdhit_nucl", 1)
 }
