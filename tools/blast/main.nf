@@ -62,7 +62,7 @@ process blast_blastn {
         tuple val(meta), path(query_fasta)
 
     output:
-        tuple val(meta), path("*.asn"), emit: blast_output
+        tuple val(meta), path("*.asn"), emit: asn
 
     script:
 
@@ -103,7 +103,7 @@ process blast_blastp {
         tuple val(meta), path(query_fasta)
 
     output:
-        tuple val(meta), path("*.asn"), emit: blast_output
+        tuple val(meta), path("*.asn"), emit: asn
 
     script:
 
@@ -144,7 +144,7 @@ process blast_blastx {
         tuple val(meta), path(query_fasta)
 
     output:
-        tuple val(meta), path("*.asn"), emit: blast_output
+        tuple val(meta), path("*.asn"), emit: asn
 
     script:
 
@@ -185,7 +185,7 @@ process blast_tblastn {
         tuple val(meta), path(query_fasta)
 
     output:
-        tuple val(meta), path("*.asn"), emit: blast_output
+        tuple val(meta), path("*.asn"), emit: asn
 
     script:
 
@@ -226,7 +226,7 @@ process blast_tblastx {
         tuple val(meta), path(query_fasta)
 
     output:
-        tuple val(meta), path("*.asn"), emit: blast_output
+        tuple val(meta), path("*.asn"), emit: asn
 
     script:
 
@@ -236,7 +236,7 @@ process blast_tblastx {
             args += ext_args.trim()
         }
 
-        blast_tblastx_command = "tblastn $args -evalue ${opts.evalue} -num_threads ${task.cpus} -query ${query_fasta.simpleName} -db ${ref_fasta.simpleName} -out ${ref_fasta}-${query_fasta.simpleName}.asn"
+        blast_tblastx_command = "tblastx $args -evalue ${opts.evalue} -num_threads ${task.cpus} -query ${query_fasta} -db ${ref_fasta.simpleName} -out ${ref_fasta.simpleName}-${query_fasta.simpleName}.asn"
 
         if (params.verbose){
             println ("[MODULE] blast_tblastx command: " + blast_tblastx_command)
@@ -262,11 +262,11 @@ process blast_asn_to_tab {
 
     input:
         val opts
-        tuple val(meta), path(blast_output)
+        tuple val(meta), path(asn)
         tuple val(meta), path(blast_db)
 
     output:
-        tuple val(meta), path("*.tab"), emit: blast_output
+        tuple val(meta), path("*.tab"), emit: tab
 
     script:
 
@@ -276,7 +276,7 @@ process blast_asn_to_tab {
             args += ext_args.trim()
         }
 
-        blast_asn_to_tab_command = "blast_formatter $args -max_target_seqs ${opts.max_target_seqs} -archive ${blast_output} -outfmt \"6 qseqid sseqid pident length mismatch gapopen qstart qend sstart send qcovs evalue bitscore\" > ${blast_output.simpleName}.tab"
+        blast_asn_to_tab_command = "blast_formatter $args -max_target_seqs ${opts.max_target_seqs} -archive ${asn} -outfmt \"6 qseqid sseqid pident length mismatch gapopen qstart qend sstart send qcovs evalue bitscore\" > ${asn.simpleName}.tab"
 
         if (params.verbose){
             println ("[MODULE] blast_asn_to_tab command: " + blast_asn_to_tab_command)
