@@ -128,3 +128,4 @@ workflow {
     assert_channel_count( bedtools_genomecov_bam.out.bed, "bed", 2)
     assert_channel_count( bedtools_genomecov_scale_bam.out.bedgraph, "bedgraph", 2)
 }
+
