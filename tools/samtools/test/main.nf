@@ -55,8 +55,8 @@ Channel
 workflow {
     // Run samtools index
     samtools_index ( params.modules['samtools_index'], ch_testDataIndex )
-    samtools_index.out.bai | view
-    assert_channel_count( samtools_index.out.bai, "bai", 2)
+    samtools_index.out.bam | view
+    assert_channel_count( samtools_index.out.bam, "bai", 2)
 
     // Run samtools view
     samtools_view ( params.modules['samtools_view'], ch_testDataIndex )
@@ -71,6 +71,8 @@ workflow {
     //Test samtools faidx
     decompress( ch_fasta )
     samtools_faidx( params.modules['samtools_faidx'], decompress.out.file_no_meta )
-    samtools_faidx.out.indexedFasta | view
-    assert_channel_count( samtools_faidx.out.indexedFasta, "indexedFasta", 1)
+    samtools_faidx.out.fasta | view
+    samtools_faidx.out.fai | view
+    assert_channel_count( samtools_faidx.out.fasta, "fasta", 1)
+    assert_channel_count( samtools_faidx.out.fai, "fai", 1)
 }

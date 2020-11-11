@@ -1,11 +1,11 @@
 # Set the base image to Ubuntu 16.04 and NVIDIA GPU
-FROM nvidia/cuda:9.0-cudnn7-devel-ubuntu16.04
+FROM nvidia/cuda:10.0-cudnn7-devel-ubuntu16.04
 
 LABEL author="Chris Cheshire <chris.cheshire@crick.ac.uk>"
 
 COPY VERSION .
 
-ARG PACKAGE_VERSION=3.6.1
+ARG PACKAGE_VERSION=4.2.2
 ARG DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get update --fix-missing && \

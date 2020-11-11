@@ -1,8 +1,8 @@
 name: module-testing
 
 on:
- # push:
- #   branches: [ feat-chris ]
+  #push:
+  #  branches: [ feat-chris ]
   pull_request:
     branches: [ master ]
 
@@ -14,7 +14,7 @@ jobs:
         nxf_ver: ['20.07.1','']
         tag: ['base']
         docker-name: ['Dockerfile']
-        module-name: ['htseq', 'velocyto', 'flye', 'homer', 'umi_tools', 'fastqc', 'cutadapt', 'bedtools', 'samtools', 'get_crosslinks','get_crosslinks_coverage', 'icount', 'minimap2', 'seqtk', 'paraclu', 'luslab_genome_tools', 'luslab_linux_tools', 'bowtie2', 'metadata', 'minionqc', 'tantan', 'hisat2', 'star', 'multiqc', 'macs2', 'racon']
+        module-name: ['htseq', 'velocyto', 'flye', 'homer', 'umi_tools', 'fastqc', 'cutadapt', 'bedtools', 'samtools', 'get_crosslinks','get_crosslinks_coverage', 'icount', 'minimap2', 'seqtk', 'paraclu', 'luslab_genome_tools', 'luslab_linux_tools', 'bowtie2', 'metadata', 'minionqc', 'tantan', 'hisat2', 'star', 'multiqc', 'macs2', 'racon', 'seacr', 'nanoplot', 'busco', 'last']
         include:
           - nxf_ver: '20.07.1'
             tag: 'cpu'
@@ -32,13 +32,14 @@ jobs:
           VERSION="0.0.0"
           test -f tools/${{matrix.module-name}}/${{matrix.docker-name}} && export DOCKER_EXISTS=true || echo "Dockerfile does not exist, skipping step"
           if [ -v DOCKER_EXISTS ]; then VERSION=`cat tools/${{matrix.module-name}}/VERSION` && echo "::set-output name=version::$(echo $VERSION)"; fi
+          if [ $? -ne 0 ]; then exit 1; fi
           echo "version: $VERSION"
         shell: bash
       - name: Install Nextflow
         run: |
           export NXF_VER=${{matrix.nxf_ver}}
           wget -qO- get.nextflow.io | bash
-          sudo mv nextflow /usr/local/bin/ 
+          sudo mv nextflow /usr/local/bin/
       - name: Docker build
         run: |
            test -f tools/${{matrix.module-name}}/${{matrix.docker-name}} && export DOCKER_EXISTS=true || echo "Dockerfile does not exist, skipping step"

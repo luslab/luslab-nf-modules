@@ -12,7 +12,7 @@ jobs:
     strategy:
       matrix:
         nxf_ver: ['20.07.1','']
-        module-name: ['test_flows','fast_flows']
+        module-name: ['test_flows','fast_flows','bed_flows','bam_flows','report_flows']
     steps:
       - uses: actions/checkout@v2
       - name: Install Nextflow

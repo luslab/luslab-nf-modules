@@ -48,6 +48,7 @@ workflow {
     bowtie2_align( params.modules['bowtie2_align'], ch_fastq_paired_end, bowtie2_build.out.bowtieIndex.collect() )
 
     bowtie2_align.out.bam | view
+    bowtie2_align.out.report | view
 
     //Check count
     assert_channel_count( bowtie2_align.out.sam, "sam", 0)

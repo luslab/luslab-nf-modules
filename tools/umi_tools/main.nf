@@ -14,8 +14,8 @@ process umitools_dedup {
                       if (opts.publish_results == "none") null
                       else filename }
 
-    container 'luslab/nf-modules-umi_tools:base-1.0.0'
-    //container 'quay.io/biocontainers/umi_tools:1.0.1--py38h0213d0e_2'
+    // umi_tools=1.0.1,samtools=1.1.0
+    container 'quay.io/biocontainers/mulled-v2-509311a44630c01d9cb7d2ac5727725f51ea43af:b4c5bc18f99e35cd061328b98f501aa7b9717308-0'
 
     input:
         val(opts)

@@ -24,12 +24,12 @@ include {assert_channel_count} from '../../../workflows/test_flows/main.nf'
 /* Define input channels
 --------------------------------------------------------------------------------------*/
 
-testData = [
-    [[sample_id:"sample1"], "$baseDir/../../../test_data/fast5"]
+test_data = [
+    [[sample_id:"sample1"], "$baseDir/../../../test_data/lambda1000a"]
 ]
 
 Channel
-    .from(testData)
+    .from(test_data)
     .map { row -> [ row[0], file(row[1], checkIfExists: true) ] }
     .set {ch_fast5}
 

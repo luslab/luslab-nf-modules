@@ -1,9 +1,0 @@
-# You can use this file to create a conda environment for the homer module:
-#   conda env create -f environment.yml
-name: nfcore-module-hisat2
-channels:
-  - conda-forge
-  - bioconda
-  - defaults
-dependencies:
-  - hisat2=2.2.1

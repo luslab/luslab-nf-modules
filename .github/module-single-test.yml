@@ -1,0 +1,38 @@
+name: module-single-test
+
+#on:
+#  push:
+#    branches: [ feat-mod-busco ]
+
+jobs:
+  test-modules:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        nxf_ver: ['20.07.1','']
+        tag: ['base']
+        docker-name: ['Dockerfile']
+        module-name: ['busco']
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set version and tags
+        id: ver
+        run: |
+          VERSION="0.0.0"
+          test -f tools/${{matrix.module-name}}/${{matrix.docker-name}} && export DOCKER_EXISTS=true || echo "Dockerfile does not exist, skipping step"
+          if [ -v DOCKER_EXISTS ]; then VERSION=`cat tools/${{matrix.module-name}}/VERSION` && echo "::set-output name=version::$(echo $VERSION)"; fi
+          if [ $? -ne 0 ]; then exit 1; fi
+          echo "version: $VERSION"
+        shell: bash
+      - name: Install Nextflow
+        run: |
+          export NXF_VER=${{matrix.nxf_ver}}
+          wget -qO- get.nextflow.io | bash
+          sudo mv nextflow /usr/local/bin/
+      - name: Docker build
+        run: |
+           test -f tools/${{matrix.module-name}}/${{matrix.docker-name}} && export DOCKER_EXISTS=true || echo "Dockerfile does not exist, skipping step"
+           if [ -v DOCKER_EXISTS ]; then docker build -f tools/${{matrix.module-name}}/${{matrix.docker-name}} -t luslab/nf-modules-${{matrix.module-name}}:latest -t luslab/nf-modules-${{matrix.module-name}}:${{matrix.tag}}-${{steps.ver.outputs.version}} tools/${{matrix.module-name}}; fi
+      - name: Module testing
+        run: |
+          nextflow run ${GITHUB_WORKSPACE}/tools/${{matrix.module-name}}/test/main.nf
