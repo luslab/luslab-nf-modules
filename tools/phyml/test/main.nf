@@ -46,7 +46,7 @@ workflow {
     phyml(params.modules["phyml"], ch_alignment)
 
     // Collect and view output
-    phyml.out.phyml | view
+    phyml.out.tree | view
 
-    assert_channel_count( phyml.out.phyml, "tree", 1)
+    assert_channel_count( phyml.out.tree, "tree", 1)
 }

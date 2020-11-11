@@ -31,7 +31,7 @@ process emboss_seqret {
         args += ext_args.trim()
     }
 
-    emboss_command = "seqret $args -sequence ${in_seq} -osformat2 ${opts.output_format} -outseq ${in_seq.simpleName}.${opts.output_format}"
+    emboss_command = "seqret $args -sequence ${in_seq} -sformat1 ${opts.input_format} -outseq ${in_seq.simpleName}.${opts.output_format} -osformat2 ${opts.output_format}"
 
     if (params.verbose){
         println ("[MODULE] EMBOSS command: " + emboss_command)

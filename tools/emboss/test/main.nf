@@ -17,6 +17,7 @@ params.verbose = true
 --------------------------------------------------------------------------------------*/
 
 include {emboss_seqret} from "../main.nf"
+params.modules["emboss_seqret"].input_format = "fasta"
 params.modules["emboss_seqret"].output_format = "phylip"
 
 include {assert_channel_count} from "../../../workflows/test_flows/main.nf"

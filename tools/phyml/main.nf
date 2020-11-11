@@ -21,7 +21,11 @@ process phyml {
         tuple val(meta), path(fasta)
 
     output:
-        tuple val(meta), path ("*"), emit: phyml
+        tuple val(meta), path ("*_phyml_tree.txt"), emit: tree
+        tuple val(meta), path ("*_phyml_stats.txt"), emit: ml_params
+        tuple val(meta), path ("*_boot_trees.txt"), optional: true, emit: bootstrap_trees
+        tuple val(meta), path ("*_boot_stats.txt"), optional: true, emit: bootstrap_ml_params
+        tuple val(meta), path ("*_phyml_trees.txt"), optional: true, emit: multi_trees
 
     script:
 
