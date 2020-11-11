@@ -4,7 +4,7 @@
 nextflow.enable.dsl=2
 
 // Log
-log.info ("Starting tests for BUSCO...")
+log.info ("Starting tests for HMMER...")
 
 /*------------------------------------------------------------------------------------*/
 /* Define params
@@ -16,7 +16,11 @@ params.verbose = true
 /* Module inclusions
 --------------------------------------------------------------------------------------*/
 
-include {busco_genome} from "../main.nf"
+include {hmmer_hmmscan} from "../main.nf"
+params.modules["hmmer_hmmscan"].db = "$baseDir/../../../test_data/hmmer/Pfam_subset.hmm"
+include {hmmer_hmmsearch} from "../main.nf"
+params.modules["hmmer_hmmsearch"].db = "$baseDir/../../../test_data/hmmer/Pfam_subset.hmm"
+
 include {assert_channel_count} from "../../../workflows/test_flows/main.nf"
 
 /*------------------------------------------------------------------------------------*/
@@ -24,7 +28,7 @@ include {assert_channel_count} from "../../../workflows/test_flows/main.nf"
 --------------------------------------------------------------------------------------*/
 
 test_data_genome = [
-    [[sample_id:"sample1"], "$baseDir/../../../test_data/fasta/S_cerevisiae_chrI.fa"],
+    [[sample_id:"sample1"], "$baseDir/../../../test_data/fasta/S_cerevisiae_prot.fa"],
 ]
 
 Channel
@@ -38,11 +42,14 @@ Channel
 
 workflow {
     // Run BUSCO on the test genome FASTA file
-    busco_genome( params.modules["busco_genome"], ch_fasta )
+    hmmer_hmmscan( params.modules["hmmer_hmmscan"], ch_fasta )
+    hmmer_hmmsearch( params.modules["hmmer_hmmsearch"], ch_fasta )
 
     // Confirm the outputs of the above command
-    busco_genome.out.report | view
+    hmmer_hmmscan.out.tbl | view
+    hmmer_hmmsearch.out.tbl | view
 
     // Double check the channel count
-    assert_channel_count( busco_genome.out.report, "busco", 1 )
+    assert_channel_count( hmmer_hmmscan.out.tbl, "hmmscan", 1 )
+    assert_channel_count( hmmer_hmmsearch.out.tbl, "hmmscan", 1 )
 }
