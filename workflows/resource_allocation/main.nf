@@ -151,7 +151,7 @@ process mn_gpu_resources {
 process l_gpu_resources {
     label 'l_gpu'
     script:
-      message = "l_gpu - cpus=" + task.cpus
+      message = "l_gpu  - cpus=" + task.cpus
       message += " mem=" + task.memory.toString().replace(' ', '')
       log.info message
       """
@@ -162,7 +162,7 @@ process l_gpu_resources {
 process m_gpu_resources {
     label 'm_gpu'
     script:
-      message = "m_gpu - cpus=" + task.cpus
+      message = "m_gpu  - cpus=" + task.cpus
       message += " mem=" + task.memory.toString().replace(' ', '')
       log.info message
       """
@@ -173,7 +173,7 @@ process m_gpu_resources {
 process h_gpu_resources {
     label 'h_gpu'
     script:
-      message = "h_gpu - cpus=" + task.cpus
+      message = "h_gpu  - cpus=" + task.cpus
       message += " mem=" + task.memory.toString().replace(' ', '')
       log.info message
       """
@@ -199,18 +199,18 @@ process mx_gpu_resources {
 // Check the resource allocation models for different profiles and configurations
 workflow assert_resource_allocation_models {
     main:
-        // default_resources()
-        // max_cpu_q_resources()
-        // mn_cpu_resources()
-        // l_cpu_resources()
-        // m_cpu_resources()
-        // h_cpu_resources()
-        // mx_cpu_resources()
-        // mn_hmem_resources()
-        // l_hmem_resources()
-        // m_hmem_resources()
-        // h_hmem_resources()
-        // mx_hmem_resources()
+        default_resources()
+        max_cpu_q_resources()
+        mn_cpu_resources()
+        l_cpu_resources()
+        m_cpu_resources()
+        h_cpu_resources()
+        mx_cpu_resources()
+        mn_hmem_resources()
+        l_hmem_resources()
+        m_hmem_resources()
+        h_hmem_resources()
+        mx_hmem_resources()
         mn_gpu_resources()
         l_gpu_resources()
         m_gpu_resources()
