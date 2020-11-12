@@ -21,7 +21,7 @@ process mafft {
         tuple val(meta), path (fasta)
 
     output:
-        tuple val(meta), path ("*.afa"), emit: fasta
+        tuple val(meta), path ("*.mfa"), emit: mfa
 
     script:
 
@@ -31,7 +31,7 @@ process mafft {
         args += ext_args.trim()
     }
 
-    mafft_command = "mafft $args --thread ${task.cpus} ${fasta} > ${fasta.simpleName}.afa "
+    mafft_command = "mafft $args --thread ${task.cpus} ${fasta} > ${fasta.simpleName}.mfa "
 
     if (params.verbose){
         println ("[MODULE] mafft command: " + mafft_command)

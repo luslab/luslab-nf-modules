@@ -47,7 +47,7 @@ workflow {
     mafft(params.modules["mafft"], ch_fasta )
 
     // Collect and view output
-    mafft.out.fasta | view
+    mafft.out.mfa | view
 
-    assert_channel_count( mafft.out.fasta, "alignment", 1)
+    assert_channel_count( mafft.out.mfa, "alignment", 1)
 }
