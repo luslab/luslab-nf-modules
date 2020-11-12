@@ -100,13 +100,13 @@ process mn_hmem_resources {
 // Check the resource allocation models for different profiles and configurations
 workflow assert_resource_allocation_models {
     main:
-        default_resources()
-        max_cpu_q_resources()
-        mn_cpu_resources()
-        l_cpu_resources()
-        m_cpu_resources()
-        h_cpu_resources()
-        mx_cpu_resources()
+        // default_resources()
+        // max_cpu_q_resources()
+        // mn_cpu_resources()
+        // l_cpu_resources()
+        // m_cpu_resources()
+        // h_cpu_resources()
+        // mx_cpu_resources()
         mn_hmem_resources()
 
         // Doesnt really work as we can only access the cpu and mem variables. Have to resort to manual testing on the cluster
