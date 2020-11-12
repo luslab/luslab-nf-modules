@@ -85,7 +85,7 @@ process mx_cpu_resources {
 process mn_hmem_resources {
     label 'mn_hmem'
     script:
-      message = "mn_hmem   - cpus=" + task.cpus
+      message = "mn_hmem - cpus=" + task.cpus
       message += " mem=" + task.memory.toString().replace(' ', '')
       log.info message
       """
@@ -96,7 +96,7 @@ process mn_hmem_resources {
 process l_hmem_resources {
     label 'l_hmem'
     script:
-      message = "l_hmem     - cpus=" + task.cpus
+      message = "l_hmem   - cpus=" + task.cpus
       message += " mem=" + task.memory.toString().replace(' ', '')
       log.info message
       """
@@ -107,7 +107,7 @@ process l_hmem_resources {
 process m_hmem_resources {
     label 'm_hmem'
     script:
-      message = "m_hmem     - cpus=" + task.cpus
+      message = "m_hmem   - cpus=" + task.cpus
       message += " mem=" + task.memory.toString().replace(' ', '')
       log.info message
       """
@@ -118,7 +118,7 @@ process m_hmem_resources {
 process h_hmem_resources {
     label 'h_hmem'
     script:
-      message = "h_hmem     - cpus=" + task.cpus
+      message = "h_hmem   - cpus=" + task.cpus
       message += " mem=" + task.memory.toString().replace(' ', '')
       log.info message
       """
@@ -129,7 +129,7 @@ process h_hmem_resources {
 process mx_hmem_resources {
     label 'mx_hmem'
     script:
-      message = "mx_hmem   - cpus=" + task.cpus
+      message = "mx_hmem - cpus=" + task.cpus
       message += " mem=" + task.memory.toString().replace(' ', '')
       log.info message
       """
@@ -151,7 +151,7 @@ process mn_gpu_resources {
 process l_gpu_resources {
     label 'l_gpu'
     script:
-      message = "l_gpu     - cpus=" + task.cpus
+      message = "l_gpu    - cpus=" + task.cpus
       message += " mem=" + task.memory.toString().replace(' ', '')
       log.info message
       """
@@ -162,7 +162,7 @@ process l_gpu_resources {
 process m_gpu_resources {
     label 'm_gpu'
     script:
-      message = "m_gpu     - cpus=" + task.cpus
+      message = "m_gpu    - cpus=" + task.cpus
       message += " mem=" + task.memory.toString().replace(' ', '')
       log.info message
       """
@@ -173,7 +173,7 @@ process m_gpu_resources {
 process h_gpu_resources {
     label 'h_gpu'
     script:
-      message = "h_gpu     - cpus=" + task.cpus
+      message = "h_gpu    - cpus=" + task.cpus
       message += " mem=" + task.memory.toString().replace(' ', '')
       log.info message
       """
