@@ -284,3 +284,46 @@ process bedtools_genomecov_bam {
     """
 
 }
+
+process bedtools_genomecov_scale_bam {
+    publishDir "${params.outdir}/${opts.publish_dir}",
+        mode: "copy", 
+        overwrite: true,
+        saveAs: { filename ->
+                      if (opts.publish_results == "none") null
+                      else filename }
+
+    container 'quay.io/biocontainers/bedtools:2.29.2--hc088bd4_0'
+
+    input:
+        val opts
+        tuple val(meta), path(bam), path(bai)
+        val scale
+
+    output:
+        tuple val(meta), path("${prefix}"), emit: bedgraph
+
+    script:
+        args = ""
+        if(opts.args && opts.args != '') {
+            ext_args = opts.args
+            args += ext_args.trim()
+        }
+
+        prefix = opts.suffix ? "${meta.sample_id}${opts.suffix}" : "${meta.sample_id}"
+
+        if (args == ''){
+            genomecov_command = "bedtools genomecov -ibam ${bam} -bg -scale ${scale} > ${prefix}"
+        } else {
+            genomecov_command = "bedtools genomecov ${args} -ibam ${bam} -bg -scale ${scale} > ${prefix}"
+        }
+        if (params.verbose){
+            println ("[MODULE] bedtools/genomecov command: " + genomecov_command)
+        }
+
+    //SHELL
+    """
+    ${genomecov_command}
+    """
+
+}
