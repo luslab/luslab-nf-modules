@@ -8,11 +8,18 @@ nextflow.enable.dsl=2
 --------------------------------------------------------------------------------------*/
 
 process default_resources {
-    output:
-      val task.cpus, emit: cpus
-      val task.memory, emit: memory
     script:
       message = "default - cpus=" + task.cpus
+      message += " mem=" + task.memory.toString().replace(' ', '')
+      log.info message
+      """
+      echo ${message}
+      """
+}
+
+process max_cpu_q_resources {
+    script:
+      message = "max_cpu_q - cpus=" + task.cpus
       message += " mem=" + task.memory.toString().replace(' ', '')
       log.info message
       """
@@ -28,6 +35,7 @@ process default_resources {
 workflow assert_resource_allocation_models {
     main:
         default_resources()
+        max_cpu_q_resources()
 
         // Doesnt really work as we can only access the cpu and mem variables. Have to resort to manual testing on the cluster
         // default_expected_cpu = 2

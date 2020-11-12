@@ -18,10 +18,6 @@ log.info ("Starting tests for nf-modules...")
 include { build_debug_param_summary; luslab_header} from './tools/luslab_util/main.nf'
 include {assert_resource_allocation_models} from './workflows/resource_allocation/main.nf'
 
-/*------------------------------------------------------------------------------------*/
-/* Define input channels
---------------------------------------------------------------------------------------*/
-
 //------------------------------------------------------------------------------------
 
 log.info luslab_header()
