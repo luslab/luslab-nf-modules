@@ -27,10 +27,10 @@ process max_cpu_q_resources {
       """
 }
 
-process cpu_q_mncpu_resources {
-    label 'mncpu'
+process mn_cpu_resources {
+    label 'mn_cpu'
     script:
-      message = "cpu_q_mn-cpu - cpus=" + task.cpus
+      message = "mn_cpu - cpus=" + task.cpus
       message += " mem=" + task.memory.toString().replace(' ', '')
       log.info message
       """
@@ -38,10 +38,10 @@ process cpu_q_mncpu_resources {
       """
 }
 
-process cpu_q_lcpu_resources {
-    label 'lcpu'
+process l_cpu_resources {
+    label 'm_cpu'
     script:
-      message = "cpu_q_l-cpu - cpus=" + task.cpus
+      message = "m_cpu - cpus=" + task.cpus
       message += " mem=" + task.memory.toString().replace(' ', '')
       log.info message
       """
@@ -49,10 +49,10 @@ process cpu_q_lcpu_resources {
       """
 }
 
-process cpu_q_mcpu_resources {
-    label 'mcpu'
+process m_cpu_resources {
+    label 'm_cpu'
     script:
-      message = "cpu_q_m-cpu - cpus=" + task.cpus
+      message = "m_cpu - cpus=" + task.cpus
       message += " mem=" + task.memory.toString().replace(' ', '')
       log.info message
       """
@@ -60,10 +60,10 @@ process cpu_q_mcpu_resources {
       """
 }
 
-process cpu_q_hcpu_resources {
-    label 'hcpu'
+process h_cpu_resources {
+    label 'h_cpu'
     script:
-      message = "cpu_q_h-cpu - cpus=" + task.cpus
+      message = "h_cpu - cpus=" + task.cpus
       message += " mem=" + task.memory.toString().replace(' ', '')
       log.info message
       """
@@ -71,10 +71,21 @@ process cpu_q_hcpu_resources {
       """
 }
 
-process cpu_q_mxcpu_resources {
-    label 'mxcpu'
+process mx_cpu_resources {
+    label 'mx_cpu'
     script:
-      message = "cpu_q_mx-cpu - cpus=" + task.cpus
+      message = "mx_cpu - cpus=" + task.cpus
+      message += " mem=" + task.memory.toString().replace(' ', '')
+      log.info message
+      """
+      echo ${message}
+      """
+}
+
+process mn_hmem_resources {
+    label 'mn_hmem'
+    script:
+      message = "mn_hmem - cpus=" + task.cpus
       message += " mem=" + task.memory.toString().replace(' ', '')
       log.info message
       """
@@ -91,11 +102,12 @@ workflow assert_resource_allocation_models {
     main:
         default_resources()
         max_cpu_q_resources()
-        cpu_q_mncpu_resources()
-        cpu_q_lcpu_resources()
-        cpu_q_mcpu_resources()
-        cpu_q_hcpu_resources()
-        cpu_q_mxcpu_resources()
+        mn_cpu_resources()
+        l_cpu_resources()
+        m_cpu_resources()
+        h_cpu_resources()
+        mx_cpu_resources()
+        mn_hmem_resources()
 
         // Doesnt really work as we can only access the cpu and mem variables. Have to resort to manual testing on the cluster
         // default_expected_cpu = 2
