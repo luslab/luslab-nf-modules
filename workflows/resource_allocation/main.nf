@@ -27,10 +27,54 @@ process max_cpu_q_resources {
       """
 }
 
-process cpu_q_mncpu_mnmem_resources {
-    label 'mncpu_mnmem'
+process cpu_q_mncpu_resources {
+    label 'mncpu'
     script:
-      message = "cpu_q_mn-cpu_mn-mem - cpus=" + task.cpus
+      message = "cpu_q_mn-cpu - cpus=" + task.cpus
+      message += " mem=" + task.memory.toString().replace(' ', '')
+      log.info message
+      """
+      echo ${message}
+      """
+}
+
+process cpu_q_lcpu_resources {
+    label 'lcpu'
+    script:
+      message = "cpu_q_l-cpu - cpus=" + task.cpus
+      message += " mem=" + task.memory.toString().replace(' ', '')
+      log.info message
+      """
+      echo ${message}
+      """
+}
+
+process cpu_q_mcpu_resources {
+    label 'mcpu'
+    script:
+      message = "cpu_q_m-cpu - cpus=" + task.cpus
+      message += " mem=" + task.memory.toString().replace(' ', '')
+      log.info message
+      """
+      echo ${message}
+      """
+}
+
+process cpu_q_hcpu_resources {
+    label 'hcpu'
+    script:
+      message = "cpu_q_h-cpu - cpus=" + task.cpus
+      message += " mem=" + task.memory.toString().replace(' ', '')
+      log.info message
+      """
+      echo ${message}
+      """
+}
+
+process cpu_q_mxcpu_resources {
+    label 'mxcpu'
+    script:
+      message = "cpu_q_mx-cpu - cpus=" + task.cpus
       message += " mem=" + task.memory.toString().replace(' ', '')
       log.info message
       """
@@ -47,7 +91,11 @@ workflow assert_resource_allocation_models {
     main:
         default_resources()
         max_cpu_q_resources()
-        cpu_q_mncpu_mnmem_resources()
+        cpu_q_mncpu_resources()
+        cpu_q_lcpu_resources()
+        cpu_q_mcpu_resources()
+        cpu_q_hcpu_resources()
+        cpu_q_mxcpu_resources()
 
         // Doesnt really work as we can only access the cpu and mem variables. Have to resort to manual testing on the cluster
         // default_expected_cpu = 2
