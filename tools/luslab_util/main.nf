@@ -22,7 +22,9 @@ def build_debug_param_summary() {
     def summary = [:]
 
     paramsKeySet.each {
-        summary[it] = params.get(it)
+        if(it != "modules") {
+          summary[it] = params.get(it)
+        }
     }
 
     output = summary.collect { k,v -> "${k.padRight(18)}: $v" }.join("\n")
