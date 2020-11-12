@@ -19,7 +19,7 @@ process default_resources {
 
 process max_cpu_q_resources {
     script:
-      message = "max_cpu_q - cpus=" + task.cpus
+      message = "mx_cpu_q - cpus=" + task.cpus
       message += " mem=" + task.memory.toString().replace(' ', '')
       log.info message
       """
@@ -41,7 +41,7 @@ process mn_cpu_resources {
 process l_cpu_resources {
     label 'l_cpu'
     script:
-      message = "l_cpu     - cpus=" + task.cpus
+      message = "l_cpu    - cpus=" + task.cpus
       message += " mem=" + task.memory.toString().replace(' ', '')
       log.info message
       """
@@ -52,7 +52,7 @@ process l_cpu_resources {
 process m_cpu_resources {
     label 'm_cpu'
     script:
-      message = "m_cpu     - cpus=" + task.cpus
+      message = "m_cpu    - cpus=" + task.cpus
       message += " mem=" + task.memory.toString().replace(' ', '')
       log.info message
       """
@@ -85,7 +85,7 @@ process mx_cpu_resources {
 process mn_hmem_resources {
     label 'mn_hmem'
     script:
-      message = "mn_hmem - cpus=" + task.cpus
+      message = "mn_hmem   - cpus=" + task.cpus
       message += " mem=" + task.memory.toString().replace(' ', '')
       log.info message
       """
@@ -129,7 +129,7 @@ process h_hmem_resources {
 process mx_hmem_resources {
     label 'mx_hmem'
     script:
-      message = "mx_hmem - cpus=" + task.cpus
+      message = "mx_hmem  - cpus=" + task.cpus
       message += " mem=" + task.memory.toString().replace(' ', '')
       log.info message
       """
