@@ -36,20 +36,16 @@ Channel
     .map { row -> [ row[0], file(row[1], checkIfExists: true), file(row[2], checkIfExists: true) ] }
     .set {ch_bam_bai}
 
-Channel
-    .value(file(genome_file))
-    .set {ch_genome}
-
 /*------------------------------------------------------------------------------------*/
 /* Run tests
 --------------------------------------------------------------------------------------*/
 
 workflow {
     // Run paired_bam_to_bedgraph
-    paired_bam_to_bedgraph ( ch_bam_bai, ch_genome )
+    paired_bam_to_bedgraph ( ch_bam_bai, 1)
     // View output
     paired_bam_to_bedgraph.out.bedgraph | view
     // Check count
-    assert_channel_count( paired_bam_to_bedgraph.out.bedgraph, "bed", 2)
+    assert_channel_count( paired_bam_to_bedgraph.out.bedgraph, "bedgraph", 2)
 }
 
