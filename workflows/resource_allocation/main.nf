@@ -63,7 +63,7 @@ process m_cpu_resources {
 process h_cpu_resources {
     label 'h_cpu'
     script:
-      message = "h_cpu     - cpus=" + task.cpus
+      message = "h_cpu    - cpus=" + task.cpus
       message += " mem=" + task.memory.toString().replace(' ', '')
       log.info message
       """
@@ -85,7 +85,7 @@ process mx_cpu_resources {
 process mn_hmem_resources {
     label 'mn_hmem'
     script:
-      message = "mn_hmem   - cpus=" + task.cpus
+      message = "mn_hmem  - cpus=" + task.cpus
       message += " mem=" + task.memory.toString().replace(' ', '')
       log.info message
       """
