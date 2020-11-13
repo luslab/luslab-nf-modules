@@ -46,4 +46,4 @@ jobs:
            if [ -v DOCKER_EXISTS ]; then docker build -f tools/${{matrix.module-name}}/${{matrix.docker-name}} -t luslab/nf-modules-${{matrix.module-name}}:latest -t luslab/nf-modules-${{matrix.module-name}}:${{matrix.tag}}-${{steps.ver.outputs.version}} tools/${{matrix.module-name}}; fi
       - name: Module testing
         run: |
-          nextflow run ${GITHUB_WORKSPACE}/tools/${{matrix.module-name}}/test/main.nf
+          nextflow -C ${GITHUB_WORKSPACE}/tools/${{matrix.module-name}}/test/nextflow.config run ${GITHUB_WORKSPACE}/tools/${{matrix.module-name}}/test/main.nf

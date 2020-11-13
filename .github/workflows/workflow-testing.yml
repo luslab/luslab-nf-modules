@@ -22,4 +22,4 @@ jobs:
           sudo mv nextflow /usr/local/bin/ 
       - name: Workflow testing
         run: |
-          nextflow run ${GITHUB_WORKSPACE}/workflows/${{matrix.module-name}}/test/main.nf 
+          nextflow -C ${GITHUB_WORKSPACE}/workflows/${{matrix.module-name}}/test/nextflow.config run ${GITHUB_WORKSPACE}/workflows/${{matrix.module-name}}/test/main.nf 
