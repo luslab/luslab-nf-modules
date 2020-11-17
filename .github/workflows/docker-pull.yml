@@ -1,10 +1,10 @@
 name: docker-pull
 
 on:
-  push:
-    branches: [feat-dockerpull]
-  # schedule:
-  #   - cron: 1 * * * *
+  # push:
+  #   branches: [feat-dockerpull]
+  schedule:
+    - cron: 1 * * * *
 
 jobs:
   docker-pull:
