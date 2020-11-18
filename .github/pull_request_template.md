@@ -25,4 +25,4 @@ Please check you have done the following:
 
 - [ ] Selected some reviewers
 - [ ] Assigned yourself to the PR
-- [ ] Tagged the PR appropriates
+- [ ] Tagged the PR appropriately
