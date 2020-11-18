@@ -27,7 +27,7 @@ bedChannelExpected = 7
 /* Module inclusions 
 --------------------------------------------------------------------------------------*/
 
-include {bedtools_intersect_regions; bedtools_intersect; bedtools_subtract; bedtools_bamtobed; bedtools_genomecov; bedtools_genomecov_scale; bedtools_genomecov_bam} from '../main.nf'
+include {bedtools_intersect_regions; bedtools_intersect; bedtools_subtract; bedtools_bamtobed; bedtools_genomecov; bedtools_genomecov_scale; bedtools_genomecov_bam; bedtools_genomecov_scale_bam} from '../main.nf'
 include {assert_channel_count} from '../../../workflows/test_flows/main.nf'
 
 /*------------------------------------------------------------------------------------*/
@@ -103,6 +103,8 @@ workflow {
     bedtools_genomecov_scale (params.modules['bedtools_genomecov_scale'], ch_test_bed, genomecov_genome, 1)
     // Run bedtools_genomecov_bam
     bedtools_genomecov_bam (params.modules['bedtools_genomecov_bam'], ch_test_bam_bai)
+    // Run bedtools_genomecov_scale_bam
+    bedtools_genomecov_scale_bam (params.modules['bedtools_genomecov_scale_bam'], ch_test_bam_bai, 1)
 
     // Run bedtools_genomecov_bam
 
@@ -114,6 +116,7 @@ workflow {
     bedtools_genomecov.out.bed | view
     bedtools_genomecov_scale.out.bedgraph | view
     bedtools_genomecov_bam.out.bed | view
+    bedtools_genomecov_scale_bam.out.bedgraph | view
 
     //Check count
     assert_channel_count( bedtools_intersect_regions.out.bed, "bed", 6)
@@ -123,4 +126,5 @@ workflow {
     assert_channel_count( bedtools_genomecov.out.bed, "bed", 2)
     assert_channel_count( bedtools_genomecov_scale.out.bedgraph, "bedgraph", 2)
     assert_channel_count( bedtools_genomecov_bam.out.bed, "bed", 2)
+    assert_channel_count( bedtools_genomecov_scale_bam.out.bedgraph, "bedgraph", 2)
 }
