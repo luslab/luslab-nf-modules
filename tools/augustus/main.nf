@@ -21,7 +21,7 @@ process augustus {
         tuple val(meta), path(fasta)
 
     output:
-        tuple val(meta), path("*.augustus"), emit: augustus
+        tuple val(meta), path("*"), emit: augustus
 
     script:
 

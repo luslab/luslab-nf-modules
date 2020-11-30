@@ -18,6 +18,7 @@ params.verbose = true
 
 include {augustus} from "../main.nf"
 params.modules["augustus"].species = "saccharomyces_cerevisiae_S288C"
+params.modules["augustus"].args = "--progress=true --softmasking=on"
 
 include {assert_channel_count} from "../../../workflows/test_flows/main.nf"
 
