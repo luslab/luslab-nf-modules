@@ -16,9 +16,9 @@ params.verbose = true
 /* Module inclusions
 --------------------------------------------------------------------------------------*/
 
-include {augustus} from "../main.nf"
-params.modules["augustus"].species = "saccharomyces_cerevisiae_S288C"
-params.modules["augustus"].args = "--progress=true --softmasking=on"
+include {augustus_run} from "../main.nf"
+params.modules["augustus_run"].species = "s_cerevisiae_custom"
+params.modules["augustus_run"].args = "--progress=true --softmasking=on"
 
 include {assert_channel_count} from "../../../workflows/test_flows/main.nf"
 
@@ -41,10 +41,10 @@ Channel
 
 workflow {
     // Run minionqc on the test set
-    augustus(params.modules['augustus'], ch_fasta)
+    augustus_run(params.modules["augustus_run"], ch_fasta)
 
     // Collect file names and view output
-    augustus.out.augustus | view
+    augustus_run.out.gff | view
 
-    assert_channel_count(augustus.out.augustus, "augustus", 1)
+    assert_channel_count(augustus_run.out.gff, "augustus_out", 1)
 }
