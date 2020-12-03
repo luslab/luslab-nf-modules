@@ -68,8 +68,6 @@ process augustus_run_custom {
 
     script:
 
-
-
     args = ""
     if(opts.args) {
         ext_args = opts.args

@@ -15,13 +15,18 @@ params.verbose = true
 /*------------------------------------------------------------------------------------*/
 /* Module inclusions
 --------------------------------------------------------------------------------------*/
-
+// AUGUSTUS run with one of the included gene model packages.
 include {augustus_run_included} from "../main.nf"
 params.modules["augustus_run_included"].species = "saccharomyces_cerevisiae_S288C"
 params.modules["augustus_run_included"].args = "--progress=true --softmasking=on"
 params.modules["augustus_run_included"].publish_dir = "augustus_run_included"
 
-
+// AUGUSTUS run with a "custom" gene model package.
+// See luslab-nf-modules/test_data/augustus/s_cerevisiae_custom/changes_from_defaults.txt
+// for the changed parameters.
+//
+// Note that this process expects two species variables to be set: the name of the directory
+// containing the model files (species_dir), and the name of the model (species_name).
 include {augustus_run_custom} from "../main.nf"
 params.modules["augustus_run_custom"].species_dir = "$baseDir/../../../test_data/augustus/s_cerevisiae_custom"
 params.modules["augustus_run_custom"].species_name = "s_cerevisiae_custom"
