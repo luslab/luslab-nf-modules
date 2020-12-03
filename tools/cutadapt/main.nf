@@ -5,6 +5,10 @@ nextflow.enable.dsl=2
 
 // Trimming reusable component
 process cutadapt {
+    label "min_cores"
+    label "min_memory"
+    label "regular_queue"
+
     tag "${meta.sample_id}"
 
     publishDir "${params.outdir}/${opts.publish_dir}",
@@ -14,6 +18,7 @@ process cutadapt {
                     if (opts.publish_results == "none") null
                     else filename }
     
+    // Would be great to have a mulled container with cutadapt and pigz - then we could use the multi-core support in cutadapt
     container 'quay.io/biocontainers/cutadapt:2.10--py37hf01694f_1'
 
     input:
