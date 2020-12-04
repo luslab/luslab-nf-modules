@@ -1,0 +1,7 @@
+This "custom" AUGUSTUS model is exactly the same as the included
+AUGUSTUS model "saccharomyces_cerevisiae_S288C", except for the
+following changes:
+
+	-only protein sequences are included in the output GFF
+	-the number of alternative transcripts sampled has been
+	reduced to 1, down from 100 (speeds up run time)
