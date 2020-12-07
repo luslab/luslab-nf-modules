@@ -30,9 +30,7 @@ bam_bai_test_data = [
     [[sample_id:"sample2"], "$baseDir/../../../test_data/bam_bai/sample2.bam", "$baseDir/../../../test_data/bam_bai/sample2.bam.bai"]
 ]
 
-blacklist_gz = [
-    [[:], "$baseDir/../../../test_data/blacklists/hg38-blacklist.v2.bed.gz"]
-]
+blacklist_gz = "$baseDir/../../../test_data/blacklists/example_blacklist.bed"
 
 // Channels
 Channel
@@ -42,18 +40,15 @@ Channel
 
 Channel
     .from(blacklist_gz)
-    .map { row -> [ row[0], file(row[1], checkIfExists: true) ] }
-    .set {ch_blacklist}
+    .set { ch_blacklist }
 
 /*------------------------------------------------------------------------------------*/
 /* Run tests
 --------------------------------------------------------------------------------------*/
 workflow {
-    // Firstly decompress blacklist
-    decompress( ch_blacklist )
 
     // Run deeptools_bam_pe_fragment_size
-    deeptools_bam_pe_fragment_size( params.modules['deeptools_bam_pe_fragment_size'], ch_test_bam_bai, decompress.out.file_no_meta.collect() )
+    deeptools_bam_pe_fragment_size( params.modules['deeptools_bam_pe_fragment_size'], ch_test_bam_bai, ch_blacklist.collect() )
 
     // Collect file names and view output
     deeptools_bam_pe_fragment_size.out.fragment_size_summary | view
