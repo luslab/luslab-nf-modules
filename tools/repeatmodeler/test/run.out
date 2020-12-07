@@ -1,0 +1,11 @@
+BLAST Database error: No alias or index file found for nucleotide database [lambda_top10.fasta] in search path [/::]
+RepeatModeler Version 2.0.1
+===========================
+Search Engine = rmblast 2.10.0+
+Dependencies: TRF 4.09, RECON 1.08, RepeatScout 1.0.5, RepeatMasker 4.1.1
+LTR Structural Analysis: Enabled ( GenomeTools 1.6.0, LTR_Retriever v2.9.0,
+                                   Ninja 0.97-cluster_only, MAFFT 7.471,
+                                   CD-HIT 4.8.1 )
+Random Number Seed: 1606982353
+Database = lambda_top10.fasta 
+Database lambda_top10.fasta does not contain any sequences!
