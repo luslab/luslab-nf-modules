@@ -16,7 +16,8 @@ params.verbose = true
 /* Module inclusions
 --------------------------------------------------------------------------------------*/
 
-include {purge_haplotigs} from "../main.nf"
+include {purge_haplotigs_hist} from "../main.nf"
+include {purge_haplotigs_minima_2} from "../main.nf"
 include {assert_channel_count} from "../../../workflows/test_flows/main.nf"
 
 /*------------------------------------------------------------------------------------*/
@@ -24,7 +25,7 @@ include {assert_channel_count} from "../../../workflows/test_flows/main.nf"
 --------------------------------------------------------------------------------------*/
 
 test_data_bam = [
-    [[sample_id:"test-sample"], "$baseDir/../../../test_data/purge_haplotigs/cns_p_ctg.aligned.sd.bam"],
+    [[sample_id:"test-sample"], "$baseDir/../../../test_data/cns_p_ctg.alignedChained.0.015.bam"],
 ]
 test_data_fasta = [
     [[sample_id:"test-sample"], "$baseDir/../../../test_data/purge_haplotigs/cns_p_ctg.fasta"],
@@ -46,11 +47,12 @@ Channel
 
 workflow {
     // Run flye
-    purge_haplotigs(params.modules["purge_haplotigs"], ch_bam, ch_fasta )
+    purge_haplotigs_hist(params.modules["purge_haplotigs"], ch_bam, ch_fasta)
+    purge_haplotigs_minima_2(params.modules["purge_haplotigs"], ch_bam, ch_fasta, purge_haplotigs_hist.out.purge_haplotigs)
 
     // Collect file names and view output
-    purge_haplotigs.out.whatever | view
+    //purge_haplotigs.out.purge_haplotigs | view
 
     // Verify channel counts
-    assert_channel_count(purge_haplotigs.out.whatever, "whatever", 1)
+    //assert_channel_count(purge_haplotigs.out.purge_haplotigs, "whatever", 1)
 }

@@ -14,3 +14,8 @@ RUN apt-get update \
 COPY environment.yml /
 RUN conda env create -f /environment.yml && conda clean -a
 ENV PATH /opt/conda/envs/nfcore-module-purge_haplotigs/bin:$PATH
+
+# Add python script to the container
+COPY purge_haplotigs_minima.py /
+
+WORKDIR /work
