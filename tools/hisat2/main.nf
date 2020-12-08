@@ -3,6 +3,10 @@
 nextflow.enable.dsl=2
 
 process hisat2_build {
+    label "avg_cores"
+    label "avg_mem"
+    label "regular_queue"
+
     tag "${genome}"
 
     publishDir "${params.outdir}/${opts.publish_dir}",
@@ -31,6 +35,10 @@ process hisat2_build {
 }
 
 process hisat2_splice_sites {
+    label "avg_cores"
+    label "avg_mem"
+    label "regular_queue"
+
     tag "${gtf}"
 
     publishDir "${params.outdir}/${opts.publish_dir}",
@@ -60,6 +68,10 @@ process hisat2_splice_sites {
  
 
 process hisat2_splice_align {
+    label "avg_cores"
+    label "avg_mem"
+    label "regular_queue"
+
     tag "${meta.sample_id}"
 
     publishDir "${params.outdir}/${opts.publish_dir}",
@@ -110,6 +122,10 @@ process hisat2_splice_align {
 }
 
 process hisat2_align {
+    label "avg_cores"
+    label "avg_mem"
+    label "regular_queue"
+
     tag "${meta.sample_id}"
     
     publishDir "${params.outdir}/${opts.publish_dir}",
