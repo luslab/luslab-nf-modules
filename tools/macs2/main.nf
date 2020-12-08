@@ -5,6 +5,10 @@ nextflow.enable.dsl=2
 
 // https://github.com/macs3-project/MACS
 process macs2_callpeaks {
+    label "min_cores"
+    label "min_mem"
+    label "regular_queue"
+
     tag "${meta.sample_id}"
 
     publishDir "${params.outdir}/${opts.publish_dir}",
