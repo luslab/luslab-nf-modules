@@ -5,6 +5,10 @@ nextflow.enable.dsl=2
 
 //Process definition
 process homer_annotate_peaks {
+    label "low_cores"
+    label "low_mem"
+    label "regular_queue"
+
     tag "${meta.sample_id}"
 
     publishDir "${params.outdir}/${opts.publish_dir}",
@@ -52,6 +56,10 @@ process homer_annotate_peaks {
 
 //Process definition
 process homer_find_motifs {
+    label "low_cores"
+    label "low_mem"
+    label "regular_queue"
+
     tag "${meta.sample_id}"
     
     publishDir "${params.outdir}/${opts.publish_dir}",
