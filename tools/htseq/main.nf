@@ -4,6 +4,10 @@
 nextflow.enable.dsl=2
 
 process htseq_count {
+    label "low_cores"
+    label "low_mem"
+    label "regular_queue"
+
     tag "${meta.sample_id}"
     
     publishDir "${params.outdir}/${opts.publish_dir}",
