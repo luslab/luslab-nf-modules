@@ -21,7 +21,8 @@ process deeptools_bam_pe_fragment_size {
 
     output:
         tuple val(meta), path("${prefix}_raw.csv"), path("${prefix}_summary.csv"), emit: fragment_size_summary
-        path "${prefix}_log.txt", emit: report
+        tuple val(meta), path("${prefix}_log.txt"), emit: report
+        path "${prefix}_log.txt", emit: report_no_meta
 
     script:
         args = ""
