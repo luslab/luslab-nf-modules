@@ -5,6 +5,10 @@ nextflow.enable.dsl=2
 
 // Process definition
 process guppy_basecaller {
+    label params.num_gpus == 0 ? "max_cores" : "low_cores"
+    label params.num_gpus == 0 ? "max_mem" : "low_mem"
+    label params.num_gpus == 0 ? "regular_queue" : "gpu_queue"
+
     tag "${meta.sample_id}"
 
     publishDir "${params.outdir}/${opts.publish_dir}",
@@ -46,6 +50,10 @@ process guppy_basecaller {
 }
 
 process guppy_qc {
+    label "min_cores"
+    label "min_mem"
+    label "regular_queue"
+
     tag "${sequencing_summary}"
 
     publishDir "${params.outdir}/${opts.publish_dir}",

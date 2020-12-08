@@ -5,6 +5,10 @@ nextflow.enable.dsl=2
 
 // Process definition
 process blast_makeblastdb {
+    label "low_cores"
+    label "low_mem"
+    label "regular_queue"
+
     tag "${meta.sample_id}"
 
     publishDir "${params.outdir}/${opts.publish_dir}",
@@ -44,6 +48,10 @@ process blast_makeblastdb {
 }
 
 process blast_blastn {
+    label "low_cores"
+    label "low_mem"
+    label "regular_queue"
+
     tag "${meta.sample_id}"
 
     publishDir "${params.outdir}/${opts.publish_dir}",
@@ -85,6 +93,10 @@ process blast_blastn {
 }
 
 process blast_blastp {
+    label "low_cores"
+    label "low_mem"
+    label "regular_queue"
+
     tag "${meta.sample_id}"
 
     publishDir "${params.outdir}/${opts.publish_dir}",
@@ -126,6 +138,10 @@ process blast_blastp {
 }
 
 process blast_blastx {
+    label "low_cores"
+    label "low_mem"
+    label "regular_queue"
+
     tag "${meta.sample_id}"
 
     publishDir "${params.outdir}/${opts.publish_dir}",
@@ -167,6 +183,10 @@ process blast_blastx {
 }
 
 process blast_tblastn {
+    label "low_cores"
+    label "low_mem"
+    label "regular_queue"
+
     tag "${meta.sample_id}"
 
     publishDir "${params.outdir}/${opts.publish_dir}",
@@ -208,6 +228,10 @@ process blast_tblastn {
 }
 
 process blast_tblastx {
+    label "low_cores"
+    label "low_mem"
+    label "regular_queue"
+
     tag "${meta.sample_id}"
 
     publishDir "${params.outdir}/${opts.publish_dir}",
@@ -249,6 +273,10 @@ process blast_tblastx {
 }
 
 process blast_asn_to_tab {
+    label "low_cores"
+    label "low_mem"
+    label "regular_queue"
+
     tag "${meta.sample_id}"
 
     publishDir "${params.outdir}/${opts.publish_dir}",
@@ -289,6 +317,10 @@ process blast_asn_to_tab {
 }
 
 process blast_windowmasker {
+    label "low_cores"
+    label "low_mem"
+    label "regular_queue"
+
     tag "${meta.sample_id}"
 
     publishDir "${params.outdir}/${opts.publish_dir}",

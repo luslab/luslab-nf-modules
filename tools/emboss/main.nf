@@ -5,6 +5,10 @@ nextflow.enable.dsl=2
 
 // Process definition
 process emboss_seqret {
+    label "min_cores"
+    label "min_mem"
+    label "regular_queue"
+
     tag "${meta.sample_id}"
 
     publishDir "${params.outdir}/${opts.publish_dir}",
