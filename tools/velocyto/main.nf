@@ -5,6 +5,10 @@ nextflow.enable.dsl=2
 
 // Process def
 process velocyto_run_smartseq2 {
+    label "avg_cores"
+    label "avg_mem"
+    label "regular_queue"
+
     tag "${meta.sample_id}"
 
     publishDir "${params.outdir}/${opts.publish_dir}",
