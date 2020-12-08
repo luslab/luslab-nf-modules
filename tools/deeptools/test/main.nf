@@ -53,9 +53,11 @@ workflow {
     // Collect file names and view output
     deeptools_bam_pe_fragment_size.out.fragment_size_summary | view
     deeptools_bam_pe_fragment_size.out.report | view
+    deeptools_bam_pe_fragment_size.out.report_no_meta | view
 
     // Check count
     assert_channel_count( deeptools_bam_pe_fragment_size.out.fragment_size_summary, "fragment_size_summary", 2 )
     assert_channel_count( deeptools_bam_pe_fragment_size.out.report, "report", 2 )
+    assert_channel_count( deeptools_bam_pe_fragment_size.out.report_no_meta, "report_no_meta", 2 )
 }
 
