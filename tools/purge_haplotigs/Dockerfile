@@ -6,7 +6,7 @@ LABEL authors="michael.mansfield@oist.jp" \
 COPY VERSION .
 
 RUN apt-get update \
-    && apt-get install -y --no-install-recommends libpng-dev \
+    && apt-get install -y --no-install-recommends libpng-dev=1.6.28-1+deb9u1 \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
