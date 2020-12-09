@@ -26,9 +26,9 @@ include {purge_haplotigs_purge} from "../main.nf"
 params.modules["purge_haplotigs"].cutoff_low = 14
 params.modules["purge_haplotigs"].cutoff_mid = 72
 params.modules["purge_haplotigs"].cutoff_high = 191
-// "Junk" > 100 = nothing discarded
+// "Junk" > 100 = nothing discarded (because the test set is low coverage)
 params.modules["purge_haplotigs"].junk = 101
-// Alignment coverage cutoff of 60%
+// Alignment coverage cutoff of 60% (lower than default)
 params.modules["purge_haplotigs"].align_cov = 60
 
 include {assert_channel_count} from "../../../workflows/test_flows/main.nf"
@@ -81,8 +81,25 @@ workflow {
     purge_haplotigs_minima.out.csv2 | view
     purge_haplotigs_minima.out.report | view
     purge_haplotigs_contigcov.out.csv | view
+    purge_haplotigs_purge.out.haploid_fasta | view
+    purge_haplotigs_purge.out.haplotigs_fasta | view
+    purge_haplotigs_purge.out.junk_fasta | view
+    purge_haplotigs_purge.out.tsv | view
+    purge_haplotigs_purge.out.report | view
+    purge_haplotigs_purge.out.dotplots | view
     purge_haplotigs_purge.out.purge_haplotigs_purge | view
 
     // Verify channel counts
-    //assert_channel_count(purge_haplotigs.out.purge_haplotigs, "whatever", 1)
+    assert_channel_count(purge_haplotigs_hist.out.purge_haplotigs_hist, "purge_haplotigs_hist", 1)
+    assert_channel_count(purge_haplotigs_minima.out.csv, "purge_haplotigs_minima_low_mid_high", 1)
+    assert_channel_count(purge_haplotigs_minima.out.csv2, "purge_haplotigs_minima_cv", 1)
+    assert_channel_count(purge_haplotigs_minima.out.report, "purge_haplotigs_minima_report", 1)
+    assert_channel_count(purge_haplotigs_contigcov.out.csv, "purge_haplotigs_contigcov", 1)
+    assert_channel_count(purge_haplotigs_purge.out.haploid_fasta, "purge_haplotigs_purge_haploid_assembly", 1)
+    assert_channel_count(purge_haplotigs_purge.out.haplotigs_fasta, "purge_haplotigs_purge_haplotigs", 1)
+    assert_channel_count(purge_haplotigs_purge.out.junk_fasta, "purge_haplotigs_purge_junk", 1)
+    assert_channel_count(purge_haplotigs_purge.out.tsv, "purge_haplotigs_purge_assignments", 1)
+    assert_channel_count(purge_haplotigs_purge.out.report, "purge_haplotigs_purge_reassignments", 1)
+    assert_channel_count(purge_haplotigs_purge.out.dotplots, "purge_haplotigs_purge_dotplots", 1)
+    assert_channel_count(purge_haplotigs_purge.out.purge_haplotigs_purge, "purge_haplotigs_purge", 1)
 }

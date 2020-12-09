@@ -133,6 +133,15 @@ process purge_haplotigs_purge {
         tuple val(meta), path(purge_haplotigs_coverage)
 
     output:
+        tuple val(meta), path("curated.fasta"), emit: haploid_fasta
+        tuple val(meta), path("curated.haplotigs.fasta"), emit: haplotigs_fasta
+        tuple val(meta), path("curated.artefacts.fasta"), emit: junk_fasta
+        tuple val(meta), path("curated.reassignments.tsv"), emit: tsv
+        tuple val(meta), path("curated.contig_associations.log"), emit: report
+        tuple val(meta), path("dotplots*"), emit: dotplots
+        // The output of purge_haplotigs includes temporary files that may
+        // help the user interpret the results. So, this catch-all ensures
+        // that all of these logs are retained.
         tuple val(meta), path("*"), emit: purge_haplotigs_purge
 
     script:
@@ -156,6 +165,7 @@ process purge_haplotigs_purge {
 workflow purge_haplotigs {
     take: tuple_meta_bam
     take: tuple_meta_fasta
+    take: module_params
     main:
         // Get coverage histogram
         purge_haplotigs_hist(params.modules['purge_haplotigs'], tuple_meta_bam, tuple_meta_fasta)
@@ -163,7 +173,7 @@ workflow purge_haplotigs {
         purge_haplotigs_minima(params.modules["purge_haplotigs"], tuple_meta_bam, tuple_meta_fasta, purge_haplotigs_hist.out.purge_haplotigs_hist)
 
         // Channel operations to add the calculated minima to the metadata
-        ch_split_path_meta = ch_bam
+        ch_split_path_meta = tuple_meta_bam
             .map { row -> [row[0].sample_id, row[1..-1]].flatten() }
         purge_haplotigs_minima.out.csv.splitCsv(header:true)
             .map { row -> [ row[0].sample_id, row[0] << row[1] ] }
@@ -172,9 +182,15 @@ workflow purge_haplotigs {
             .set { ch_annotated_meta }
 
         // Get contig coverage values
-        purge_haplotigs_contigcov(params.modules["purge_haplotigs"], ch_bam, ch_fasta, purge_haplotigs_hist.out.purge_haplotigs_hist, ch_annotated_meta.flatten())
+        purge_haplotigs_contigcov(params.modules["purge_haplotigs"], tuple_meta_bam, tuple_meta_fasta, purge_haplotigs_hist.out.purge_haplotigs_hist, ch_annotated_meta.flatten())
         // Actually perform the purging
-        purge_haplotigs_purge(params.modules["purge_haplotigs"], ch_bam, ch_fasta, purge_haplotigs_hist.out.purge_haplotigs_hist, purge_haplotigs_contigcov.out.csv)
+        purge_haplotigs_purge(params.modules["purge_haplotigs"], tuple_meta_bam, tuple_meta_fasta, purge_haplotigs_hist.out.purge_haplotigs_hist, purge_haplotigs_contigcov.out.csv)
     emit:
+        purge_haplotigs_purge.out.haploid_fasta
+        purge_haplotigs_purge.out.haplotigs_fasta
+        purge_haplotigs_purge.out.junk_fasta
+        purge_haplotigs_purge.out.tsv
+        purge_haplotigs_purge.out.report
+        purge_haplotigs_purge.out.dotplots
         purge_haplotigs_purge.out.purge_haplotigs_purge
 }
