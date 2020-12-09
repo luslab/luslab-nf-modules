@@ -25,7 +25,7 @@ include {assert_channel_count} from '../../../workflows/test_flows/main.nf'
 --------------------------------------------------------------------------------------*/
 
 test_data = [
-    [[sample_id:"sample1"], "$baseDir/../../../test_data/lambda1000a"]
+    [[sample_id:"sample1"], "$baseDir/../../../test_data/fast5"]
 ]
 
 Channel
