@@ -1,0 +1,12 @@
+# You can use this file to create a conda environment for the nf-core purge_haplotigs module:
+#   conda env create -f environment.yml
+name: nfcore-module-purge_haplotigs
+channels:
+  - conda-forge
+  - bioconda
+  - anaconda
+  - defaults
+dependencies:
+  - purge_haplotigs=1.1.1-0
+  - python=3.7
+  - scipy=1.5.2
