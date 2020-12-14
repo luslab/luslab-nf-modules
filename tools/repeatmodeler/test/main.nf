@@ -17,8 +17,9 @@ params.modules["repeatmodeler_model"].pa = 1
 params.modules["repeatmodeler_model"].args = "-LTRStruct"
 // RepeatMasker optional arguments
 // Search speeds: -s (slow) -q (quick) -qq (rush job)
-
-params.modules["repeatmasker"].args = "-qq"
+params.modules["repeatmasker"].args = "-qq -cutoff 200 -nolow"
+// You can use a custom library with RepeatMasker by passing
+// it to the repeatmasker process as a meta/fasta channel.
 
 /*------------------------------------------------------------------------------------*/
 /* Module inclusions
@@ -26,6 +27,7 @@ params.modules["repeatmasker"].args = "-qq"
 
 include {repeatmodeler_database} from "../main.nf"
 include {repeatmodeler_model} from "../main.nf"
+include {repeatclassifier} from "../main.nf"
 include {repeatmasker} from "../main.nf"
 
 include {assert_channel_count} from "../../../workflows/test_flows/main.nf"
@@ -51,9 +53,11 @@ workflow {
     // Run minionqc on the test set
     repeatmodeler_database(params.modules['repeatmodeler_database'], ch_fasta)
     repeatmodeler_model(params.modules['repeatmodeler_model'], ch_fasta, repeatmodeler_database.out.repeatmodeler_db)
+    repeatclassifier(params.modules['repeatclassifier'], repeatmodeler_model.out.fasta, repeatmodeler_model.out.stockholm)
+    repeatmasker(params.modules['repeatmasker'], ch_fasta, repeatmodeler_model.out.fasta)
 
     // Collect file names and view output
-    repeatmodeler_database.out.repeatmodeler_db | view
+    //repeatmodeler_database.out.repeatmodeler_db | view
 
-    assert_channel_count(repeatmodeler_database.out.repeatmodeler_db, "repeatmodeler_db", 1)
+    //assert_channel_count(repeatmodeler_database.out.repeatmodeler_db, "repeatmodeler_db", 1)
 }
