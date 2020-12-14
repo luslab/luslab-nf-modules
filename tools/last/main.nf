@@ -188,6 +188,10 @@ process last_filter_maf {
 }
 
 process last_convert_maf_to_sam {
+    label "min_cores"
+    label "low_mem"
+    label "regular_queue"
+
     tag "${meta.sample_id}"
 
     publishDir "${params.outdir}/${opts.publish_dir}",
@@ -228,6 +232,10 @@ process last_convert_maf_to_sam {
 }
 
 process last_dotplot {
+    label "min_cores"
+    label "min_mem"
+    label "regular_queue"
+
     tag "${meta.sample_id}"
 
     publishDir "${params.outdir}/${opts.publish_dir}",
