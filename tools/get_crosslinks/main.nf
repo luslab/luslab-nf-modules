@@ -5,7 +5,7 @@ nextflow.enable.dsl=2
 
 // Process definition
 process getcrosslinks {
-    label "avg_cores"
+    label "low_cores"
     label "high_mem"
     label "regular_queue"
 

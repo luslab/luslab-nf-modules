@@ -5,7 +5,7 @@ nextflow.enable.dsl=2
 
 // Process definition
 process umitools_dedup {
-    label "high_cores"
+    label "low_cores"
     label "high_mem"
     label "regular_queue"
 
@@ -52,6 +52,6 @@ process umitools_dedup {
     //SHELL
     """
     ${dedup_command}
-    samtools index ${prefix}.bam
+    samtools index -@ ${task.cpus} ${prefix}.bam
     """
 }
