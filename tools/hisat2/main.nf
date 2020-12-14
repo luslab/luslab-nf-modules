@@ -30,13 +30,13 @@ process hisat2_build {
         //SHELL
         """
         mkdir ${opts.index_dir}
-        hisat2-build ${genome} ${opts.index_dir}/${opts.prefix}
+        hisat2-build -p ${task.cpus} ${genome} ${opts.index_dir}/${opts.prefix}
         """
 }
 
 process hisat2_splice_sites {
-    label "avg_cores"
-    label "avg_mem"
+    label "min_cores"
+    label "min_mem"
     label "regular_queue"
 
     tag "${gtf}"

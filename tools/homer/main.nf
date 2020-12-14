@@ -5,7 +5,7 @@ nextflow.enable.dsl=2
 
 //Process definition
 process homer_annotate_peaks {
-    label "low_cores"
+    label "min_cores"
     label "low_mem"
     label "regular_queue"
 

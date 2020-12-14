@@ -4,7 +4,7 @@
 nextflow.enable.dsl=2
 
 process htseq_count {
-    label "low_cores"
+    label "min_cores"
     label "low_mem"
     label "regular_queue"
 
