@@ -50,8 +50,8 @@ process guppy_basecaller {
 }
 
 process guppy_qc {
-    label "min_cores"
-    label "min_mem"
+    label "low_cores"
+    label "low_mem"
     label "regular_queue"
 
     tag "${sequencing_summary}"
