@@ -110,7 +110,7 @@ process repeatclassifier {
         tuple val(meta), path(stockholm)
 
     output:
-        tuple val(meta), path("*"), emit: repeatclassifier
+        tuple val(meta), path("{*.classified,*.stk,*.fa}"), emit: report
 
     script:
 
@@ -167,52 +167,9 @@ process repeatmasker {
     //     -html   - write optional HTML output file
     //     -gff    - write optional GFF output file
     //     -xsmall - soft-masking
-    repeatmasker_command = "RepeatMasker $args -xsmall -a -html -gff -engine ${opts.engine} -pa ${opts.pa} -cutoff ${opts.cutoff} -lib ${lib_fasta} -dir ${query_fasta.simpleName}_masked ${query_fasta} > repeatmasker.log"
 
-    if (params.verbose){
-        println ("[MODULE] repeatmasker_command: " + repeatmasker_command)
-    }
-
-    //SHELL
-    """
-    ${repeatmasker_command}
-    """
-}
-process repeatmasker {
-    tag "${meta.sample_id}"
-
-    publishDir "${params.outdir}/${opts.publish_dir}",
-        mode: "copy",
-        overwrite: true,
-        saveAs: { filename ->
-                      if (opts.publish_results == "none") null
-                      else filename }
-
-    container "dfam/tetools:1.2"
-    containerOptions '-u \$(id -u):\$(id -g) -v "$PWD":/work --env "HOME=/work"'
-
-    input:
-        val opts
-        tuple val(meta), path(query_fasta)
-        tuple val(meta), path(lib_fasta)
-
-    output:
-        tuple val(meta), path("{*.out,*.tbl,*.log}"), emit: report
-        tuple val(meta), path("*"), emit: repeatmasker
-
-    script:
-
-    args = ""
-    if(opts.args) {
-        ext_args = opts.args
-        args += ext_args.trim()
-    }
-
-    // Optional arguments included by default here:
-    //     -a      - write alignments to .align output file
-    //     -html   - write optional HTML output file
-    //     -gff    - write optional GFF output file
-    //     -xsmall - soft-masking
+    // Reminder: you can use a custom library with RepeatMasker by passing it
+    // to the repeatmasker process as a meta/fasta channel.
     repeatmasker_command = "RepeatMasker $args -xsmall -a -html -gff -engine ${opts.engine} -pa ${opts.pa} -cutoff ${opts.cutoff} -lib ${lib_fasta} -dir ${query_fasta.simpleName}_masked ${query_fasta} > repeatmasker.log"
 
     if (params.verbose){

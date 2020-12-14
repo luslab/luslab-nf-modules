@@ -18,8 +18,8 @@ params.modules["repeatmodeler_model"].args = "-LTRStruct"
 // RepeatMasker optional arguments
 // Search speeds: -s (slow) -q (quick) -qq (rush job)
 params.modules["repeatmasker"].args = "-qq -cutoff 200 -nolow"
-// You can use a custom library with RepeatMasker by passing
-// it to the repeatmasker process as a meta/fasta channel.
+// Reminder: you can use a custom library with RepeatMasker by passing it
+// to the repeatmasker process as a meta/fasta channel.
 
 /*------------------------------------------------------------------------------------*/
 /* Module inclusions
@@ -57,7 +57,19 @@ workflow {
     repeatmasker(params.modules['repeatmasker'], ch_fasta, repeatmodeler_model.out.fasta)
 
     // Collect file names and view output
-    //repeatmodeler_database.out.repeatmodeler_db | view
+    repeatmodeler_database.out.repeatmodeler_db | view
+    repeatmodeler_model.out.fasta | view
+    repeatmodeler_model.out.stockholm | view
+    repeatmodeler_model.out.repeatmodeler | view
+    repeatclassifier.out.report | view
+    repeatmasker.out.report | view
+    repeatmasker.out.repeatmasker | view
 
-    //assert_channel_count(repeatmodeler_database.out.repeatmodeler_db, "repeatmodeler_db", 1)
+    assert_channel_count(repeatmodeler_database.out.repeatmodeler_db, "repeatmodeler_db", 1)
+    assert_channel_count(repeatmodeler_model.out.fasta, "repeatmodeler_model consensus", 1)
+    assert_channel_count(repeatmodeler_model.out.stockholm, "repeatmodeler_model families stockholm", 1)
+    assert_channel_count(repeatmodeler_model.out.repeatmodeler, "repeatmodeler_model everything else", 1)
+    assert_channel_count(repeatclassifier.out.report, "repeatclassifier report", 1)
+    assert_channel_count(repeatmasker.out.report, "repeatmasker report", 1)
+    assert_channel_count(repeatmasker.out.repeatmasker, "repeatmasker everything else", 1)
 }
