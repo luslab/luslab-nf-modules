@@ -6,7 +6,7 @@ nextflow.enable.dsl=2
 // Process definition 
 process peka {
     label "min_cores"
-    label "min_mem"
+    label "low_mem"
     label "regular_queue"
 
     tag "${sample_id}"

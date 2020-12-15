@@ -5,7 +5,7 @@ nextflow.enable.dsl=2
 
 // Process definition
 process blast_makeblastdb {
-    label "low_cores"
+    label "min_cores"
     label "low_mem"
     label "regular_queue"
 
@@ -273,8 +273,8 @@ process blast_tblastx {
 }
 
 process blast_asn_to_tab {
-    label "low_cores"
-    label "low_mem"
+    label "min_cores"
+    label "min_mem"
     label "regular_queue"
 
     tag "${meta.sample_id}"
@@ -317,8 +317,8 @@ process blast_asn_to_tab {
 }
 
 process blast_windowmasker {
-    label "low_cores"
-    label "low_mem"
+    label "min_cores"
+    label "min_mem"
     label "regular_queue"
 
     tag "${meta.sample_id}"

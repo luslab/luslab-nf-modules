@@ -6,7 +6,7 @@ nextflow.enable.dsl=2
 // Process definition
 process umitools_dedup {
     label "low_cores"
-    label "high_mem"
+    label "avg_mem"
     label "regular_queue"
 
     tag "${meta.sample_id}"
