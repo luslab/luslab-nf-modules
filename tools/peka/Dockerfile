@@ -7,7 +7,7 @@ COPY VERSION .
 # Install apt packages
 RUN apt-get update \
  && apt-get install -y --no-install-recommends \
- apt-utils=1.4.10 \
+ apt-utils=1.4.11  \
  build-essential=12.3 \
  zlib1g-dev=1:1.2.8.dfsg-5 \
  && apt-get clean \
