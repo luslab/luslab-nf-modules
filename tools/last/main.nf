@@ -3,6 +3,10 @@
 nextflow.enable.dsl=2
 
 process last_db {
+    label "max_cores"
+    label "high_mem"
+    label "regular_queue"
+
     tag "${meta.sample_id}"
 
     publishDir "${params.outdir}/${opts.publish_dir}",
@@ -43,6 +47,10 @@ process last_db {
 }
 
 process last_train {
+    label "max_cores"
+    label "high_mem"
+    label "regular_queue"
+
     tag "${meta.sample_id}"
 
     publishDir "${params.outdir}/${opts.publish_dir}",
@@ -85,6 +93,10 @@ process last_train {
 }
 
 process last_align {
+    label "max_cores"
+    label "high_mem"
+    label "regular_queue"
+
     tag "${meta.sample_id}"
 
     publishDir "${params.outdir}/${opts.publish_dir}",
@@ -128,6 +140,10 @@ process last_align {
 }
 
 process last_filter_maf {
+    label "min_cores"
+    label "low_mem"
+    label "regular_queue"
+
     tag "${meta.sample_id}"
 
     publishDir "${params.outdir}/${opts.publish_dir}",
@@ -172,6 +188,10 @@ process last_filter_maf {
 }
 
 process last_convert_maf_to_sam {
+    label "min_cores"
+    label "low_mem"
+    label "regular_queue"
+
     tag "${meta.sample_id}"
 
     publishDir "${params.outdir}/${opts.publish_dir}",
@@ -212,6 +232,10 @@ process last_convert_maf_to_sam {
 }
 
 process last_dotplot {
+    label "min_cores"
+    label "low_mem"
+    label "regular_queue"
+
     tag "${meta.sample_id}"
 
     publishDir "${params.outdir}/${opts.publish_dir}",

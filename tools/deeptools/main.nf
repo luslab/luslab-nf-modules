@@ -3,6 +3,10 @@
 nextflow.enable.dsl=2
 
 process deeptools_bam_pe_fragment_size {
+    label "min_cores"
+    label "min_memory"
+    label "regular_queue"
+
     tag "${meta.sample_id}"
 
     publishDir "${params.outdir}/${opts.publish_dir}",

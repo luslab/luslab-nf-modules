@@ -5,6 +5,10 @@ nextflow.enable.dsl = 2
 
 // Process definition
 process tantan {
+    label "min_cores"
+    label "low_mem"
+    label "regular_queue"
+
     tag "${meta.sample_id}"
 
     publishDir "${params.outdir}/${opts.publish_dir}",
@@ -34,6 +38,10 @@ process tantan {
 }
 
 process tantan_to_GFF3 {
+    label "min_cores"
+    label "min_mem"
+    label "regular_queue"
+
     tag "${meta.sample_id}"
     
     publishDir "${params.outdir}/${opts.publish_dir}",

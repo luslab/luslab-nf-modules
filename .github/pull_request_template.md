@@ -8,6 +8,7 @@ Please check you have done the following:
 
 - [ ] Used snake_case rather than camelCase
 - [ ] Followed the output channel naming convention (e.g. `bam` for BAM files, `bed` for BED files)
+- [ ] Set the resource label for a new process
 
 ## Continuous integration
 

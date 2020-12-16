@@ -5,6 +5,10 @@ nextflow.enable.dsl=2
 
 // Process definition
 process cdhit_prot {
+    label "high_cores"
+    label "avg_mem"
+    label "regular_queue"
+
     tag "${meta.sample_id}"
 
     publishDir "${params.outdir}/${opts.publish_dir}",
@@ -45,6 +49,10 @@ process cdhit_prot {
 }
 
 process cdhit_nucl {
+    label "high_cores"
+    label "avg_mem"
+    label "regular_queue"
+
     tag "${meta.sample_id}"
 
     publishDir "${params.outdir}/${opts.publish_dir}",

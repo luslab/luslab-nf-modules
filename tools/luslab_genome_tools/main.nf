@@ -5,6 +5,10 @@ nextflow.enable.dsl=2
 
 // Converts region in the format - "chrX:15560138-15602945 to a bed file for downstream use"
 process region2bed {
+    label "min_cores"
+    label "min_mem"
+    label "regular_queue"
+
     tag "${region}"
 
     input:

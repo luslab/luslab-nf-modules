@@ -5,6 +5,9 @@ nextflow.preview.dsl=2
 
 // Log
 log.info ("Starting tests for guppy...")
+log.info ("--------")
+log.info ("params.num_gpus = " + params.num_gpus)
+log.info ("--------")
 
 /*------------------------------------------------------------------------------------*/
 /* Define params

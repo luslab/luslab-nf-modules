@@ -5,6 +5,10 @@ nextflow.enable.dsl=2
 
 // Random subsample of FASTQ file
 process seqtk_subsample {
+    label "min_cores"
+    label "min_mem"
+    label "regular_queue"
+
     tag "${meta.sample_id}"
 
     publishDir "${params.outdir}/${opts.publish_dir}",
@@ -69,6 +73,10 @@ process seqtk_subsample {
 
 // Subset FASTA or FASTQ file with bed
 process seqtk_subseq {
+    label "min_cores"
+    label "min_mem"
+    label "regular_queue"
+
     tag "${input}"
 
     publishDir "${params.outdir}/${opts.publish_dir}",
