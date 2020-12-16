@@ -5,7 +5,7 @@ nextflow.enable.dsl=2
 
 // Process definition
 process mafft {
-    label "max_cores"
+    label "avg_cores"
     label "high_mem"
     label "regular_queue"
 
