@@ -9,6 +9,10 @@ nextflow.enable.dsl=2
 
 // Process definition
 process repeatmodeler_database {
+    label "min_cores"
+    label "min_mem"
+    label "regular_queue"
+
     tag "${meta.sample_id}"
 
     publishDir "${params.outdir}/${opts.publish_dir}",
@@ -49,6 +53,10 @@ process repeatmodeler_database {
 }
 
 process repeatmodeler_model {
+    label "avg_cores"
+    label "avg_mem"
+    label "regular_queue"
+
     tag "${meta.sample_id}"
 
     publishDir "${params.outdir}/${opts.publish_dir}",
@@ -92,6 +100,10 @@ process repeatmodeler_model {
 }
 
 process repeatclassifier {
+    label "min_cores"
+    label "min_mem"
+    label "regular_queue"
+
     tag "${meta.sample_id}"
 
     publishDir "${params.outdir}/${opts.publish_dir}",
@@ -133,6 +145,10 @@ process repeatclassifier {
 }
 
 process repeatmasker {
+    label "avg_cores"
+    label "avg_mem"
+    label "regular_queue"
+
     tag "${meta.sample_id}"
 
     publishDir "${params.outdir}/${opts.publish_dir}",
