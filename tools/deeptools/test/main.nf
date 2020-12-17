@@ -55,11 +55,14 @@ workflow {
     deeptools_bam_pe_fragment_size.out.report_meta | view
     deeptools_bam_pe_fragment_size.out.report_no_meta | view
     deeptools_bam_pe_fragment_size.out.fragment_stats_meta | view
+    deeptools_bam_pe_fragment_size.out.fragment_no_meta | view
 
     // Check count
     assert_channel_count( deeptools_bam_pe_fragment_size.out.fragment_size_summary, "fragment_size_summary", 2 )
     assert_channel_count( deeptools_bam_pe_fragment_size.out.report_meta, "report", 2 )
     assert_channel_count( deeptools_bam_pe_fragment_size.out.report_no_meta, "report_no_meta", 2 )
     assert_channel_count( deeptools_bam_pe_fragment_size.out.fragment_stats_meta, "fragment_stats_meta", 2 )
+    assert_channel_count( deeptools_bam_pe_fragment_size.out.fragment_no_meta, "fragment_no_meta", 2 )
+
 }
 

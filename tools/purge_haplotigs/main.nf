@@ -5,6 +5,10 @@ nextflow.enable.dsl=2
 
 // Process definition
 process purge_haplotigs_hist {
+    label "low_cores"
+    label "low_mem"
+    label "regular_queue"
+
     tag "${meta.sample_id}"
 
     publishDir "${params.outdir}/${opts.publish_dir}",
@@ -39,6 +43,10 @@ process purge_haplotigs_hist {
 }
 
 process purge_haplotigs_minima {
+    label "min_cores"
+    label "min_mem"
+    label "regular_queue"
+
     tag "${meta.sample_id}"
 
     publishDir "${params.outdir}/${opts.publish_dir}",
@@ -73,6 +81,10 @@ process purge_haplotigs_minima {
 }
 
 process purge_haplotigs_contigcov {
+    label "min_cores"
+    label "low_mem"
+    label "regular_queue"
+
     tag "${meta.sample_id}"
 
     publishDir "${params.outdir}/${opts.publish_dir}",
@@ -112,6 +124,10 @@ process purge_haplotigs_contigcov {
 }
 
 process purge_haplotigs_purge {
+    label "low_cores"
+    label "low_mem"
+    label "regular_queue"
+
     tag "${meta.sample_id}"
 
     publishDir "${params.outdir}/${opts.publish_dir}",

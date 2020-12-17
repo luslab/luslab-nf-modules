@@ -5,6 +5,10 @@ nextflow.enable.dsl=2
 
 // Generate genome index
 process star_genome_generate {
+    label "high_cores"
+    label "high_mem"
+    label "regular_queue"
+
     tag "${fasta}"
 
     publishDir "${params.outdir}/${opts.publish_dir}",
@@ -76,6 +80,10 @@ process star_genome_generate {
 
 // Map reads
 process star_align_reads {
+    label "high_cores"
+    label "high_mem"
+    label "regular_queue"
+
     tag "${meta.sample_id}"
 
     publishDir "${params.outdir}/${opts.publish_dir}",

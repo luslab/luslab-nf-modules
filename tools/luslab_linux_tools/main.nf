@@ -5,6 +5,10 @@ nextflow.enable.dsl=2
 
 // Decompresses file to output (assumes running base system on linux)"
 process decompress {
+    label "min_cores"
+    label "min_mem"
+    label "regular_queue"
+
     tag "${input_file}"
 
     container 'ubuntu:16.04'
@@ -25,6 +29,10 @@ process decompress {
 
 // Compresses file to output (assumes running base system on linux)"
 process compress {
+    label "min_cores"
+    label "min_mem"
+    label "regular_queue"
+
     container 'ubuntu:16.04'
 
     input:
@@ -43,6 +51,10 @@ process compress {
 
 // Generic awk process
 process awk {
+    label "min_cores"
+    label "min_mem"
+    label "regular_queue"
+
     tag "${input_file}"
 
     publishDir "${params.outdir}/${opts.publish_dir}",
@@ -83,6 +95,10 @@ process awk {
 }
 
 process awk_file {
+    label "min_cores"
+    label "min_mem"
+    label "regular_queue"
+
     tag "${input_file}"
 
     publishDir "${params.outdir}/${opts.publish_dir}",
@@ -126,35 +142,43 @@ process awk_file {
 }
 
 process cut {
-      publishDir "${params.outdir}/${opts.publish_dir}",
-        mode: "copy", 
-        overwrite: true,
-        saveAs: { filename ->
-                      if (opts.publish_results == "none") null
-                      else filename }
+    label "min_cores"
+    label "min_mem"
+    label "regular_queue"
 
-      container 'ubuntu:16.04'
+    publishDir "${params.outdir}/${opts.publish_dir}",
+      mode: "copy", 
+      overwrite: true,
+      saveAs: { filename ->
+                    if (opts.publish_results == "none") null
+                    else filename }
 
-      input:
-      val opts
-      tuple val(meta), path(input_file)
+    container 'ubuntu:16.04'
 
-      output:
-      tuple val(meta), path("${outfile_name}"), emit: file
-      path "${outfile_name}", emit: file_no_meta
+    input:
+    val opts
+    tuple val(meta), path(input_file)
 
-      script:
-        outfile_name = "cut_${input_file}"
-        if(opts.outfile_name) {
-          outfile_name = opts.outfile_name
-        }
+    output:
+    tuple val(meta), path("${outfile_name}"), emit: file
+    path "${outfile_name}", emit: file_no_meta
 
-      """
-      cut ${opts.args} $input_file > ${outfile_name}
-      """
+    script:
+      outfile_name = "cut_${input_file}"
+      if(opts.outfile_name) {
+        outfile_name = opts.outfile_name
+      }
+
+    """
+    cut ${opts.args} $input_file > ${outfile_name}
+    """
 }
 
 process sort {
+    label "low_cores"
+    label "min_mem"
+    label "regular_queue"
+
     publishDir "${params.outdir}/${opts.publish_dir}",
       mode: "copy", 
       overwrite: true,

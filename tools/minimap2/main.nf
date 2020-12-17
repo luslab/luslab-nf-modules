@@ -5,6 +5,10 @@ nextflow.enable.dsl=2
 
 // Process definition
 process minimap2_index {
+    label "high_cores"
+    label "high_mem"
+    label "regular_queue"
+
     tag "${meta.sample_id}"
 
     publishDir "${params.outdir}/${opts.publish_dir}",
@@ -46,6 +50,10 @@ process minimap2_index {
 }
 
 process minimap2_paf {
+    label "high_cores"
+    label "high_mem"
+    label "regular_queue"
+
     tag "${meta.sample_id}"
 
     publishDir "${params.outdir}/${opts.publish_dir}",
@@ -90,6 +98,10 @@ process minimap2_paf {
 
 
 process minimap2_sam {
+    label "high_cores"
+    label "high_mem"
+    label "regular_queue"
+
     tag "${meta.sample_id}"
 
     publishDir "${params.outdir}/${opts.publish_dir}",

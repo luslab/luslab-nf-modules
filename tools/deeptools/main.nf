@@ -3,6 +3,10 @@
 nextflow.enable.dsl=2
 
 process deeptools_bam_pe_fragment_size {
+    label "min_cores"
+    label "min_memory"
+    label "regular_queue"
+
     tag "${meta.sample_id}"
 
     publishDir "${params.outdir}/${opts.publish_dir}",
@@ -24,6 +28,7 @@ process deeptools_bam_pe_fragment_size {
         tuple val(meta), path("${prefix}_summary.csv"), emit: fragment_stats_meta
         tuple val(meta), path("${prefix}_log.txt"), emit: report_meta
         path "${prefix}_log.txt", emit: report_no_meta
+        path "${prefix}_raw.csv", emit: fragment_no_meta
 
     script:
         args = ""

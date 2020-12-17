@@ -5,6 +5,10 @@ nextflow.enable.dsl=2
 
 // Samtools index
 process samtools_index {
+    label "low_cores"
+    label "low_mem"
+    label "regular_queue"
+
     tag "${meta.sample_id}"
 
     publishDir "${params.outdir}/${opts.publish_dir}",
@@ -46,6 +50,10 @@ process samtools_index {
 
 // Samtools view - only works for bam files - requires bam and bai
 process samtools_view {
+    label "low_cores"
+    label "low_mem"
+    label "regular_queue"
+
     tag "${meta.sample_id}"
 
     publishDir "${params.outdir}/${opts.publish_dir}",
@@ -95,6 +103,10 @@ process samtools_view {
 
 // Samtools faidx indexes fasta files
 process samtools_faidx {
+    label "min_cores"
+    label "low_mem"
+    label "regular_queue"
+
     tag "${fasta}"
 
     publishDir "${params.outdir}/${opts.publish_dir}",
@@ -136,7 +148,11 @@ process samtools_faidx {
 }
 
 
-process samtools_sort {
+process samtools_sort {    
+    label "low_cores"
+    label "low_mem"
+    label "regular_queue"
+
     tag "${meta.sample_id}"
     
     publishDir "${params.outdir}/${opts.publish_dir}",
@@ -164,7 +180,7 @@ process samtools_sort {
 
         prefix = opts.suffix ? "${meta.sample_id}${opts.suffix}" : "${meta.sample_id}"
 
-        sort_command = "samtools sort ${args} -o ${prefix} $reads"
+        sort_command = "samtools sort ${args} -@ ${task.cpus}  -o ${prefix} $reads"
         if (params.verbose){
             println ("[MODULE] samtools/sort command: " + sort_command)
         }

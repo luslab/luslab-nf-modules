@@ -3,6 +3,10 @@
 nextflow.enable.dsl=2
 
 process bedtools_intersect_regions {
+    label "min_cores"
+    label "low_memory"
+    label "regular_queue"
+
     tag "${meta.sample_id}" 
 
     publishDir "${params.outdir}/${opts.publish_dir}",
@@ -44,6 +48,10 @@ process bedtools_intersect_regions {
 
 
 process bedtools_intersect {
+    label "min_cores"
+    label "low_memory"
+    label "regular_queue"
+
     tag "${meta.sample_id}"
 
     publishDir "${params.outdir}/${opts.publish_dir}",
@@ -85,6 +93,10 @@ process bedtools_intersect {
 
 //Process definition
 process bedtools_subtract {
+    label "min_cores"
+    label "low_memory"
+    label "regular_queue"
+
     tag "${meta.sample_id}"
 
     publishDir "${params.outdir}/${opts.publish_dir}",
@@ -126,6 +138,10 @@ process bedtools_subtract {
 
 //Process definition
 process bedtools_bamtobed {
+    label "min_cores"
+    label "low_memory"
+    label "regular_queue"
+
     publishDir "${params.outdir}/${opts.publish_dir}",
         mode: "copy", 
         overwrite: true,
@@ -165,6 +181,10 @@ process bedtools_bamtobed {
 
 //Process definition
 process bedtools_genomecov {
+    label "min_cores"
+    label "low_memory"
+    label "regular_queue"
+
     publishDir "${params.outdir}/${opts.publish_dir}",
         mode: "copy", 
         overwrite: true,
@@ -204,6 +224,10 @@ process bedtools_genomecov {
 }
 
 process bedtools_genomecov_scale {
+    label "min_cores"
+    label "low_memory"
+    label "regular_queue"
+
     publishDir "${params.outdir}/${opts.publish_dir}",
         mode: "copy", 
         overwrite: true,
@@ -248,6 +272,10 @@ process bedtools_genomecov_scale {
 }
 
 process bedtools_genomecov_bam {
+    label "min_cores"
+    label "low_memory"
+    label "regular_queue"
+
     publishDir "${params.outdir}/${opts.publish_dir}",
         mode: "copy", 
         overwrite: true,
@@ -286,6 +314,10 @@ process bedtools_genomecov_bam {
 }
 
 process bedtools_genomecov_scale_bam {
+    label "min_cores"
+    label "low_memory"
+    label "regular_queue"
+
     publishDir "${params.outdir}/${opts.publish_dir}",
         mode: "copy", 
         overwrite: true,

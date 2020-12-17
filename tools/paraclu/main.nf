@@ -5,6 +5,10 @@ nextflow.enable.dsl=2
 
 // Process definition
 process paraclu {
+    label "low_cores"
+    label "low_mem"
+    label "regular_queue"
+
     tag "${sample_id}"
 
     publishDir "${params.outdir}/paraclu",

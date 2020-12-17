@@ -5,6 +5,10 @@ nextflow.enable.dsl=2
 
 // Process definition
 process seacr {
+    label "min_cores"
+    label "low_mem"
+    label "regular_queue"
+
     publishDir "${params.outdir}/seacr",
         mode: "copy",
         overwrite: true,

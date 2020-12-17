@@ -4,6 +4,10 @@
 nextflow.enable.dsl=2
 
 process multiqc {
+    label "min_cores"
+    label "min_mem"
+    label "regular_queue"
+
     publishDir "${params.outdir}/${opts.publish_dir}",
         mode: "copy", 
         overwrite: true,

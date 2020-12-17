@@ -5,12 +5,16 @@ nextflow.enable.dsl=2
 
 // Process definition 
 process peka {
+    label "min_cores"
+    label "low_mem"
+    label "regular_queue"
+
     tag "${sample_id}"
 
     publishDir "${params.outdir}/peka",
         mode: "copy", overwrite: true
 
-    container 'luslab/nf-modules-peka:base-1.0.0'
+    container 'luslab/nf-modules-peka:base-1.0.1'
 
     input:
         tuple val(sample_id), path(peaks), path(xls), path(genome), path(genome_index), path(regions)

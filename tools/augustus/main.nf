@@ -6,6 +6,10 @@ nextflow.enable.dsl=2
 // Process definition
 // For running AUGUSTUS with one of its included, pre-trained models.
 process augustus_run_included {
+    label "max_cores"
+    label "avg_mem"
+    label "regular_queue"
+
     tag "${meta.sample_id}"
 
     publishDir "${params.outdir}/${opts.publish_dir}",
@@ -46,6 +50,10 @@ process augustus_run_included {
 
 // For running AUGUSTUS with a user-supplied, pre-trained model.
 process augustus_run_custom {
+    label "max_cores"
+    label "avg_mem"
+    label "regular_queue"
+
     tag "${meta.sample_id}"
 
     publishDir "${params.outdir}/${opts.publish_dir}",

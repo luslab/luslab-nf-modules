@@ -4,6 +4,10 @@
 nextflow.enable.dsl=2
 
 process hmmer_hmmscan {
+    label "low_cores"
+    label "low_mem"
+    label "regular_queue"
+
     tag "${meta.sample_id}"
 
     publishDir "${params.outdir}/${opts.publish_dir}",
@@ -45,6 +49,10 @@ process hmmer_hmmscan {
 }
 
 process hmmer_hmmsearch {
+    label "low_cores"
+    label "low_mem"
+    label "regular_queue"
+
     tag "${meta.sample_id}"
 
     publishDir "${params.outdir}/${opts.publish_dir}",

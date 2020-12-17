@@ -5,6 +5,10 @@ nextflow.enable.dsl = 2
 
 // Process definition
 process busco_genome {
+    label "max_cores"
+    label "high_mem"
+    label "regular_queue"
+
     tag "${meta.sample_id}"
 
     publishDir "${params.outdir}/${opts.publish_dir}",
