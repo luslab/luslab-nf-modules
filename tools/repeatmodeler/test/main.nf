@@ -63,6 +63,17 @@ workflow {
     repeatmodeler_model.out.repeatmodeler | view
     repeatclassifier.out.report | view
     repeatmasker.out.report | view
+    repeatmasker.out.fasta | view
+    repeatmasker.out.fasta | view
+    repeatmasker.out.fasta | view
+    repeatmasker.out.fasta | view
+    repeatmasker.out.fasta | view
+    repeatmasker.out.fasta | view
+    repeatmasker.out.fasta | view
+    repeatmasker.out.fasta | view
+    repeatmasker.out.fasta | view
+    repeatmasker.out.fasta | view
+    repeatmasker.out.fasta | view
     repeatmasker.out.repeatmasker | view
 
     assert_channel_count(repeatmodeler_database.out.repeatmodeler_db, "repeatmodeler_db", 1)
@@ -71,5 +82,6 @@ workflow {
     assert_channel_count(repeatmodeler_model.out.repeatmodeler, "repeatmodeler_model everything else", 1)
     assert_channel_count(repeatclassifier.out.report, "repeatclassifier report", 1)
     assert_channel_count(repeatmasker.out.report, "repeatmasker report", 1)
+    assert_channel_count(repeatmasker.out.fasta, "repeatmasker masked genome", 1)
     assert_channel_count(repeatmasker.out.repeatmasker, "repeatmasker everything else", 1)
 }

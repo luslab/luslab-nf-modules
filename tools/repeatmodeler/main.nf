@@ -168,6 +168,7 @@ process repeatmasker {
 
     output:
         tuple val(meta), path("{*.out,*.tbl,*.log}"), emit: report
+        tuple val(meta), path("*/*.masked"), emit: fasta
         tuple val(meta), path("*"), emit: repeatmasker
 
     script:
