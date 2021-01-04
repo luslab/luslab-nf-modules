@@ -23,7 +23,7 @@ process pilon {
     input:
         val opts
         tuple val(meta), path(fasta)
-        tuple val(meta), path(bam)
+        tuple val(meta), path(bam), path(bai)
 
     output:
         tuple val(meta), path("*.pilon"), emit: pilon

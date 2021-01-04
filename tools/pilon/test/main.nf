@@ -29,7 +29,7 @@ test_fasta = [
 ]
 
 test_bam = [
-    [[sample_id:"test-sample"], "$baseDir/../../../test_data/lambda1000a/lambda_SRR5042715_downsampled.bam"],
+    [[sample_id:"test-sample"], "$baseDir/../../../test_data/lambda1000a/lambda_SRR5042715_downsampled.bam", "$baseDir/../../../test_data/lambda1000a/lambda_SRR5042715_downsampled.bam.bai"],
 ]
 
 Channel
@@ -39,7 +39,7 @@ Channel
 
 Channel
     .from(test_bam)
-    .map { row -> [ row[0], file(row[1], checkIfExists: true) ] }
+    .map { row -> [ row[0], file(row[1], checkIfExists: true), file(row[2], checkIfExists: true) ] }
     .set {ch_bam}
 
 /*------------------------------------------------------------------------------------*/
