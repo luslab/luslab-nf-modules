@@ -52,6 +52,8 @@ workflow {
 
     // Collect file names and view output
     pilon.out.pilon | view
+    pilon.out.fasta | view
 
     assert_channel_count( pilon.out.pilon, "pilon", 1)
+    assert_channel_count( pilon.out.fasta, "polished fasta", 1)
 }

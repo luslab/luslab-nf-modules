@@ -27,6 +27,7 @@ process pilon {
 
     output:
         tuple val(meta), path("*.pilon"), emit: pilon
+        tuple val(meta), path("*.pilon/*.fasta"), emit: fasta
 
     script:
 
