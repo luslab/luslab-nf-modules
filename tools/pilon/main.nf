@@ -36,7 +36,7 @@ process pilon {
         args += ext_args.trim()
     }
 
-    pilon_command = "pilon $args --threads ${task.cpus} --fix ${opts.fix} --vcf --tracks --genome ${fasta} --bam ${bam} --outdir ${fasta.simpleName}.pilon"
+    pilon_command = "pilon $args --threads ${task.cpus} --fix ${opts.fix} --vcf --tracks --genome ${fasta} --bam ${bam} --output ${fasta.simpleName} --outdir ${fasta.simpleName}.pilon"
 
     if (params.verbose){
         println ("[MODULE] pilon command: " + pilon_command)
