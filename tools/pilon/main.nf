@@ -19,6 +19,7 @@ process pilon {
                       else filename }
 
     container "biocontainers/pilon:v1.23dfsg-1-deb_cv1"
+    containerOptions '-u \$(id -u):\$(id -g) -v "$PWD":/data'
 
     input:
         val opts
@@ -26,8 +27,9 @@ process pilon {
         tuple val(meta), path(bam), path(bai)
 
     output:
-        tuple val(meta), path("*.pilon"), emit: pilon
-        tuple val(meta), path("*.pilon/*.fasta"), emit: fasta
+        tuple val(meta), path("*.fasta"), emit: fasta
+        tuple val(meta), path("*.wig"), emit: wig
+        tuple val(meta), path("*.vcf"), emit: vcf
 
     script:
 
@@ -37,7 +39,7 @@ process pilon {
         args += ext_args.trim()
     }
 
-    pilon_command = "pilon $args --threads ${task.cpus} --fix ${opts.fix} --vcf --tracks --genome ${fasta} --bam ${bam} --output ${fasta.simpleName} --outdir ${fasta.simpleName}.pilon"
+    pilon_command = "pilon $args --threads ${task.cpus} --fix ${opts.fix} --vcf --tracks --genome ${fasta} --bam ${bam} --output ${fasta.simpleName}.pilon"
 
     if (params.verbose){
         println ("[MODULE] pilon command: " + pilon_command)
