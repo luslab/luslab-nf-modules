@@ -30,7 +30,7 @@ process repeatmodeler_database {
         tuple val(meta), path(fasta)
 
     output:
-        tuple val(meta), path("*{nhr,nin,nnd,nni,nog,nsq,translation}"), emit: repeatmodeler_db
+        tuple val(meta), path("*{nhr,nin,nnd,nni,nog,nsq,translation}"), emit: db
 
     script:
 
@@ -72,7 +72,7 @@ process repeatmodeler_model {
     input:
         val opts
         tuple val(meta), path(fasta)
-        tuple val(meta), path(repeatmodeler_db)
+        tuple val(meta), path(db)
 
     output:
         tuple val(meta), path("*/consensi.fa"), emit: fasta

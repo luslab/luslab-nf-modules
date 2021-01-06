@@ -52,12 +52,12 @@ Channel
 workflow {
     // Run minionqc on the test set
     repeatmodeler_database(params.modules['repeatmodeler_database'], ch_fasta)
-    repeatmodeler_model(params.modules['repeatmodeler_model'], ch_fasta, repeatmodeler_database.out.repeatmodeler_db)
+    repeatmodeler_model(params.modules['repeatmodeler_model'], ch_fasta, repeatmodeler_database.out.db)
     repeatclassifier(params.modules['repeatclassifier'], repeatmodeler_model.out.fasta, repeatmodeler_model.out.stockholm)
     repeatmasker(params.modules['repeatmasker'], ch_fasta, repeatmodeler_model.out.fasta)
 
     // Collect file names and view output
-    repeatmodeler_database.out.repeatmodeler_db | view
+    repeatmodeler_database.out.db | view
     repeatmodeler_model.out.fasta | view
     repeatmodeler_model.out.stockholm | view
     repeatmodeler_model.out.repeatmodeler | view
@@ -76,7 +76,7 @@ workflow {
     repeatmasker.out.fasta | view
     repeatmasker.out.repeatmasker | view
 
-    assert_channel_count(repeatmodeler_database.out.repeatmodeler_db, "repeatmodeler_db", 1)
+    assert_channel_count(repeatmodeler_database.out.db, "db", 1)
     assert_channel_count(repeatmodeler_model.out.fasta, "repeatmodeler_model consensus", 1)
     assert_channel_count(repeatmodeler_model.out.stockholm, "repeatmodeler_model families stockholm", 1)
     assert_channel_count(repeatmodeler_model.out.repeatmodeler, "repeatmodeler_model everything else", 1)
