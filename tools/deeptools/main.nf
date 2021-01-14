@@ -39,7 +39,7 @@ process deeptools_bam_pe_fragment_size {
 
         prefix = opts.suffix ? "${meta.sample_id}${opts.suffix}" : "${meta.sample_id}"
 
-        command = "bamPEFragmentSize -b ${bam} --outRawFragmentLengths ${prefix}_raw.csv --table ${prefix}_summary.csv -bl ${blacklist} ${args} > ${prefix}_log.txt"
+        command = "bamPEFragmentSize -b ${bam} --outRawFragmentLengths ${prefix}_raw.csv --table ${prefix}_summary.csv -bl ${blacklist} -p ${task.cpus} ${args} > ${prefix}_log.txt"
 
     //SHELL
     """
