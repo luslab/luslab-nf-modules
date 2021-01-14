@@ -44,7 +44,6 @@ Channel
   
 workflow {
     bowtie2_build( params.modules['bowtie2_build'], ch_fasta )
-
     bowtie2_align( params.modules['bowtie2_align'], ch_fastq_paired_end, bowtie2_build.out.bowtieIndex.collect() )
 
     bowtie2_align.out.bam | view
