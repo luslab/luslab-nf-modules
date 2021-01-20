@@ -35,7 +35,7 @@ process busco_genome {
         args += ext_args.trim()
     }
 
-    busco_command = "busco $args -m genome -c ${task.cpus} -i $genome -o busco"
+    busco_command = "AUGUSTUS_CONFIG_PATH=augustus_config busco $args -m genome -c ${task.cpus} -i $genome -o busco"
 
     if (params.verbose){
         println ("[MODULE] busco command: " + busco_command)
@@ -43,6 +43,7 @@ process busco_genome {
 
 	//SHELL
     """
+    cp -a /augustus/config  augustus_config
     ${busco_command}
     """
 }
