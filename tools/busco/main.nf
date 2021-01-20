@@ -18,7 +18,7 @@ process busco_genome {
                       if (opts.publish_results == "none") null
                       else filename }
 
-    container "ezlabgva/busco:v4.1.2_cv1"
+    container "ezlabgva/busco:v4.1.4_cv1"
 
     input:
         val opts
