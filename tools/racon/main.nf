@@ -27,14 +27,14 @@ process racon {
         path(assembly_fasta)
 
     output:
-        tuple val(meta), path("racon.fasta"), emit: fasta
+        tuple val(meta), path("$opts.outfile_name"), emit: fasta
 
     script:
 	//Build the command line options
 	racon_command = "racon --threads ${task.cpus} \
 			$reads \
 			$overlap_paf \
-			$assembly_fasta > racon.fasta "
+			$assembly_fasta > $opts.outfile_name"
 
     //SHELL
     """
