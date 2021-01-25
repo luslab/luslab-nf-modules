@@ -19,6 +19,8 @@ params.verbose = true
 include {busco_genome} from "../main.nf"
 include {assert_channel_count} from "../../../workflows/test_flows/main.nf"
 
+params.modules["busco_genome"].args = "--auto-lineage-euk"
+
 /*------------------------------------------------------------------------------------*/
 /* Define input channels
 --------------------------------------------------------------------------------------*/

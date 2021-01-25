@@ -18,7 +18,7 @@ process racon {
                       if (opts.publish_results == "none") null
                       else filename }
 
-    container "quay.io/biocontainers/racon:1.4.12--he513fc3_0"
+    container "quay.io/biocontainers/racon:1.4.20--he513fc3_0"
 
     input:
         val opts
@@ -27,14 +27,14 @@ process racon {
         path(assembly_fasta)
 
     output:
-        tuple val(meta), path("racon.fasta"), emit: fasta
+        tuple val(meta), path("$opts.outfile_name"), emit: fasta
 
     script:
 	//Build the command line options
 	racon_command = "racon --threads ${task.cpus} \
 			$reads \
 			$overlap_paf \
-			$assembly_fasta > racon.fasta "
+			$assembly_fasta > $opts.outfile_name"
 
     //SHELL
     """
