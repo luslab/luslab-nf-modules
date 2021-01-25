@@ -58,7 +58,9 @@ process paraclu {
 
     df_out.to_csv(paraclu_input, sep='\t', header=None, index=None)
 
-    call(f'paraclu ${params.paraclu_min_value} "{paraclu_input}" | paraclu-cut.sh -l ${params.paraclu_max_cluster_length} -d ${params.paraclu_min_density_increase} > "{paraclu_output}"', shell=True)
+    exit_code = call(f'paraclu ${params.paraclu_min_value} "{paraclu_input}" | paraclu-cut.sh -l ${params.paraclu_max_cluster_length} -d ${params.paraclu_min_density_increase} > "{paraclu_output}"', shell=True)
+    if not exit_code == 0:
+      sys.exit('Paraclu error')
     df_in = pd.read_csv(paraclu_output,
                         names = ["sequence_name", "strand","start", "end", "number_of_positions",
                                 "sum_of_data_values", "min_density", "max_density"],
