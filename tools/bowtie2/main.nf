@@ -18,8 +18,8 @@ process bowtie2_align {
                       if (opts.publish_results == "none") null
                       else filename }
     
-    // bowtie2=2.4.1,samtools=1.9,pigz=2.3.4
-    container 'quay.io/biocontainers/mulled-v2-ac74a7f02cebcfcc07d8e8d1d750af9c83b4d45a:f480262c6feea34eb5a49c4fdfbb4986490fefbb-0'
+    // bowtie2=2.4.2,samtools=1.11,pigz=2.3.4
+    container 'quay.io/biocontainers/mulled-v2-ac74a7f02cebcfcc07d8e8d1d750af9c83b4d45a:577a697be67b5ae9b16f637fd723b8263a3898b3-0'
 
     input:
         val opts

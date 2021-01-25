@@ -14,7 +14,7 @@ jobs:
         nxf_ver: ['20.07.1','']
         tag: ['base']
         docker-name: ['Dockerfile']
-        module-name: ['htseq', 'velocyto', 'flye', 'homer', 'umi_tools', 'fastqc', 'cutadapt', 'bedtools', 'samtools', 'get_crosslinks','get_crosslinks_coverage', 'icount', 'minimap2', 'seqtk', 'paraclu', 'luslab_genome_tools', 'luslab_linux_tools', 'bowtie2', 'metadata', 'minionqc', 'tantan', 'hisat2', 'star', 'multiqc', 'macs2', 'racon', 'seacr', 'nanoplot', 'busco', 'last', 'blast', 'infernal', 'hmmer', 'cdhit', 'mafft','phyml','emboss','augustus','deeptools', 'purge_haplotigs', 'porechop']
+        module-name: ['htseq', 'velocyto', 'flye', 'homer', 'umi_tools', 'fastqc', 'cutadapt', 'bedtools', 'samtools', 'get_crosslinks','get_crosslinks_coverage', 'icount', 'minimap2', 'seqtk', 'paraclu', 'luslab_genome_tools', 'luslab_linux_tools', 'bowtie2', 'metadata', 'minionqc', 'tantan', 'hisat2', 'star', 'multiqc', 'macs2', 'racon', 'seacr', 'nanoplot', 'busco', 'last', 'blast', 'infernal', 'hmmer', 'cdhit', 'mafft', 'phyml', 'emboss', 'augustus', 'deeptools', 'purge_haplotigs', 'porechop', 'pilon', 'repeatmodeler']
         include:
           - nxf_ver: '20.07.1'
             tag: 'cpu'
