@@ -26,3 +26,4 @@ WORKDIR /home
 RUN mkdir bin && wget http://cbrc3.cbrc.jp/~martin/paraclu/paraclu-9.zip && unzip paraclu-9.zip
 WORKDIR /home/paraclu-9
 RUN make && cp paraclu /home/bin/paraclu && cp paraclu-cut.sh /home/bin/paraclu-cut.sh
+ENV PATH /home/bin/:$PATH
