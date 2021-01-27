@@ -40,9 +40,39 @@ Channel
     .map { row -> [ row[0], file(row[1], checkIfExists: true) ] }
     .set {ch_crosslinks}
 
+output_line_counts = [
+    Sample1: 7,
+    Sample2: 0,
+    Sample3: 0,
+    Sample4: 4,
+    Sample5: 0,
+    Sample6: 0
+]
+
 /*------------------------------------------------------------------------------------*/
 /* Run tests
 --------------------------------------------------------------------------------------*/
+
+process count_lines {
+    label "low_cores"
+    label "low_mem"
+    label "regular_queue"
+
+    tag "${sample_id}"
+
+    container 'ubuntu:16.04'
+
+    input:
+        tuple val(sample_id), path(peaks)
+
+    output:
+        tuple val(sample_id), stdout, emit: line_count
+
+    script:
+    """
+    echo -n "\$(gunzip -c $peaks | wc -l)"
+    """
+}
 
 workflow {
     // Run paraclu
@@ -50,4 +80,12 @@ workflow {
 
     // Collect file names and view output
     paraclu.out.peaks | view
+
+    count_lines( paraclu.out.peaks )
+
+    count_lines.out.subscribe {
+        if(output_line_counts[it[0]] != it[1].toInteger()) {
+            throw new Exception("Sample " + it[0] + " is expected to have " + output_line_counts[it[0]] + " lines, but has " + it[1])
+        }
+    }
 }
