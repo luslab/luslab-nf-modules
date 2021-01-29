@@ -5,8 +5,8 @@ nextflow.enable.dsl=2
 
 // Process definition
 process filtlong {
-    label "low_cores"
-    label "high_mem"
+    label "min_cores"
+    label "low_mem"
     label "regular_queue"
 
     tag "${meta.sample_id}"
