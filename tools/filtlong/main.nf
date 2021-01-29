@@ -18,7 +18,7 @@ process filtlong {
                       if (opts.publish_results == "none") null
                       else filename }
 
-    container "quay.io/biocontainers/filtlong:0.1.0--0"
+    container "quay.io/biocontainers/filtlong:0.2.0--he513fc3_3"
 
     input:
         val opts
