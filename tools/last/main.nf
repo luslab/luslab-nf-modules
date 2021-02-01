@@ -250,7 +250,7 @@ process last_dotplot {
         tuple val(meta), path(tab)
 
     output:
-        tuple val(meta), path("*.tiff"), emit: tiff
+        tuple val(meta), path("*.${opts.suffix}"), emit: tiff
 
     script:
         args = ""
@@ -259,9 +259,7 @@ process last_dotplot {
             args += ext_args.trim()
         }
 
-        prefix = opts.suffix ? "${meta.sample_id}${opts.suffix}" : "${meta.sample_id}"
-
-        last_command = "last-dotplot -x 2000 -y 2000 --sort1=1 --sort2=3 --strands2=1 --rot1=v --rot2=h ${tab} ${tab.simpleName}.tiff"
+        last_command = "last-dotplot -x 2000 -y 2000 --sort1=1 --sort2=3 --strands2=1 --rot1=v --rot2=h ${tab} ${tab.simpleName}.${opts.suffix}"
 
         if (params.verbose){
             println ("[MODULE] last_dotplot command: " + last_command)
