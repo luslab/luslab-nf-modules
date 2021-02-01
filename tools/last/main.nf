@@ -111,6 +111,7 @@ process last_align {
 
     output:
         tuple val(meta), path("*.maf"), emit: maf
+        tuple val(meta), path("*.tab"), emit: tab
 
     script:
         args = ""
@@ -119,21 +120,24 @@ process last_align {
             args += ext_args.trim()
         }
 
-        last_command = "lastal $args -P ${task.cpus} -p ${last_train_par} ${meta_db.sample_id} ${query_sequences} | last-split -m1 > ${meta_db.sample_id}-${meta.sample_id}.maf"
+        last_command = "lastal $args -P ${task.cpus} -p ${last_train_par} ${meta_db.sample_id} ${query_sequences} > ${meta_db.sample_id}-${meta.sample_id}.maf"
+        last_postmask_command = "last-postmask ${meta_db.sample_id}-${meta.sample_id}.maf | maf-convert -n tab > ${meta_db.sample_id}-${meta.sample_id}.tab"
 
         if (params.verbose){
             println ("[MODULE] last_align command: " + last_command)
+            println ("[MODULE] LAST postmask command: " + last_postmask_command)
         }
 
         //SHELL
         """
         ${last_command}
+        ${last_postmask_command}
         """
 }
 
 process last_filter_maf {
     label "min_cores"
-    label "low_mem"
+    label "avg_mem"
     label "regular_queue"
 
     tag "${meta.sample_id}"
@@ -162,7 +166,9 @@ process last_filter_maf {
             args += ext_args.trim()
         }
 
-        last_rerarrange_command = "maf-swap ${unfiltered_maf} | last-split -m1 | maf-swap > ${unfiltered_maf.simpleName}.filtered.maf"
+        prefix = opts.suffix ? "${meta.sample_id}${opts.suffix}" : "${meta.sample_id}"
+
+        last_rerarrange_command = "last-split ${unfiltered_maf} | maf-swap | last-split | maf-swap > ${unfiltered_maf.simpleName}.filtered.maf"
         last_postmask_command = "last-postmask ${unfiltered_maf.simpleName}.filtered.maf | maf-convert -n tab > ${unfiltered_maf.simpleName}.filtered.tab"
 
         if (params.verbose){
