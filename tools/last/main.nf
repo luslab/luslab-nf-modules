@@ -75,7 +75,7 @@ process last_train {
             args += ext_args.trim()
         }
 
-        last_command = "last-train $args -P ${task.cpus} ${meta_db.sample_id} ${query_sequences} > ${meta_db.sample_id}-${meta.sample_id}.par"
+        last_command = "last-train $args -P ${task.cpus} ${meta_db.sample_id} ${query_sequences} > ${meta_db.sample_id}__${meta.sample_id}.par"
 
         if (params.verbose){
             println ("[MODULE] last_train command: " + last_command)
@@ -120,8 +120,10 @@ process last_align {
             args += ext_args.trim()
         }
 
-        last_command = "lastal $args -P ${task.cpus} -p ${last_train_par} ${meta_db.sample_id} ${query_sequences} > ${meta_db.sample_id}-${meta.sample_id}.maf"
-        last_postmask_command = "last-postmask ${meta_db.sample_id}-${meta.sample_id}.maf | maf-convert -n tab > ${meta_db.sample_id}-${meta.sample_id}.tab"
+        prefix = "${meta_db.sample_id}__${meta.sample_id}"
+
+        last_command = "lastal $args -P ${task.cpus} -p ${last_train_par} ${meta_db.sample_id} ${query_sequences} > ${prefix}.maf"
+        last_postmask_command = "last-postmask ${prefix}.maf | maf-convert -n tab > ${prefix}.tab"
 
         if (params.verbose){
             println ("[MODULE] last_align command: " + last_command)
