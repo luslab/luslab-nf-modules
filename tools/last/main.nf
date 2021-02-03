@@ -250,7 +250,7 @@ process last_dotplot {
         tuple val(meta), path(tab)
 
     output:
-        tuple val(meta), path("*.${opts.suffix}"), emit: tiff
+        tuple val(meta), path("*.${opts.suffix}"), emit: plot
 
     script:
         args = ""

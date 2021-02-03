@@ -130,7 +130,7 @@ workflow {
     assert_channel_count( last_filter_maf_near.out.maf, "last_filter", 1 )
     assert_channel_count( last_filter_maf_distant.out.maf, "last_filter", 1 )
     assert_channel_count( last_convert_maf_to_sam.out.sam, "last_convert", 1 )
-    assert_channel_count( last_dotplot_near.out.tiff, "last_dotplot", 1 )
-    assert_channel_count( last_dotplot_distant.out.tiff, "last_dotplot", 1 )
+    assert_channel_count( last_dotplot_near.out.plot, "last_dotplot", 1 )
+    assert_channel_count( last_dotplot_distant.out.plot, "last_dotplot", 1 )
 
 }
