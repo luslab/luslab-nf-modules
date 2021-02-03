@@ -185,7 +185,7 @@ process last_filter_maf {
         """
 }
 
-process last_convert_maf_to_sam {
+process last_convert_maf {
     label "min_cores"
     label "low_mem"
     label "regular_queue"
@@ -206,7 +206,7 @@ process last_convert_maf_to_sam {
         tuple val(meta), path(maf)
 
     output:
-        tuple val(meta), path("*.sam"), emit: sam
+        tuple val(meta), path("*.${opts.suffix}")
 
     script:
         args = ""
@@ -215,12 +215,10 @@ process last_convert_maf_to_sam {
             args += ext_args.trim()
         }
 
-        prefix = opts.suffix ? "${meta.sample_id}${opts.suffix}" : "${meta.sample_id}"
-
-        last_command = "maf-convert sam ${maf} > ${maf.simpleName}.sam"
+        last_command = "maf-convert ${opts.suffix} ${maf} > ${maf.simpleName}.${opts.suffix}"
 
         if (params.verbose){
-            println ("[MODULE] last_convert_maf_to_sam command: " + last_command)
+            println ("[MODULE] last_convert_maf command: " + last_command)
         }
 
         //SHELL

@@ -48,7 +48,7 @@ include {last_dotplot as last_dotplot_distant} from "../main.nf"
 include {last_db as last_db_reads_to_genome} from "../main.nf"
 include {last_train as last_train_reads_to_genome} from "../main.nf"
 include {last_align as last_align_reads_to_genome} from "../main.nf"
-include {last_convert_maf_to_sam} from "../main.nf"
+include {last_convert_maf as last_convert_maf_to_sam} from "../main.nf"
 
 include {assert_channel_count} from "../../../workflows/test_flows/main.nf"
 
@@ -129,7 +129,7 @@ workflow {
     assert_channel_count( last_align_reads_to_genome.out.maf, "last_align", 1 )
     assert_channel_count( last_filter_maf_near.out.maf, "last_filter", 1 )
     assert_channel_count( last_filter_maf_distant.out.maf, "last_filter", 1 )
-    assert_channel_count( last_convert_maf_to_sam.out.sam, "last_convert", 1 )
+    assert_channel_count( last_convert_maf_to_sam.out, "last_convert", 1 )
     assert_channel_count( last_dotplot_near.out.plot, "last_dotplot", 1 )
     assert_channel_count( last_dotplot_distant.out.plot, "last_dotplot", 1 )
 
