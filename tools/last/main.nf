@@ -3,8 +3,8 @@
 nextflow.enable.dsl=2
 
 process last_db {
-    label "max_cores"
-    label "high_mem"
+    label "avg_cores"
+    label "avg_mem"
     label "regular_queue"
 
     tag "${meta.sample_id}"
@@ -45,8 +45,8 @@ process last_db {
 }
 
 process last_train {
-    label "max_cores"
-    label "high_mem"
+    label "avg_cores"
+    label "avg_mem"
     label "regular_queue"
 
     tag "${meta.sample_id}"
@@ -88,8 +88,8 @@ process last_train {
 }
 
 process last_align {
-    label "max_cores"
-    label "high_mem"
+    label "avg_cores"
+    label "avg_mem"
     label "regular_queue"
 
     tag "${meta.sample_id}"
