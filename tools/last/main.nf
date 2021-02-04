@@ -215,7 +215,7 @@ process last_convert_maf {
             args += ext_args.trim()
         }
 
-        last_command = "maf-convert ${opts.suffix} ${maf} > ${maf.simpleName}.${opts.suffix}"
+        last_command = "maf-convert ${args} ${opts.suffix} ${maf} > ${maf.simpleName}.${opts.suffix}"
 
         if (params.verbose){
             println ("[MODULE] last_convert_maf command: " + last_command)
