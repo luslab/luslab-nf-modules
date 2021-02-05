@@ -18,8 +18,7 @@ process minionqc {
                       if (opts.publish_results == "none") null
                       else filename }
 
-    container "luslab/nf-modules-minionqc:base-1.0.0"
-    //container "quay.io/biocontainers/r-minionqc:1.4.2--r40_0"
+    container "luslab/nf-modules-minionqc:base-1.0.2"
 
     input:
         val opts
@@ -42,7 +41,7 @@ process minionqc {
         println ("[MODULE] minionqc command: " + minionqc_command)
     }
 
-	//SHELL
+    //SHELL
     """
     ${minionqc_command}
     """
