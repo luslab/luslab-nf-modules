@@ -5,7 +5,7 @@ LABEL author="Chris Cheshire <chris.cheshire@crick.ac.uk>"
 
 COPY VERSION .
 
-ARG PACKAGE_VERSION=4.2.2
+ARG PACKAGE_VERSION=4.4.1
 ARG DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get update --fix-missing && \
@@ -24,7 +24,7 @@ RUN apt-get update --fix-missing && \
         libboost-program-options1.58.0=1.58.0+dfsg-5ubuntu3.1 \
         libboost-iostreams1.58.0=1.58.0+dfsg-5ubuntu3.1 \
         bzip2=1.0.6-8ubuntu0.2 \
-        ca-certificates=20201027ubuntu0.16.04.1  \
+        ca-certificates=20210119~16.04.1 \
         curl=7.47.0-1ubuntu2.18 \
         git=1:2.7.4-0ubuntu1.9 \
         procps=2:3.3.10-4ubuntu2.5 \
