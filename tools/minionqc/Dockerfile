@@ -7,8 +7,8 @@ COPY VERSION .
 
 # Install all of R's dependencies, then install R
 RUN apt-get update \
-	&& apt-get clean \
-	&& rm -rf /var/lib/apt/lists/*
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
 
 # Install conda packages
 COPY environment.yml /
