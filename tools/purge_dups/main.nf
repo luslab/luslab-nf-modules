@@ -45,10 +45,10 @@ process purge_dups {
         if (params.verbose){
             println ("[MODULE] purge_dups calculate coverage command: " + pbcstat_command)
             println ("[MODULE] purge_dups calculate cutoff command: " + calcuts_command)
-            println ("[MODULE] purge_dups calculate split FASTA command: " + split_fa_command)
-            println ("[MODULE] purge_dups calculate self-align command: " + minimap_command)
-            println ("[MODULE] purge_dups calculate purge dups command: " + purge_dups_command)
-            println ("[MODULE] purge_dups calculate get sequences command: " + get_seqs_commmand)
+            println ("[MODULE] purge_dups split FASTA command: " + split_fa_command)
+            println ("[MODULE] purge_dups self-align command: " + minimap_command)
+            println ("[MODULE] purge_dups purge duplicates command: " + purge_dups_command)
+            println ("[MODULE] purge_dups get sequences command: " + get_seqs_commmand)
         }
 
     """
