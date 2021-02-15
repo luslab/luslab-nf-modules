@@ -9,7 +9,7 @@ RUN apt-get update \
  && apt-get install -y --no-install-recommends \
  git=1:2.20.1-2+deb10u3 \
  apt-utils=1.8.2.2 \
- unzip=6.0-23+deb10u1 \
+ unzip=6.0-23+deb10u2 \
  procps=2:3.3.15-2 \
  build-essential=12.6 \
  zlib1g-dev=1:1.2.11.dfsg-1 \
