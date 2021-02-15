@@ -26,6 +26,7 @@ process purge_dups {
     output:
         tuple val(meta), path("purged.fa"), emit: purged_fasta
         tuple val(meta), path("hap.fa"), emit: hap_fasta
+        tuple val(meta), path("dups.bed"), emit: bed
 
     script:
         args = ""
