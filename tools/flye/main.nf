@@ -5,7 +5,7 @@ nextflow.enable.dsl=2
 
 // Process definition
 process flye {
-    label "max_cores"
+    label "high_cores"
     label "max_mem"
     label "regular_queue"
 
