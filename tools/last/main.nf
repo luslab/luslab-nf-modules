@@ -170,17 +170,17 @@ process last_filter_one_to_one {
 
         prefix = opts.suffix ? "${meta.sample_id}${opts.suffix}" : "${meta.sample_id}"
 
-        last_rerarrange_command = "last-split ${unfiltered_maf} | maf-swap | last-split | maf-swap > ${unfiltered_maf.simpleName}.filtered.maf"
+        last_filter_command = "last-split ${unfiltered_maf} | maf-swap | last-split | maf-swap > ${unfiltered_maf.simpleName}.filtered.maf"
         last_postmask_command = "last-postmask ${unfiltered_maf.simpleName}.filtered.maf | maf-convert -n tab > ${unfiltered_maf.simpleName}.filtered.tab"
 
         if (params.verbose){
-            println ("[MODULE] LAST one-to-one filter command: " + last_rerarrange_command)
+            println ("[MODULE] LAST one-to-one filter command: " + last_filter_command)
             println ("[MODULE] LAST postmask command: " + last_postmask_command)
         }
 
         //SHELL
         """
-        ${last_rerarrange_command}
+        ${last_filter_command}
         ${last_postmask_command}
         """
 }
