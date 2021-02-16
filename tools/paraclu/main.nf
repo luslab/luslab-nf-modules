@@ -11,67 +11,34 @@ process paraclu {
 
     tag "${sample_id}"
 
-    publishDir "${params.outdir}/paraclu",
-        mode: "copy", overwrite: true
-      
-    container 'luslab/nf-modules-paraclu:base-1.0.4'
-    
-    //Biocontainer with pandas, pigz
-    //quay.io/biocontainers/mulled-v2-ccd4ff06b8023185d0deb02b965a1d0f166896aa:dc4f57656c582f41e3b608365c900a485379b0c7-0
+    publishDir "${params.outdir}/${opts.publish_dir}",
+        mode: "copy",
+        overwrite: true,
+        saveAs: { filename ->
+                      if (opts.publish_results == "none") null
+                      else filename }
+
+    container 'quay.io/biocontainers/paraclu:10--he513fc3_0'
 
     input:
+        val opts
         tuple val(sample_id), path(crosslinks)
 
     output:
-        tuple val(sample_id), path("*_peaks.bed.gz"), emit: peaks
+        tuple val(sample_id), path(output_name), emit: peaks
 
     script:
+        output_name = "${sample_id}_paraclu_peaks_score_${opts.min_cluster_score}.bed.gz"
 
-    """
-    #!/usr/bin/env python
+        // Adding 1 to the start position in the first awk converts to 1-based coordinates
+        // Subtracting 1 from the start position in the second awk converts to 0-based BED format
 
-    import pandas as pd
-    from subprocess import call
-    import sys
-    import os
-
-    file_in = "${crosslinks}"
-    print(file_in)
-    #file_in_name = file_in.name
-    #print(file_in_name)
-
-    if file_in.endswith('.gz'):
-      file_out = file_in.replace('.bed', '_peaks.bed')
-    else:
-      file_out = file_in.replace('.bed', '_peaks.bed.gz')
-    
-    df_in = pd.read_csv(file_in,
-                        names = ["chrom", "start", "end", "name", "score", "strand"],
-                        header=None, sep='\t')
-
-    df_out = df_in[['chrom', 'strand', 'start', 'score']]
-
-    df_out.sort_values(['chrom', 'strand', 'start'], ascending=[True, True, True], inplace=True)
-
-    paraclu_input = file_in + '.paraclu_input'
-    paraclu_output = file_in + '.paraclu_output'
-
-    df_out.to_csv(paraclu_input, sep='\t', header=None, index=None)
-
-    exit_code = call(f'paraclu ${params.paraclu_min_value} "{paraclu_input}" | paraclu-cut.sh -l ${params.paraclu_max_cluster_length} -d ${params.paraclu_min_density_increase} > "{paraclu_output}"', shell=True)
-    if not exit_code == 0:
-      sys.exit('Paraclu error')
-    df_in = pd.read_csv(paraclu_output,
-                        names = ["sequence_name", "strand","start", "end", "number_of_positions",
-                                "sum_of_data_values", "min_density", "max_density"],
-                        header=None, sep='\t')
-    df_in['fourth_column'] = '.'
-    df_out = df_in[['sequence_name', 'start', 'end', 'fourth_column', 'sum_of_data_values', 'strand']]
-    df_out.sort_values(['sequence_name','start', 'end', 'strand'],
-                      ascending=[True, True, True, True], inplace=True)
-    df_out.to_csv(file_out, sep='\t', header=None, index=None)
-    call(f'rm "{paraclu_input}"', shell=True)
-    call(f'rm  "{paraclu_output}"', shell=True)
-
-    """
+        """
+        gunzip -c $crosslinks | \
+        awk '{OFS = "\t"}{print \$1, \$6, \$2+1, \$5}' | sort -k1,1 -k2,2 -k3,3n | \
+        paraclu ${opts.min_cluster_score} - | \
+        paraclu-cut -d ${opts.min_density_increase} -l ${opts.max_cluster_length} |
+        awk '{OFS = "\t"}{print \$1, \$3-1, \$4, ".", \$6, \$2}' |
+        sort -k1,1 -k2,2n | gzip > $output_name
+        """
 }
