@@ -8,7 +8,7 @@ process racon {
     label "max_cores"
     label "high_mem"
     label "regular_queue"
-    
+
     tag "${meta.sample_id}"
 
     publishDir "${params.outdir}/${opts.publish_dir}",
@@ -23,18 +23,15 @@ process racon {
     input:
         val opts
         tuple val(meta), path(reads)
-        path(overlap_paf)
-        path(assembly_fasta)
+        tuple val(meta), path(overlap_paf)
+        tuple val(meta), path(assembly_fasta)
 
     output:
-        tuple val(meta), path("$opts.outfile_name"), emit: fasta
+        tuple val(meta), path("racon_${opts.polish_iter}/${assembly_fasta.simpleName}.fasta"), emit: fasta
 
     script:
-	//Build the command line options
-	racon_command = "racon --threads ${task.cpus} \
-			$reads \
-			$overlap_paf \
-			$assembly_fasta > $opts.outfile_name"
+    //Build the command line options
+    racon_command = "mkdir -p racon_${opts.polish_iter}; racon --threads ${task.cpus} ${reads} ${overlap_paf} ${assembly_fasta} > racon_${opts.polish_iter}/${assembly_fasta.simpleName}.fasta"
 
     //SHELL
     """
