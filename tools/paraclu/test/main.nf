@@ -26,12 +26,12 @@ include {paraclu} from '../main.nf'
 
 // Defining test data
 testData = [
-    ['Sample1', "$baseDir/input/sample1.xl.bed.gz"],
-    ['Sample2', "$baseDir/input/sample2.xl.bed.gz"],
-    ['Sample3', "$baseDir/input/sample3.xl.bed.gz"],
-    ['Sample4', "$baseDir/input/sample4.xl.bed.gz"],
-    ['Sample5', "$baseDir/input/sample5.xl.bed.gz"],
-    ['Sample6', "$baseDir/input/sample6.xl.bed.gz"]
+    ['Sample1', "$baseDir/../../../test_data/crosslinks/sample1.xl.bed.gz"],
+    ['Sample2', "$baseDir/../../../test_data/crosslinks/sample2.xl.bed.gz"],
+    ['Sample3', "$baseDir/../../../test_data/crosslinks/sample3.xl.bed.gz"],
+    ['Sample4', "$baseDir/../../../test_data/crosslinks/sample4.xl.bed.gz"],
+    ['Sample5', "$baseDir/../../../test_data/crosslinks/sample5.xl.bed.gz"],
+    ['Sample6', "$baseDir/../../../test_data/crosslinks/sample6.xl.bed.gz"]
 ]
 
 // Define test data input channels
