@@ -137,7 +137,7 @@ process last_align {
         """
 }
 
-process last_filter_maf {
+process last_filter_one_to_one {
     label "min_cores"
     label "avg_mem"
     label "regular_queue"
@@ -170,18 +170,60 @@ process last_filter_maf {
 
         prefix = opts.suffix ? "${meta.sample_id}${opts.suffix}" : "${meta.sample_id}"
 
-        last_rerarrange_command = "last-split ${unfiltered_maf} | maf-swap | last-split | maf-swap > ${unfiltered_maf.simpleName}.filtered.maf"
+        last_filter_command = "last-split ${unfiltered_maf} | maf-swap | last-split | maf-swap > ${unfiltered_maf.simpleName}.filtered.maf"
         last_postmask_command = "last-postmask ${unfiltered_maf.simpleName}.filtered.maf | maf-convert -n tab > ${unfiltered_maf.simpleName}.filtered.tab"
 
         if (params.verbose){
-            println ("[MODULE] LAST one-to-one rearrangement command: " + last_rerarrange_command)
+            println ("[MODULE] LAST one-to-one filter command: " + last_filter_command)
             println ("[MODULE] LAST postmask command: " + last_postmask_command)
         }
 
         //SHELL
         """
-        ${last_rerarrange_command}
+        ${last_filter_command}
         ${last_postmask_command}
+        """
+}
+
+process last_filter_one_to_many {
+    label "min_cores"
+    label "avg_mem"
+    label "regular_queue"
+
+    tag "${meta.sample_id}"
+
+    publishDir "${params.outdir}/${opts.publish_dir}",
+        mode: "copy",
+        overwrite: true,
+        saveAs: { filename ->
+                      if (opts.publish_results == "none") null
+                      else filename }
+
+    container "quay.io/biocontainers/last:1186--h8b12597_0"
+
+    input:
+        val opts
+        tuple val(meta), path(unfiltered_maf)
+
+    output:
+        tuple val(meta), path("*.one-to-many.maf"), emit: maf
+
+    script:
+        args = ""
+        if(opts.args && opts.args != '') {
+            ext_args = opts.args
+            args += ext_args.trim()
+        }
+
+        last_filter_one_to_many_command = "last-split ${unfiltered_maf} > ${unfiltered_maf.simpleName}.one-to-many.maf"
+
+        if (params.verbose){
+            println ("[MODULE] LAST one-to-many filter command: " + last_filter_one_to_many_command)
+        }
+
+        //SHELL
+        """
+        ${last_filter_one_to_many_command}
         """
 }
 
