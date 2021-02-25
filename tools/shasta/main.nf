@@ -25,9 +25,9 @@ process shasta {
         tuple val(meta), path(reads)
 
     output:
-        tuple val(meta), path("ShastaRun/Assembly.fasta"), emit: fasta
-        tuple val(meta), path("ShastaRun/Assembly.gfa"), emit: gfa
-        tuple val(meta), path("**{csv,dot,html,conf}"), emit: report
+        tuple val(meta), path("${meta.sample_id}/Assembly.fasta"), emit: fasta
+        tuple val(meta), path("${meta.sample_id}/Assembly.gfa"), emit: gfa
+        tuple val(meta), path("${meta.sample_id}/*{csv,dot,html,conf}"), emit: report
 
     script:
 
@@ -39,7 +39,7 @@ process shasta {
     }
 
     //Build the command line options
-    shasta_command = "shasta $args --threads ${task.cpus} --input ${reads}"
+    shasta_command = "shasta $args --threads ${task.cpus} --input ${reads} --assemblyDirectory ${meta.sample_id}"
 
     //SHELL
     """
