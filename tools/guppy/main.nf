@@ -18,7 +18,7 @@ process guppy_basecaller {
                       if (opts.publish_results == "none") null
                       else filename }
 
-    container params.num_gpus == 0 ? "luslab/nf-modules-guppy:cpu-1.2.0" : "luslab/nf-modules-guppy:gpu-1.2.0"
+    container params.num_gpus == 0 ? "luslab/nf-modules-guppy:cpu-1.3.0" : "luslab/nf-modules-guppy:gpu-1.3.0"
 
     input:
         val opts
