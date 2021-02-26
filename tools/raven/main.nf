@@ -22,11 +22,12 @@ process raven {
 
     input:
         val opts
-        tuple val(meta), path(fastq)
+        // Note that "reads" can be FASTA or FASTQ format and compressed or not.
+        tuple val(meta), path(reads)
 
     output:
         tuple val(meta), path("${meta.sample_id}/assembly.fasta"), emit: fasta
-        tuple path("${meta.sample_id}/assembly_info.txt"), path("${meta.sample_id}/flye.log"), emit: log
+        tuple val(meta), path("${meta.sample_id}/assembly_graph.gfa"), emit: gfa
 
     script:
 
@@ -38,10 +39,10 @@ process raven {
     }
 
     //Build the command line options
-    flye_command = "flye $args --genome-size ${opts.genome_size} --threads ${task.cpus} --out-dir ${meta.sample_id} --nano-raw $fastq"
+    raven_command = "mkdir -p ${meta.sample_id} && raven $args --threads ${task.cpus} --polishing-rounds ${opts.polishing_rounds} --graphical-fragment-assembly ${meta.sample_id}/assembly_graph.gfa ${reads} > ${meta.sample_id}/assembly.fasta"
 
-	//SHELL
+    //SHELL
     """
-    ${flye_command}
+    ${raven_command}
     """
 }

@@ -4,22 +4,19 @@
 nextflow.enable.dsl=2
 
 // Log out
-log.info ("Starting tests for flye...")
+log.info ("Starting tests for raven...")
 
 /*------------------------------------------------------------------------------------*/
 /* Define params
 --------------------------------------------------------------------------------------*/
 
 params.verbose = true
-params.modules["flye"].genome_size = "50000"
-// The following flag is required for low-coverage assemblies - like the test set
-// params.modules["flye"].args = "--asm-coverage 4"
 
 /*------------------------------------------------------------------------------------*/
 /* Module inclusions
 --------------------------------------------------------------------------------------*/
 
-include {flye} from "../main.nf"
+include {raven} from "../main.nf"
 include {assert_channel_count} from "../../../workflows/test_flows/main.nf"
 
 /*------------------------------------------------------------------------------------*/
@@ -44,11 +41,13 @@ Channel
 
 workflow {
     // Run flye
-    flye ( params.modules["flye"], ch_fastq_data )
+    raven (params.modules["raven"], ch_fastq_data)
 
     // Collect file names and view output
-    flye.out.fasta | view
+    raven.out.fasta | view
+    raven.out.gfa | view
 
     // Verify channel counts
-    assert_channel_count(flye.out.fasta, "assembly", 1)
+    assert_channel_count(raven.out.fasta, "assembly fasta", 1)
+    assert_channel_count(raven.out.gfa, "assembly graph", 1)
 }
