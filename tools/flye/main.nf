@@ -18,7 +18,7 @@ process flye {
                       if (opts.publish_results == "none") null
                       else filename }
 
-    container "quay.io/biocontainers/flye:2.8.2--py38h1c8e9b9_0"
+    container "quay.io/biocontainers/flye:2.8.3--py38h1c8e9b9_0"
 
     input:
         val opts
@@ -26,6 +26,7 @@ process flye {
 
     output:
         tuple val(meta), path("${meta.sample_id}/assembly.fasta"), emit: fasta
+	tuple val(meta), path("${meta.sample_id}/assembly_graph.gfa"), emit: gfa
         tuple path("${meta.sample_id}/assembly_info.txt"), path("${meta.sample_id}/flye.log"), emit: log
 
     script:
