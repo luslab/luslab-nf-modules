@@ -13,7 +13,7 @@ jobs:
         matrix:
             tag: ['base']
             docker-file: ['Dockerfile']
-            module-name: ['paraclu','peka','minionqc','tantan','purge_haplotigs']
+            module-name: ['peka','minionqc','tantan','purge_haplotigs','r']
             include:
               - tag: 'cpu'
                 docker-file: 'Dockerfile.cpu'
