@@ -11,7 +11,7 @@ ARG DEBIAN_FRONTEND=noninteractive
 RUN apt-get update --fix-missing && \
     apt-get install -y --no-install-recommends \
         libcurl4-openssl-dev=7.47.0-1ubuntu2.18 \
-        libssl-dev=1.0.2g-1ubuntu4.18 \
+        libssl-dev \
         libhdf5-cpp-11=1.8.16+docs-4ubuntu1.1 \
         libzmq5=4.1.4-7ubuntu0.1 \
         libboost-atomic1.58.0=1.58.0+dfsg-5ubuntu3.1 \

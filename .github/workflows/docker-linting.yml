@@ -11,12 +11,12 @@ jobs:
     strategy:
         matrix:
           docker-name: ['Dockerfile']
-          module-name: ['peka','minionqc','tantan','purge_haplotigs']
-          include:
-            - docker-name: 'Dockerfile.cpu'
-              module-name: 'guppy'
-            - docker-name: 'Dockerfile.gpu'
-              module-name: 'guppy'
+          module-name: ['peka','minionqc','tantan','purge_haplotigs','r']
+          # include:
+          #   - docker-name: 'Dockerfile.cpu'
+          #     module-name: 'guppy'
+          #   - docker-name: 'Dockerfile.gpu'
+          #     module-name: 'guppy'
     steps:
       - uses: actions/checkout@v2
       - name: Lint Dockerfile
