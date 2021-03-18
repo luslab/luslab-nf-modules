@@ -27,11 +27,15 @@ Channel
     .from(aws_gtf)
     .set {ch_gtf}
 
+// def result = true
+
 workflow {
     activate_gtf(ch_gtf)
     //activate_gtf.out.gtf | view
-        
-    Workflow.check_gtf_format( activate_gtf.out.gtf )
-    // log.info "test-" + gtf_check
-}
 
+    activate_gtf.out.gtf.subscribe {
+        Workflow.check_gtf_format( it, 30 )
+    }
+
+    log.info result.toString()
+}
